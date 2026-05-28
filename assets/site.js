@@ -78,7 +78,10 @@ function autoFormatContent(rawText) {
   });
   
   // 5) Parse [calculator type="..."]
-  content = content.replace(/\[calculator\s+type="([^"]+)"\s*\]/g, (match, type) => {
+  content = content.replace(/\[calculator\s+([^\]]+)\]/g, (match, attrsStr) => {
+    const typeMatch = attrsStr.match(/type="([^"]+)"/i) || attrsStr.match(/type='([^']+)'/i);
+    const type = typeMatch ? typeMatch[1] : 'oracle';
+    
     if (type === 'oracle') {
       return `
         <div class="calc-card" data-practitioner="keep" style="margin:20px 0">
@@ -120,6 +123,53 @@ function autoFormatContent(rawText) {
           <label>Estimated Hours Saved/User <input id="copilotHours" type="number" value="4" oninput="calcCopilotROI()"></label>
           <button onclick="calcCopilotROI()">Calculate ROI</button>
           <output id="copilotCalcOut" style="display:block; margin-top:10px; font-weight:700">Annual Waste: $54,000 / year</output>
+        </div>
+      `;
+    } else if (type === 'custom') {
+      const titleMatch = attrsStr.match(/title="([^"]+)"/i) || attrsStr.match(/title='([^']+)'/i);
+      const formulaMatch = attrsStr.match(/formula="([^"]+)"/i) || attrsStr.match(/formula='([^']+)'/i);
+      const outputMatch = attrsStr.match(/output="([^"]+)"/i) || attrsStr.match(/output='([^']+)'/i);
+      const inputsMatch = attrsStr.match(/inputs="([^"]+)"/i) || attrsStr.match(/inputs='([^']+)'/i);
+      
+      const title = titleMatch ? titleMatch[1] : 'Custom Calculator';
+      const formula = formulaMatch ? formulaMatch[1] : 'X * Y';
+      const output = outputMatch ? outputMatch[1] : 'Result: {result}';
+      const inputsStr = inputsMatch ? inputsMatch[1] : 'X:10|Y:2';
+      
+      const calcId = 'custom_calc_' + Math.random().toString(36).substr(2, 9);
+      
+      const fields = inputsStr.split('|').map(f => {
+        const parts = f.split(':');
+        return {
+          label: parts[0] || 'Field',
+          val: parts[1] || '0',
+          varName: (parts[0] || 'Field').replace(/[^a-zA-Z0-9]/g, '')
+        };
+      });
+      
+      let fieldsHtml = '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:12px; margin-bottom:12px;">';
+      fields.forEach(field => {
+        fieldsHtml += `
+          <label style="font-weight:700; font-size:12px; display:block;">${field.label}<br>
+            <input type="number" class="editor-input ${calcId}_input" data-var="${field.varName}" value="${field.val}" style="margin-top:4px;" oninput="evaluateCustomCalc('${calcId}', '${formula.replace(/'/g, "\\'")}', '${output.replace(/'/g, "\\'")}')">
+          </label>
+        `;
+      });
+      fieldsHtml += '</div>';
+      
+      return `
+        <div class="calc-card" data-practitioner="keep" style="margin:20px 0" id="${calcId}" data-formula="${formula.replace(/"/g, '&quot;')}" data-output="${output.replace(/"/g, '&quot;')}">
+          <h3>${title}</h3>
+          ${fieldsHtml}
+          <button class="editor-btn" onclick="evaluateCustomCalc('${calcId}', '${formula.replace(/'/g, "\\'")}', '${output.replace(/'/g, "\\'")}')" style="display:none;">Calculate</button>
+          <output class="${calcId}_output" style="display:block; margin-top:10px; font-weight:700">${output.replace('{result}', '...')}</output>
+          <script>
+            setTimeout(() => {
+              if (typeof evaluateCustomCalc === 'function') {
+                evaluateCustomCalc('${calcId}', '${formula.replace(/'/g, "\\'")}', '${output.replace(/'/g, "\\")}');
+              }
+            }, 100);
+          </script>
         </div>
       `;
     }
@@ -288,6 +338,56 @@ function calcOracle(){const c=+document.getElementById('orclCores')?.value||0,f=
 function calcJavaCost(){const e=+document.getElementById('javaEmpCount')?.value||0,t=+document.getElementById('javaContCount')?.value||0,n=e+t;let a=0;n<=999?a=15:n<=2999?a=12:n<=8999?a=10.5:n<=19999?a=8.25:n<=49999?a=6.75:a=5.25;const r=n*a*12,c=document.getElementById('javaCalcOut');c&&(c.textContent=`Calculated Employees: ${n} | Tier Price: $${a.toFixed(2)}/mo | Annual Cost: $${r.toLocaleString()} / year`)}
 function calcCopilotROI(){const e=+document.getElementById('copilotSeats')?.value||0,t=+document.getElementById('copilotInactive')?.value||0,n=+document.getElementById('copilotHours')?.value||0,a=360*e,r=360*t,c=Math.max(0,e-t),i=50*n,s=12*c*i,o=s-a,u=document.getElementById('copilotCalcOut');u&&(u.textContent=`Annual Spend: $${a.toLocaleString()} | Annual Inactive Waste: $${r.toLocaleString()} | Active Productivity ROI: $${s.toLocaleString()}/year | Net Benefit: $${o.toLocaleString()}/year`)}
 
+window.evaluateCustomCalc = function(calcId, formula, outputTemplate) {
+  const container = document.getElementById(calcId);
+  if (!container) return;
+  
+  const inputs = container.querySelectorAll("." + calcId + "_input");
+  const context = {};
+  inputs.forEach(input => {
+    const varName = input.dataset.var;
+    context[varName] = +input.value || 0;
+  });
+  
+  let result = 0;
+  try {
+    const keys = Object.keys(context);
+    const vals = Object.values(context);
+    const fn = new Function(...keys, "return (" + formula + ");");
+    result = fn(...vals);
+  } catch(e) {
+    result = NaN;
+  }
+  
+  if (isNaN(result)) {
+    result = "Error in formula";
+  } else {
+    if (result % 1 !== 0) {
+      result = result.toFixed(2);
+    } else {
+      result = result.toString();
+    }
+  }
+  
+  const outEl = container.querySelector("." + calcId + "_output");
+  if (outEl) {
+    outEl.textContent = outputTemplate.replace("{result}", result);
+  }
+};
+
+window.initializeCustomCalculators = function(container = document) {
+  container.querySelectorAll('.calc-card[data-formula]').forEach(calcEl => {
+    const calcId = calcEl.id;
+    const formula = calcEl.dataset.formula || '';
+    const output = calcEl.dataset.output || '';
+    if (typeof window.evaluateCustomCalc === 'function') {
+      window.evaluateCustomCalc(calcId, formula, output);
+    }
+  });
+};
+
+
+
 function renderDynamicArticles(){
   const grid = document.querySelector('.article-grid');
   if(!grid) return;
@@ -412,7 +512,12 @@ function serializeBlocks(blocks) {
     if (b.type === 'info') return `[info]\n${b.value}\n[/info]`;
     if (b.type === 'formula') return `[formula]\n${b.value}\n[/formula]`;
     if (b.type === 'table') return b.value;
-    if (b.type === 'calculator') return `[calculator type="${b.calcType}"]`;
+    if (b.type === 'calculator') {
+      if (b.calcType === 'custom') {
+        return `[calculator type="custom" title="${b.title || 'Custom Calculator'}" formula="${b.formula || 'Cores * Factor'}" output="${b.output || 'Required Licenses: {result}'}" inputs="${b.inputs || 'Cores:16|Factor:0.5'}"]`;
+      }
+      return `[calculator type="${b.calcType}"]`;
+    }
     if (b.type === 'excel') return `[excel title="${b.title}" size="${b.size}" sheets="${b.sheets}" link="${b.link}"]`;
     return '';
   }).join('\n\n');
@@ -468,7 +573,24 @@ function parseRawContentToBlocks(rawText) {
       const attrs = match[2] || match[5] || '';
       const typeMatch = attrs.match(/type="([^"]+)"/i) || attrs.match(/type='([^']+)'/i);
       const calcType = typeMatch ? typeMatch[1] : 'oracle';
-      blocks.push({ type: 'calculator', calcType });
+      
+      if (calcType === 'custom') {
+        const titleMatch = attrs.match(/title="([^"]+)"/i) || attrs.match(/title='([^']+)'/i);
+        const formulaMatch = attrs.match(/formula="([^"]+)"/i) || attrs.match(/formula='([^']+)'/i);
+        const outputMatch = attrs.match(/output="([^"]+)"/i) || attrs.match(/output='([^']+)'/i);
+        const inputsMatch = attrs.match(/inputs="([^"]+)"/i) || attrs.match(/inputs='([^']+)'/i);
+        
+        blocks.push({
+          type: 'calculator',
+          calcType: 'custom',
+          title: titleMatch ? titleMatch[1] : 'Custom Calculator',
+          formula: formulaMatch ? formulaMatch[1] : 'Cores * Factor',
+          output: outputMatch ? outputMatch[1] : 'Required Licenses: {result}',
+          inputs: inputsMatch ? inputsMatch[1] : 'Cores:16|Factor:0.5'
+        });
+      } else {
+        blocks.push({ type: 'calculator', calcType });
+      }
     } else if (tag === 'excel') {
       const attrs = match[2] || match[5] || '';
       const titleMatch = attrs.match(/title="([^"]+)"/i) || attrs.match(/title='([^']+)'/i);
@@ -539,6 +661,19 @@ function serializeTable(rows) {
   });
   return md;
 }
+
+function parseVariables(inputStr) {
+  if (!inputStr) return [{ label: 'Cores', val: '16' }, { label: 'Factor', val: '0.5' }];
+  return inputStr.split('|').map(s => {
+    const p = s.split(':');
+    return { label: p[0] || 'Variable', val: p[1] || '0' };
+  });
+}
+
+function serializeVariables(arr) {
+  return arr.map(item => `${item.label.trim()}:${item.val.trim()}`).join('|');
+}
+
 
 function setupRichEditor(modalContainer, form) {
   const textarea = form.querySelector('textarea[name="content"]');
@@ -612,13 +747,44 @@ function setupRichEditor(modalContainer, form) {
               <option value="ibm" ${block.calcType === 'ibm' ? 'selected' : ''}>IBM PVU Calculator (Full vs Sub-capacity)</option>
               <option value="java" ${block.calcType === 'java' ? 'selected' : ''}>Java SE Universal Subscription Calculator</option>
               <option value="copilot" ${block.calcType === 'copilot' ? 'selected' : ''}>M365 Copilot Cost & ROI Calculator</option>
+              <option value="custom" ${block.calcType === 'custom' ? 'selected' : ''}>🛠️ Create Custom Calculator...</option>
             </select>
           </label>
+          
+          <div class="custom-calc-fields" style="display: ${block.calcType === 'custom' ? 'block' : 'none'}; padding:14px; border:1px solid var(--line); border-radius:10px; margin-top:10px; background:var(--soft);">
+            <div style="font-size:11.5px; font-weight:800; color:var(--blue); text-transform:uppercase; margin-bottom:10px; letter-spacing:0.03em;">🛠️ Custom Calculator Builder:</div>
+            
+            <label style="font-weight:700; font-size:12px; display:block; margin-bottom:10px;">Calculator Title<br>
+              <input class="editor-input calc-custom-title" style="margin-top:4px;" value="${block.title || 'Custom Calculator'}" placeholder="e.g. SQL Server License Calculator">
+            </label>
+            
+            <div style="margin-bottom:10px;">
+              <span style="font-weight:700; font-size:12px; display:block; margin-bottom:6px;">Variables & Default Values</span>
+              <div class="calc-variables-container" style="display:flex; flex-direction:column; gap:6px; margin-bottom:6px;">
+                <!-- Dynamically populated variable rows -->
+              </div>
+              <button type="button" class="mini-btn add-var-btn" style="font-size:11px; padding:4px 8px; border-radius:6px;">➕ Add Variable</button>
+            </div>
+            
+            <label style="font-weight:700; font-size:12px; display:block; margin-bottom:10px;">Calculation Formula<br>
+              <input class="editor-input calc-custom-formula" style="margin-top:4px; font-family:monospace;" value="${block.formula || 'Cores * Factor'}" placeholder="e.g. Cores * Factor">
+              <span style="font-size:11px; color:var(--muted); font-weight:normal; display:block; margin-top:4px;">
+                💡 <em>Use the Variable names above in your mathematical expression (e.g. `Cores * Factor`). Supported: `*`, `/`, `+`, `-`, `(`, `)`.</em>
+              </span>
+            </label>
+            
+            <label style="font-weight:700; font-size:12px; display:block; margin-bottom:6px;">Output Text Template<br>
+              <input class="editor-input calc-custom-output" style="margin-top:4px;" value="${block.output || 'Required Licenses: {result} Cores'}" placeholder="e.g. Total cost: {result}">
+              <span style="font-size:11px; color:var(--muted); font-weight:normal; display:block; margin-top:4px;">
+                💡 <em>Use `{result}` where the calculated number should be placed.</em>
+              </span>
+            </label>
+          </div>
           
           <div class="calc-editor-preview" style="margin-top:12px; padding:14px; border:1px dashed var(--blue); border-radius:10px; background:var(--soft);">
             <div style="font-size:10px; font-weight:800; color:var(--blue); text-transform:uppercase; margin-bottom:8px; letter-spacing:0.05em;">Interactive Simulator (Try it!):</div>
             <div class="calc-card" style="padding:14px; margin:0; border:1px solid var(--line); border-radius:10px; background:var(--card);">
-              <h4 class="calc-preview-title" style="margin:0 0 10px; font-size:14px; font-weight:800; color:var(--ink);">Oracle Processor Calculator</h4>
+              <h4 class="calc-preview-title" style="margin:0 0 10px; font-size:14px; font-weight:800; color:var(--ink);">${block.title || 'Calculator'}</h4>
               <div class="calc-preview-fields" style="display:grid; gap:8px;">
                 <!-- Filled dynamically by JS -->
               </div>
@@ -643,13 +809,20 @@ function setupRichEditor(modalContainer, form) {
             </select>
           </label>
           
-          <div class="custom-excel-fields" style="display: none; padding:12px; border:1px solid var(--line); border-radius:8px; margin-bottom:12px; background:var(--soft);">
-            <div style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; margin-bottom:8px;">Custom Workbook Configuration:</div>
+          <div class="custom-excel-fields" style="display: none; padding:14px; border:1px solid var(--line); border-radius:10px; margin-bottom:12px; background:var(--soft);">
+            <div style="font-size:11.5px; font-weight:800; color:var(--green); text-transform:uppercase; margin-bottom:10px; letter-spacing:0.03em;">📂 Custom Excel Guideline:</div>
+            
+            <div style="font-size:12px; color:var(--muted); line-height:1.45; margin-bottom:12px; background:var(--card); padding:10px; border-radius:6px; border-left:3px solid var(--green);">
+              1️⃣ Place your Excel file inside the project's <code>/assets/</code> folder (or upload it to a cloud hosting URL).<br>
+              2️⃣ Paste the link (e.g. <code>../assets/My_Workbook.xlsx</code> or direct URL) in the Link field below.<br>
+              3️⃣ Provide a title, estimated file size, and sheet count for your readers.
+            </div>
+            
             <div class="editor-block-grid">
-              <label>Workbook Title<br><input class="editor-input excel-title" style="margin-top:4px" value="${block.title || ''}" placeholder="e.g. My SAM Workbook"></label>
-              <label>File Size<br><input class="editor-input excel-size" style="margin-top:4px" value="${block.size || ''}" placeholder="e.g. 24 KB"></label>
-              <label>Sheets Count<br><input class="editor-input excel-sheets" style="margin-top:4px" value="${block.sheets || ''}" placeholder="e.g. 5 sheets"></label>
-              <label>Workbook Link / File Path<br><input class="editor-input excel-link" style="margin-top:4px" value="${block.link || ''}" placeholder="e.g. ../assets/Workbook.xlsx"></label>
+              <label>Workbook Title<br><input class="editor-input excel-title" style="margin-top:4px" value="${block.title || ''}" placeholder="e.g. Oracle SAM ELP Workbook"></label>
+              <label>File Size<br><input class="editor-input excel-size" style="margin-top:4px" value="${block.size || ''}" placeholder="e.g. 37.3 KB"></label>
+              <label>Sheets Count<br><input class="editor-input excel-sheets" style="margin-top:4px" value="${block.sheets || ''}" placeholder="e.g. 13 sheets"></label>
+              <label>Workbook Link / File Path<br><input class="editor-input excel-link" style="margin-top:4px" value="${block.link || ''}" placeholder="e.g. ../assets/Oracle_SAM_ELP_Workbook.xlsx"></label>
             </div>
           </div>
           
@@ -736,121 +909,271 @@ function setupRichEditor(modalContainer, form) {
       
       if (block.type === 'calculator') {
         const select = card.querySelector('.block-calc-select');
+        const customFieldsDiv = card.querySelector('.custom-calc-fields');
+        const customTitleIn = card.querySelector('.calc-custom-title');
+        const customFormulaIn = card.querySelector('.calc-custom-formula');
+        const customOutputIn = card.querySelector('.calc-custom-output');
+        const variablesContainer = card.querySelector('.calc-variables-container');
+        
         const previewFields = card.querySelector('.calc-preview-fields');
         const previewTitle = card.querySelector('.calc-preview-title');
         const previewResult = card.querySelector('.calc-preview-result');
+        
+        let varsList = parseVariables(block.inputs || 'Cores:16|Factor:0.5');
+        
+        const renderVariableRows = () => {
+          variablesContainer.innerHTML = '';
+          varsList.forEach((v, vIdx) => {
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.gap = '6px';
+            row.style.alignItems = 'center';
+            row.style.marginBottom = '4px';
+            
+            row.innerHTML = `
+              <input class="editor-input var-label" style="padding:4px 6px; font-size:12px; flex:2;" value="${v.label}" placeholder="Variable Name">
+              <input class="editor-input var-val" type="number" style="padding:4px 6px; font-size:12px; flex:1;" value="${v.val}" placeholder="Default Value">
+              <button type="button" class="mini-btn del-var-btn" style="color:var(--red); border-color:var(--red); padding:3px 6px; font-size:11px;">🗑️</button>
+            `;
+            
+            const labelIn = row.querySelector('.var-label');
+            const valIn = row.querySelector('.var-val');
+            const delBtn = row.querySelector('.del-var-btn');
+            
+            labelIn.oninput = (e) => {
+              varsList[vIdx].label = e.target.value;
+              block.inputs = serializeVariables(varsList);
+              syncToTextarea();
+              renderSimulator();
+            };
+            
+            valIn.oninput = (e) => {
+              varsList[vIdx].val = e.target.value;
+              block.inputs = serializeVariables(varsList);
+              syncToTextarea();
+              renderSimulator();
+            };
+            
+            delBtn.onclick = () => {
+              varsList.splice(vIdx, 1);
+              if (varsList.length === 0) {
+                varsList.push({ label: 'Cores', val: '16' });
+              }
+              block.inputs = serializeVariables(varsList);
+              syncToTextarea();
+              renderVariableRows();
+              renderSimulator();
+            };
+            
+            variablesContainer.appendChild(row);
+          });
+        };
+        
+        card.querySelector('.add-var-btn').onclick = () => {
+          varsList.push({ label: 'NewVar', val: '10' });
+          block.inputs = serializeVariables(varsList);
+          syncToTextarea();
+          renderVariableRows();
+          renderSimulator();
+        };
         
         const renderSimulator = () => {
           const type = select.value;
           block.calcType = type;
           
-          if (type === 'oracle') {
-            previewTitle.textContent = "Oracle Processor Calculator";
-            previewFields.innerHTML = `
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <label style="font-weight:700; font-size:11px; color:var(--muted);">Cores<br><input class="editor-input sim-core" type="number" value="20" style="margin-top:4px; padding:6px; font-size:12px;"></label>
-                <label style="font-weight:700; font-size:11px; color:var(--muted);">Core Factor<br><input class="editor-input sim-factor" type="number" value="0.5" step="0.25" style="margin-top:4px; padding:6px; font-size:12px;"></label>
-              </div>
-            `;
-            const coreIn = previewFields.querySelector('.sim-core');
-            const factorIn = previewFields.querySelector('.sim-factor');
+          if (type === 'custom') {
+            customFieldsDiv.style.display = 'block';
+            block.title = customTitleIn.value.trim() || 'Custom Calculator';
+            block.formula = customFormulaIn.value.trim() || 'Cores * Factor';
+            block.output = customOutputIn.value.trim() || 'Required Licenses: {result}';
+            
+            previewTitle.textContent = block.title;
+            
+            let inputsHtml = '<div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">';
+            varsList.forEach(v => {
+              inputsHtml += `
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">${v.label}<br>
+                  <input class="editor-input sim-custom-field" data-var="${v.label.replace(/[^a-zA-Z0-9]/g, '')}" type="number" value="${v.val}" style="margin-top:4px; padding:6px; font-size:12px;">
+                </label>
+              `;
+            });
+            inputsHtml += '</div>';
+            previewFields.innerHTML = inputsHtml;
+            
+            const fields = previewFields.querySelectorAll('.sim-custom-field');
             const updateResult = () => {
-              const c = +coreIn.value || 0;
-              const f = +factorIn.value || 0;
-              previewResult.textContent = `Required: ${Math.ceil(c * f)} Processor licenses`;
+              const context = {};
+              fields.forEach(field => {
+                const varName = field.dataset.var;
+                context[varName] = +field.value || 0;
+              });
+              
+              let result = 0;
+              try {
+                const keys = Object.keys(context);
+                const vals = Object.values(context);
+                const fn = new Function(...keys, `return (${block.formula});`);
+                result = fn(...vals);
+              } catch(e) {
+                result = NaN;
+              }
+              
+              if (isNaN(result)) {
+                previewResult.textContent = 'Error in formula';
+              } else {
+                if (result % 1 !== 0) {
+                  result = result.toFixed(2);
+                }
+                previewResult.textContent = block.output.replace('{result}', result);
+              }
             };
-            coreIn.oninput = updateResult;
-            factorIn.oninput = updateResult;
+            
+            fields.forEach(field => {
+              field.oninput = updateResult;
+            });
+            
             updateResult();
             
-          } else if (type === 'ibm') {
-            previewTitle.textContent = "IBM PVU Calculator";
-            previewFields.innerHTML = `
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <label style="font-weight:700; font-size:11px; color:var(--muted);">Sockets<br><input class="editor-input sim-sockets" type="number" value="2" style="margin-top:4px; padding:6px; font-size:12px;"></label>
-                <label style="font-weight:700; font-size:11px; color:var(--muted);">Cores/Socket<br><input class="editor-input sim-cores" type="number" value="8" style="margin-top:4px; padding:6px; font-size:12px;"></label>
-                <label style="font-weight:700; font-size:11px; color:var(--muted);">PVU/Core<br><input class="editor-input sim-pvu" type="number" value="70" step="10" style="margin-top:4px; padding:6px; font-size:12px;"></label>
-                <label style="font-weight:700; font-size:11px; color:var(--muted);">VM vCPUs<br><input class="editor-input sim-vcpu" type="number" value="4" style="margin-top:4px; padding:6px; font-size:12px;"></label>
-              </div>
-            `;
-            const socketsIn = previewFields.querySelector('.sim-sockets');
-            const coresIn = previewFields.querySelector('.sim-cores');
-            const pvuIn = previewFields.querySelector('.sim-pvu');
-            const vcpuIn = previewFields.querySelector('.sim-vcpu');
-            const updateResult = () => {
-              const s = +socketsIn.value || 0;
-              const c = +coresIn.value || 0;
-              const p = +pvuIn.value || 0;
-              const v = +vcpuIn.value || 0;
-              previewResult.textContent = `Full capacity: ${s*c*p} PVU | Sub-capacity: ${v*p} PVU`;
-            };
-            socketsIn.oninput = updateResult;
-            coresIn.oninput = updateResult;
-            pvuIn.oninput = updateResult;
-            vcpuIn.oninput = updateResult;
-            updateResult();
-            
-          } else if (type === 'java') {
-            previewTitle.textContent = "Java SE Universal Subscription Calculator";
-            previewFields.innerHTML = `
-              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                <label style="font-weight:700; font-size:11px; color:var(--muted);">Employees<br><input class="editor-input sim-emp" type="number" value="1200" style="margin-top:4px; padding:6px; font-size:12px;"></label>
-                <label style="font-weight:700; font-size:11px; color:var(--muted);">Contractors<br><input class="editor-input sim-cont" type="number" value="300" style="margin-top:4px; padding:6px; font-size:12px;"></label>
-              </div>
-            `;
-            const empIn = previewFields.querySelector('.sim-emp');
-            const contIn = previewFields.querySelector('.sim-cont');
-            const updateResult = () => {
-              const e = +empIn.value || 0;
-              const t = +contIn.value || 0;
-              const n = e + t;
-              let a = 0;
-              if (n <= 999) a = 15;
-              else if (n <= 2999) a = 12;
-              else if (n <= 8999) a = 10.5;
-              else if (n <= 19999) a = 8.25;
-              else if (n <= 49999) a = 6.75;
-              else a = 5.25;
-              const r = n * a * 12;
-              previewResult.textContent = `Total Users: ${n} | Tier Price: $${a.toFixed(2)}/mo | Annual: $${r.toLocaleString()} / year`;
-            };
-            empIn.oninput = updateResult;
-            contIn.oninput = updateResult;
-            updateResult();
-            
-          } else if (type === 'copilot') {
-            previewTitle.textContent = "M365 Copilot Cost & ROI Calculator";
-            previewFields.innerHTML = `
-              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
-                <label style="font-weight:700; font-size:11px; color:var(--muted);">Seats<br><input class="editor-input sim-seats" type="number" value="500" style="margin-top:4px; padding:6px; font-size:12px;"></label>
-                <label style="font-weight:700; font-size:11px; color:var(--muted);">Inactive<br><input class="editor-input sim-inactive" type="number" value="150" style="margin-top:4px; padding:6px; font-size:12px;"></label>
-                <label style="font-weight:700; font-size:11px; color:var(--muted);">Hours Saved/User<br><input class="editor-input sim-hours" type="number" value="4" style="margin-top:4px; padding:6px; font-size:12px;"></label>
-              </div>
-            `;
-            const seatsIn = previewFields.querySelector('.sim-seats');
-            const inactiveIn = previewFields.querySelector('.sim-inactive');
-            const hoursIn = previewFields.querySelector('.sim-hours');
-            const updateResult = () => {
-              const e = +seatsIn.value || 0;
-              const t = +inactiveIn.value || 0;
-              const n = +hoursIn.value || 0;
-              const a = 360 * e;
-              const r = 360 * t;
-              const c = Math.max(0, e - t);
-              const i = 50 * n;
-              const s = 12 * c * i;
-              const o = s - a;
-              previewResult.textContent = `Spend: $${a.toLocaleString()} | Waste: $${r.toLocaleString()} | Benefit: $${o.toLocaleString()}/year`;
-            };
-            seatsIn.oninput = updateResult;
-            inactiveIn.oninput = updateResult;
-            hoursIn.oninput = updateResult;
-            updateResult();
+          } else {
+            customFieldsDiv.style.display = 'none';
+            if (type === 'oracle') {
+              previewTitle.textContent = "Oracle Processor Calculator";
+              previewFields.innerHTML = `
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                  <label style="font-weight:700; font-size:11px; color:var(--muted);">Cores<br><input class="editor-input sim-core" type="number" value="20" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                  <label style="font-weight:700; font-size:11px; color:var(--muted);">Core Factor<br><input class="editor-input sim-factor" type="number" value="0.5" step="0.25" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                </div>
+              `;
+              const coreIn = previewFields.querySelector('.sim-core');
+              const factorIn = previewFields.querySelector('.sim-factor');
+              const updateResult = () => {
+                const c = +coreIn.value || 0;
+                const f = +factorIn.value || 0;
+                previewResult.textContent = `Required: ${Math.ceil(c * f)} Processor licenses`;
+              };
+              coreIn.oninput = updateResult;
+              factorIn.oninput = updateResult;
+              updateResult();
+              
+            } else if (type === 'ibm') {
+              previewTitle.textContent = "IBM PVU Calculator";
+              previewFields.innerHTML = `
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                  <label style="font-weight:700; font-size:11px; color:var(--muted);">Sockets<br><input class="editor-input sim-sockets" type="number" value="2" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                  <label style="font-weight:700; font-size:11px; color:var(--muted);">Cores/Socket<br><input class="editor-input sim-cores" type="number" value="8" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                  <label style="font-weight:700; font-size:11px; color:var(--muted);">PVU/Core<br><input class="editor-input sim-pvu" type="number" value="70" step="10" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                  <label style="font-weight:700; font-size:11px; color:var(--muted);">VM vCPUs<br><input class="editor-input sim-vcpu" type="number" value="4" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                </div>
+              `;
+              const socketsIn = previewFields.querySelector('.sim-sockets');
+              const coresIn = previewFields.querySelector('.sim-cores');
+              const pvuIn = previewFields.querySelector('.sim-pvu');
+              const vcpuIn = previewFields.querySelector('.sim-vcpu');
+              const updateResult = () => {
+                const s = +socketsIn.value || 0;
+                const c = +coresIn.value || 0;
+                const p = +pvuIn.value || 0;
+                const v = +vcpuIn.value || 0;
+                previewResult.textContent = `Full capacity: ${s*c*p} PVU | Sub-capacity: ${v*p} PVU`;
+              };
+              socketsIn.oninput = updateResult;
+              coresIn.oninput = updateResult;
+              pvuIn.oninput = updateResult;
+              vcpuIn.oninput = updateResult;
+              updateResult();
+              
+            } else if (type === 'java') {
+              previewTitle.textContent = "Java SE Universal Subscription Calculator";
+              previewFields.innerHTML = `
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                  <label style="font-weight:700; font-size:11px; color:var(--muted);">Employees<br><input class="editor-input sim-emp" type="number" value="1200" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                  <label style="font-weight:700; font-size:11px; color:var(--muted);">Contractors<br><input class="editor-input sim-cont" type="number" value="300" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                </div>
+              `;
+              const empIn = previewFields.querySelector('.sim-emp');
+              const contIn = previewFields.querySelector('.sim-cont');
+              const updateResult = () => {
+                const e = +empIn.value || 0;
+                const t = +contIn.value || 0;
+                const n = e + t;
+                let a = 0;
+                if (n <= 999) a = 15;
+                else if (n <= 2999) a = 12;
+                else if (n <= 8999) a = 10.5;
+                else if (n <= 19999) a = 8.25;
+                else if (n <= 49999) a = 6.75;
+                else a = 5.25;
+                const r = n * a * 12;
+                previewResult.textContent = `Total Users: ${n} | Tier Price: $${a.toFixed(2)}/mo | Annual: $${r.toLocaleString()} / year`;
+              };
+              empIn.oninput = updateResult;
+              contIn.oninput = updateResult;
+              updateResult();
+              
+            } else if (type === 'copilot') {
+              previewTitle.textContent = "M365 Copilot Cost & ROI Calculator";
+              previewFields.innerHTML = `
+                <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                  <label style="font-weight:700; font-size:11px; color:var(--muted);">Seats<br><input class="editor-input sim-seats" type="number" value="500" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                  <label style="font-weight:700; font-size:11px; color:var(--muted);">Inactive<br><input class="editor-input sim-inactive" type="number" value="150" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                  <label style="font-weight:700; font-size:11px; color:var(--muted);">Hours Saved/User<br><input class="editor-input sim-hours" type="number" value="4" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                </div>
+              `;
+              const seatsIn = previewFields.querySelector('.sim-seats');
+              const inactiveIn = previewFields.querySelector('.sim-inactive');
+              const hoursIn = previewFields.querySelector('.sim-hours');
+              const updateResult = () => {
+                const e = +seatsIn.value || 0;
+                const t = +inactiveIn.value || 0;
+                const n = +hoursIn.value || 0;
+                const a = 360 * e;
+                const r = 360 * t;
+                const c = Math.max(0, e - t);
+                const i = 50 * n;
+                const s = 12 * c * i;
+                const o = s - a;
+                previewResult.textContent = `Spend: $${a.toLocaleString()} | Waste: $${r.toLocaleString()} | Benefit: $${o.toLocaleString()}/year`;
+              };
+              seatsIn.oninput = updateResult;
+              inactiveIn.oninput = updateResult;
+              hoursIn.oninput = updateResult;
+              updateResult();
+            }
           }
           syncToTextarea();
         };
         
-        select.onchange = renderSimulator;
+        select.onchange = () => {
+          if (select.value === 'custom') {
+            block.calcType = 'custom';
+            block.title = block.title || 'Custom Calculator';
+            block.formula = block.formula || 'Cores * Factor';
+            block.output = block.output || 'Required Licenses: {result} Cores';
+            block.inputs = block.inputs || 'Cores:16|Factor:0.5';
+            
+            customTitleIn.value = block.title;
+            customFormulaIn.value = block.formula;
+            customOutputIn.value = block.output;
+            varsList = parseVariables(block.inputs);
+          }
+          renderVariableRows();
+          renderSimulator();
+        };
+        
+        const onCustomFieldInput = () => {
+          if (select.value === 'custom') {
+            block.title = customTitleIn.value.trim() || 'Custom Calculator';
+            block.formula = customFormulaIn.value.trim() || 'Cores * Factor';
+            block.output = customOutputIn.value.trim() || 'Required Licenses: {result}';
+            renderSimulator();
+          }
+        };
+        
+        customTitleIn.oninput = onCustomFieldInput;
+        customFormulaIn.oninput = onCustomFieldInput;
+        customOutputIn.oninput = onCustomFieldInput;
+        
+        renderVariableRows();
         renderSimulator();
       } else if (block.type === 'excel') {
         const presetSelect = card.querySelector('.excel-preset-select');
@@ -1110,6 +1433,11 @@ function setupRichEditor(modalContainer, form) {
           copilotInactive.oninput = () => calcCopilotROI();
           copilotHours.oninput = () => calcCopilotROI();
           calcCopilotROI();
+        }
+        
+        // Render and evaluate any custom calculators inside the preview container
+        if (typeof window.initializeCustomCalculators === 'function') {
+          window.initializeCustomCalculators(previewContainer);
         }
       }
     };
@@ -1425,5 +1753,10 @@ document.addEventListener('DOMContentLoaded',()=> {
       
       titleSec.appendChild(container);
     }
+  }
+  
+  // Initialize any custom calculators
+  if (typeof window.initializeCustomCalculators === 'function') {
+    window.initializeCustomCalculators();
   }
 })
