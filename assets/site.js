@@ -21,7 +21,7 @@ function handleAdminToggle(){
     location.reload();
   } else {
     const pass = prompt('Enter admin passcode to enable editing options:');
-    if(pass === 'ashish'){
+    if(pass === 'ashish1534'){
       localStorage.setItem('ashishJournalAdmin', 'yes');
       alert('Admin Mode activated successfully.');
       location.reload();
@@ -29,6 +29,74 @@ function handleAdminToggle(){
       alert('Incorrect passcode.');
     }
   }
+}
+
+function autoFormatContent(rawText) {
+  const trimmed = rawText.trim();
+  if (trimmed.startsWith('<section') || trimmed.startsWith('<p') || trimmed.startsWith('<div')) {
+    return rawText; // Already HTML
+  }
+  
+  const paragraphs = rawText.split(/\n\s*\n+/);
+  let html = '';
+  let currentSection = null;
+  
+  paragraphs.forEach((p, idx) => {
+    const text = p.trim();
+    if (!text) return;
+    
+    // Header logic: starts with # or ##, or is a short line without ending punctuation
+    const isHeader = text.startsWith('##') || text.startsWith('#') || (text.length < 80 && !text.endsWith('.') && !text.endsWith('?') && !text.endsWith('!'));
+    
+    if (isHeader) {
+      const cleanHeader = text.replace(/^#+\s*/, '');
+      if (currentSection) {
+        html += `</div></section>`;
+      }
+      const secId = `sec-${cleanHeader.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+      html += `
+        <section id="${secId}" class="portal-section" data-section-title="${cleanHeader}">
+          <div class="section-toolbar">
+            <h2>${cleanHeader}</h2>
+            <button class="mini-btn" onclick="printSection('${secId}')">Print this section</button>
+          </div>
+          <div class="article-body">
+      `;
+      currentSection = secId;
+    } else {
+      if (!currentSection) {
+        const secId = `sec-introduction`;
+        html += `
+          <section id="${secId}" class="portal-section" data-section-title="Introduction">
+            <div class="section-toolbar">
+              <h2>Introduction</h2>
+              <button class="mini-btn" onclick="printSection('${secId}')">Print this section</button>
+            </div>
+            <div class="article-body">
+        `;
+        currentSection = secId;
+      }
+      
+      if (text.includes('\n- ') || text.startsWith('- ')) {
+        const items = text.split(/\n-?\s+/);
+        let listHtml = '<ul>';
+        items.forEach(item => {
+          const cleanItem = item.replace(/^-\s*/, '').trim();
+          if (cleanItem) listHtml += `<li>${cleanItem}</li>`;
+        });
+        listHtml += '</ul>';
+        html += listHtml;
+      } else {
+        html += `<p>${text.replace(/\n/g, '<br>')}</p>`;
+      }
+    }
+  });
+  
+  if (currentSection) {
+    html += `</div></section>`;
+  }
+  
+  return html;
 }
 
 function renderComments(slug){
@@ -99,14 +167,27 @@ function renderDynamicArticles(){
   if(!grid) return;
   
   const deleted = JSON.parse(localStorage.getItem('ashishJournal:deletedArticles') || '[]');
+  const hardEdits = JSON.parse(localStorage.getItem('ashishJournal:hardcodedEdits') || '{}');
   
   document.querySelectorAll('[data-article-card]').forEach(card => {
     const href = card.getAttribute('href') || '';
     const slug = href.split('/').pop().replace('.html', '');
     if(deleted.includes(slug)){
       card.remove();
-    } else if (isAdmin()) {
-      injectDeleteBtn(card, slug, false);
+    } else {
+      // Apply hardcoded edits if any
+      if (hardEdits[slug]) {
+        const prefix = (location.pathname.includes('/articles/')) ? '' : 'articles/';
+        card.setAttribute('href', `${prefix}viewer.html?slug=${slug}`);
+        card.querySelector('h2').textContent = hardEdits[slug].title;
+        card.querySelector('p').textContent = hardEdits[slug].description;
+        card.querySelector('.cat').textContent = hardEdits[slug].category;
+        card.querySelector('.meta').textContent = `By ${hardEdits[slug].author || 'Ashish Deshmukh'} on ${hardEdits[slug].date}`;
+      }
+      
+      if (isAdmin()) {
+        injectAdminControls(card, slug, false);
+      }
     }
   });
   
@@ -118,7 +199,6 @@ function renderDynamicArticles(){
     card.className = 'article-card';
     card.setAttribute('data-article-card', '');
     
-    // Resolve dynamic path relative to page directory
     const prefix = (location.pathname.includes('/articles/')) ? '' : 'articles/';
     card.setAttribute('href', `${prefix}viewer.html?slug=${art.slug}`);
     
@@ -130,20 +210,43 @@ function renderDynamicArticles(){
     `;
     
     if (isAdmin()) {
-      injectDeleteBtn(card, art.slug, true);
+      injectAdminControls(card, art.slug, true);
     }
     
     grid.insertBefore(card, grid.firstChild);
   });
 }
 
-function injectDeleteBtn(card, slug, isDynamic){
+function injectAdminControls(card, slug, isDynamic){
   card.style.position = 'relative';
+  
+  const container = document.createElement('div');
+  container.style.position = 'absolute';
+  container.style.top = '10px';
+  container.style.right = '10px';
+  container.style.display = 'flex';
+  container.style.gap = '6px';
+  container.style.zIndex = '10';
+  
+  const editBtn = document.createElement('button');
+  editBtn.type = 'button';
+  editBtn.style.border = '1px solid var(--blue)';
+  editBtn.style.borderRadius = '999px';
+  editBtn.style.padding = '4px 10px';
+  editBtn.style.background = 'var(--blue)';
+  editBtn.style.color = '#fff';
+  editBtn.style.fontSize = '11px';
+  editBtn.style.fontWeight = '900';
+  editBtn.style.cursor = 'pointer';
+  editBtn.textContent = 'Edit';
+  editBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    showEditArticleModal(slug, isDynamic);
+  });
+  
   const delBtn = document.createElement('button');
   delBtn.type = 'button';
-  delBtn.style.position = 'absolute';
-  delBtn.style.top = '10px';
-  delBtn.style.right = '10px';
   delBtn.style.border = '1px solid #be123c';
   delBtn.style.borderRadius = '999px';
   delBtn.style.padding = '4px 10px';
@@ -152,7 +255,6 @@ function injectDeleteBtn(card, slug, isDynamic){
   delBtn.style.fontSize = '11px';
   delBtn.style.fontWeight = '900';
   delBtn.style.cursor = 'pointer';
-  delBtn.style.zIndex = '10';
   delBtn.textContent = 'Delete';
   delBtn.addEventListener('click', (e) => {
     e.preventDefault();
@@ -171,7 +273,9 @@ function injectDeleteBtn(card, slug, isDynamic){
       location.reload();
     }
   });
-  card.appendChild(delBtn);
+  
+  container.append(editBtn, delBtn);
+  card.appendChild(container);
 }
 
 function showAddArticleModal(){
@@ -199,7 +303,7 @@ function showAddArticleModal(){
         <label style="font-weight:700; font-size:13px">Title<br><input name="title" required placeholder="e.g. Oracle Database Performance Tuning" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
         <label style="font-weight:700; font-size:13px">Category / Topic<br><input name="category" required placeholder="e.g. Oracle Licensing" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
         <label style="font-weight:700; font-size:13px">Summary / Deck<br><textarea name="description" required placeholder="e.g. A field guide to database tuning..." style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); height:60px; font-family:inherit"></textarea></label>
-        <label style="font-weight:700; font-size:13px">Content (HTML Paragraphs & Sections)<br><textarea name="content" required placeholder="Enter HTML content tags (e.g. &lt;section id='x' class='portal-section' data-section-title='...'&gt;&lt;h2&gt;...&lt;/h2&gt;&lt;p&gt;...&lt;/p&gt;&lt;/section&gt;)" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); height:160px; font-family:inherit"></textarea></label>
+        <label style="font-weight:700; font-size:13px">Content (HTML or Plain Text)<br><textarea name="content" required placeholder="Paste plain text paragraphs (separated by double newlines) or custom HTML markup." style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); height:160px; font-family:inherit"></textarea></label>
         <div style="display:flex; gap:10px">
           <label style="flex:1; font-weight:700; font-size:13px">Author<br><input name="author" value="Ashish Deshmukh" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
           <label style="flex:1; font-weight:700; font-size:13px">Date<br><input name="date" value="${new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'})}" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
@@ -221,12 +325,13 @@ function showAddArticleModal(){
     const title = fd.get('title').trim();
     const category = fd.get('category').trim();
     const description = fd.get('description').trim();
-    const content = fd.get('content').trim();
+    const rawContent = fd.get('content').trim();
     const author = fd.get('author').trim();
     const date = fd.get('date').trim();
     
-    if (!title || !category || !description || !content) return;
+    if (!title || !category || !description || !rawContent) return;
     
+    const content = autoFormatContent(rawContent);
     const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
     
     const dynamics = JSON.parse(localStorage.getItem('ashishJournal:dynamicArticles') || '[]');
@@ -235,7 +340,7 @@ function showAddArticleModal(){
       return;
     }
     
-    dynamics.push({ slug, title, category, description, content, author, date });
+    dynamics.push({ slug, title, category, description, content, author, date, rawContent });
     localStorage.setItem('ashishJournal:dynamicArticles', JSON.stringify(dynamics));
     
     alert('Article created successfully!');
@@ -244,8 +349,195 @@ function showAddArticleModal(){
   };
 }
 
+function showEditArticleModal(slug, isDynamic){
+  const modalId = 'editArticleModal';
+  if(document.getElementById(modalId)) return;
+  
+  let article = null;
+  if(isDynamic){
+    const dynamics = JSON.parse(localStorage.getItem('ashishJournal:dynamicArticles') || '[]');
+    article = dynamics.find(a => a.slug === slug);
+  } else {
+    const hardEdits = JSON.parse(localStorage.getItem('ashishJournal:hardcodedEdits') || '{}');
+    article = hardEdits[slug] || {
+      slug: slug,
+      title: document.querySelector(`[href*="${slug}"] h2`)?.textContent || '',
+      category: document.querySelector(`[href*="${slug}"] .cat`)?.textContent || '',
+      description: document.querySelector(`[href*="${slug}"] p`)?.textContent || '',
+      content: '', // Edited hardcoded ones will save content as well
+      author: 'Ashish Deshmukh',
+      date: new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'})
+    };
+  }
+  
+  if(!article) return;
+  
+  const modal = document.createElement('div');
+  modal.id = modalId;
+  modal.style.position = 'fixed';
+  modal.style.left = '0';
+  modal.style.top = '0';
+  modal.style.width = '100%';
+  modal.style.height = '100%';
+  modal.style.background = 'rgba(0, 0, 0, 0.6)';
+  modal.style.backdropFilter = 'blur(6px)';
+  modal.style.zIndex = '1000';
+  modal.style.display = 'grid';
+  modal.style.placeItems = 'center';
+  modal.style.padding = '20px';
+  
+  modal.innerHTML = `
+    <div class="calc-card" style="width: 100%; max-width: 600px; background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); max-height: calc(100vh - 40px); overflow: auto; border-radius:14px; padding:22px">
+      <h2 style="margin-top:0; font-size:24px">Edit Article</h2>
+      <form id="editArticleForm" style="display:grid; gap:12px">
+        <label style="font-weight:700; font-size:13px">Title<br><input name="title" required value="${article.title}" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
+        <label style="font-weight:700; font-size:13px">Category / Topic<br><input name="category" required value="${article.category}" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
+        <label style="font-weight:700; font-size:13px">Summary / Deck<br><textarea name="description" required style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); height:60px; font-family:inherit">${article.description}</textarea></label>
+        <label style="font-weight:700; font-size:13px">Content (HTML or Plain Text)<br><textarea name="content" required placeholder="Paste plain text paragraphs or custom HTML markup." style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); height:160px; font-family:inherit">${article.rawContent || article.content || ''}</textarea></label>
+        <div style="display:flex; gap:10px">
+          <label style="flex:1; font-weight:700; font-size:13px">Author<br><input name="author" value="${article.author || 'Ashish Deshmukh'}" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
+          <label style="flex:1; font-weight:700; font-size:13px">Date<br><input name="date" value="${article.date}" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px">
+          <button type="button" class="theme-toggle" id="cancelEditArt" style="cursor:pointer">Cancel</button>
+          <button type="submit" class="theme-toggle" style="background:var(--blue); color:white; border-color:var(--blue); cursor:pointer">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  document.getElementById('cancelEditArt').onclick = () => modal.remove();
+  
+  document.getElementById('editArticleForm').onsubmit = (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.currentTarget);
+    const title = fd.get('title').trim();
+    const category = fd.get('category').trim();
+    const description = fd.get('description').trim();
+    const rawContent = fd.get('content').trim();
+    const author = fd.get('author').trim();
+    const date = fd.get('date').trim();
+    
+    if (!title || !category || !description || !rawContent) return;
+    
+    const content = autoFormatContent(rawContent);
+    
+    if(isDynamic){
+      const dynamics = JSON.parse(localStorage.getItem('ashishJournal:dynamicArticles') || '[]');
+      const idx = dynamics.findIndex(a => a.slug === slug);
+      if(idx !== -1){
+        dynamics[idx] = { slug, title, category, description, content, author, date, rawContent };
+        localStorage.setItem('ashishJournal:dynamicArticles', JSON.stringify(dynamics));
+      }
+    } else {
+      const hardEdits = JSON.parse(localStorage.getItem('ashishJournal:hardcodedEdits') || '{}');
+      hardEdits[slug] = { slug, title, category, description, content, author, date, rawContent };
+      localStorage.setItem('ashishJournal:hardcodedEdits', JSON.stringify(hardEdits));
+    }
+    
+    alert('Article updated successfully!');
+    modal.remove();
+    location.reload();
+  };
+}
+
+function showAdminDashboard(){
+  const modalId = 'adminDashboardModal';
+  if(document.getElementById(modalId)) return;
+  
+  const dynamics = JSON.parse(localStorage.getItem('ashishJournal:dynamicArticles') || '[]');
+  const deleted = JSON.parse(localStorage.getItem('ashishJournal:deletedArticles') || '[]');
+  const hardEdits = JSON.parse(localStorage.getItem('ashishJournal:hardcodedEdits') || '{}');
+  
+  // Calculate total comments across all slugs in localStorage
+  let totalComments = 0;
+  for(let i=0; i<localStorage.length; i++){
+    const key = localStorage.key(i);
+    if(key.includes(':comments')){
+      try {
+        const comments = JSON.parse(localStorage.getItem(key) || '[]');
+        totalComments += comments.length;
+      } catch {}
+    }
+  }
+  
+  const modal = document.createElement('div');
+  modal.id = modalId;
+  modal.style.position = 'fixed';
+  modal.style.left = '0';
+  modal.style.top = '0';
+  modal.style.width = '100%';
+  modal.style.height = '100%';
+  modal.style.background = 'rgba(0, 0, 0, 0.6)';
+  modal.style.backdropFilter = 'blur(6px)';
+  modal.style.zIndex = '1000';
+  modal.style.display = 'grid';
+  modal.style.placeItems = 'center';
+  modal.style.padding = '20px';
+  
+  modal.innerHTML = `
+    <div class="calc-card" style="width: 100%; max-width: 500px; background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius:14px; padding:22px">
+      <h2 style="margin-top:0; font-size:24px">Admin Dashboard &amp; Analytics</h2>
+      <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; margin:16px 0">
+        <div style="background:var(--soft); border:1px solid var(--line); border-radius:8px; padding:12px; text-align:center">
+          <div style="font-size:28px; font-weight:900; color:var(--blue)">13</div>
+          <div style="font-size:12px; color:var(--muted)">Hardcoded Articles</div>
+        </div>
+        <div style="background:var(--soft); border:1px solid var(--line); border-radius:8px; padding:12px; text-align:center">
+          <div style="font-size:28px; font-weight:900; color:var(--blue)">${dynamics.length}</div>
+          <div style="font-size:12px; color:var(--muted)">Dynamic Articles</div>
+        </div>
+        <div style="background:var(--soft); border:1px solid var(--line); border-radius:8px; padding:12px; text-align:center">
+          <div style="font-size:28px; font-weight:900; color:#be123c">${deleted.length}</div>
+          <div style="font-size:12px; color:var(--muted)">Deleted Articles</div>
+        </div>
+        <div style="background:var(--soft); border:1px solid var(--line); border-radius:8px; padding:12px; text-align:center">
+          <div style="font-size:28px; font-weight:900; color:var(--green)">${totalComments}</div>
+          <div style="font-size:12px; color:var(--muted)">Total Comments</div>
+        </div>
+      </div>
+      <p style="font-size:13px; color:var(--muted)">Edits Applied to Hardcoded Articles: <b>${Object.keys(hardEdits).length}</b></p>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px; border-top:1px solid var(--line); padding-top:16px">
+        <button type="button" class="theme-toggle" id="resetAllData" style="background:#be123c; color:white; border-color:#be123c; cursor:pointer">Reset All Site Data</button>
+        <button type="button" class="theme-toggle" id="closeDashboard" style="cursor:pointer">Close</button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  document.getElementById('closeDashboard').onclick = () => modal.remove();
+  
+  document.getElementById('resetAllData').onclick = () => {
+    if(confirm('Are you sure you want to completely reset all dynamic articles, comments, edits, and deletions? This action is irreversible.')){
+      localStorage.clear();
+      alert('All local database records cleared successfully.');
+      location.reload();
+    }
+  };
+}
+
 document.addEventListener('scroll',()=>{const bar=document.querySelector('[data-reading-progress]');if(!bar)return;const max=document.documentElement.scrollHeight-innerHeight;bar.style.width=`${max>0?(scrollY/max)*100:0}%`},{passive:true})
-document.addEventListener('DOMContentLoaded',()=>{const saved=localStorage.getItem('samJournalTheme');const preferred=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';applyTheme(saved||preferred);document.querySelectorAll('[data-theme-toggle]').forEach(b=>b.addEventListener('click',toggleTheme));document.querySelectorAll('[data-site-search]').forEach(f=>f.addEventListener('submit',handleSiteSearch));const params=new URLSearchParams(location.search);if(params.has('q'))filterArticles(params.get('q'));const u=encodeURIComponent(location.href),t=encodeURIComponent(document.title);document.querySelectorAll('[data-share-linkedin]').forEach(a=>{a.href=`https://www.linkedin.com/sharing/share-offsite/?url=${u}`;a.addEventListener('click',trackShare)});document.querySelectorAll('[data-share-x]').forEach(a=>{a.href=`https://twitter.com/intent/tweet?text=${t}&url=${u}`;a.addEventListener('click',trackShare)});document.querySelectorAll('[data-like-button]').forEach(b=>b.addEventListener('click',toggleLike));document.querySelectorAll('[data-comment-form]').forEach(f=>f.addEventListener('submit',addComment));updateEngagement(getSlug());
+document.addEventListener('DOMContentLoaded',()=> {
+  const saved = localStorage.getItem('samJournalTheme');
+  const preferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  applyTheme(saved || preferred);
+  document.querySelectorAll('[data-theme-toggle]').forEach(b => b.addEventListener('click', toggleTheme));
+  document.querySelectorAll('[data-site-search]').forEach(f => f.addEventListener('submit', handleSiteSearch));
+  const params = new URLSearchParams(location.search);
+  if (params.has('q')) filterArticles(params.get('q'));
+  const u = encodeURIComponent(location.href), t = encodeURIComponent(document.title);
+  document.querySelectorAll('[data-share-linkedin]').forEach(a => {
+    a.href = `https://www.linkedin.com/sharing/share-offsite/?url=${u}`;
+    a.addEventListener('click', trackShare)
+  });
+  document.querySelectorAll('[data-share-x]').forEach(a => {
+    a.href = `https://twitter.com/intent/tweet?text=${t}&url=${u}`;
+    a.addEventListener('click', trackShare)
+  });
+  document.querySelectorAll('[data-like-button]').forEach(b => b.addEventListener('click', toggleLike));
+  document.querySelectorAll('[data-comment-form]').forEach(f => f.addEventListener('submit', addComment));
+  updateEngagement(getSlug());
 
   // Inject Admin button next to theme toggle
   const navLinks = document.querySelector('.nav-links');
@@ -261,19 +553,38 @@ document.addEventListener('DOMContentLoaded',()=>{const saved=localStorage.getIt
   // Load dynamics & deletions
   renderDynamicArticles();
 
-  // Inject Add Article button if admin is on homepage
+  // Inject Add Article and Admin Dashboard buttons on homepage
   const isHome = location.pathname.endsWith('index.html') || location.pathname === '/' || location.pathname.endsWith('/ashish-deshmukh-journal/') || location.pathname.endsWith('/sam-blog-site/');
-  if (isAdmin() && isHome) {
+  if (isHome) {
     const titleSec = document.querySelector('.home-section .section-title');
     if (titleSec) {
+      const container = document.createElement('div');
+      container.style.display = 'inline-flex';
+      container.style.gap = '10px';
+      container.style.marginLeft = '18px';
+      
       const addBtn = document.createElement('button');
       addBtn.className = 'mini-btn';
       addBtn.textContent = '+ Add Article';
-      addBtn.style.marginLeft = '18px';
       addBtn.style.fontSize = '14px';
       addBtn.style.padding = '8px 16px';
       addBtn.addEventListener('click', showAddArticleModal);
-      titleSec.appendChild(addBtn);
+      container.appendChild(addBtn);
+      
+      if (isAdmin()) {
+        const dashBtn = document.createElement('button');
+        dashBtn.className = 'mini-btn';
+        dashBtn.textContent = 'Admin Dashboard';
+        dashBtn.style.fontSize = '14px';
+        dashBtn.style.padding = '8px 16px';
+        dashBtn.style.border = '1px solid var(--blue)';
+        dashBtn.style.background = 'var(--blue)';
+        dashBtn.style.color = '#fff';
+        dashBtn.addEventListener('click', showAdminDashboard);
+        container.appendChild(dashBtn);
+      }
+      
+      titleSec.appendChild(container);
     }
   }
 })

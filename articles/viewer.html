@@ -47,8 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
   
   document.body.dataset.articleSlug = slug;
   
-  const articles = JSON.parse(localStorage.getItem('ashishJournal:dynamicArticles') || '[]');
-  const article = articles.find(a => a.slug === slug);
+  // Try to load from dynamic articles first, then check edited hardcoded articles
+  const dynamics = JSON.parse(localStorage.getItem('ashishJournal:dynamicArticles') || '[]');
+  const hardEdits = JSON.parse(localStorage.getItem('ashishJournal:hardcodedEdits') || '{}');
+  
+  const article = dynamics.find(a => a.slug === slug) || hardEdits[slug];
+  
   if (!article) {
     document.getElementById('viewerBody').innerHTML = '<p class="lead">Article not found.</p>';
     return;
@@ -62,7 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('viewerByline').innerHTML = `<strong>By ${article.author || 'Ashish Deshmukh'} on ${article.date}</strong><br>10 min read`;
   
   const body = document.getElementById('viewerBody');
-  body.innerHTML = article.content;
+  
+  // Format content using central auto-formatting engine from site.js
+  const formattedHtml = autoFormatContent(article.rawContent || article.content || '');
+  body.innerHTML = formattedHtml;
   
   // Generate Table of Contents
   const toc = document.getElementById('viewerToc');
@@ -78,16 +85,19 @@ document.addEventListener('DOMContentLoaded', () => {
       toc.appendChild(link);
       
       if (h.tagName === 'H2') {
-        const wrap = document.createElement('div');
-        wrap.className = 'section-toolbar';
-        h.parentNode.insertBefore(wrap, h);
-        wrap.appendChild(h);
-        
-        const printBtn = document.createElement('button');
-        printBtn.className = 'mini-btn';
-        printBtn.textContent = 'Print this section';
-        printBtn.onclick = () => window.print();
-        wrap.appendChild(printBtn);
+        // Wrap and inject toolbar only if not already wrapped
+        if (h.parentNode && !h.parentNode.classList.contains('section-toolbar')) {
+          const wrap = document.createElement('div');
+          wrap.className = 'section-toolbar';
+          h.parentNode.insertBefore(wrap, h);
+          wrap.appendChild(h);
+          
+          const printBtn = document.createElement('button');
+          printBtn.className = 'mini-btn';
+          printBtn.textContent = 'Print this section';
+          printBtn.onclick = () => window.print();
+          wrap.appendChild(printBtn);
+        }
       }
     });
   }
