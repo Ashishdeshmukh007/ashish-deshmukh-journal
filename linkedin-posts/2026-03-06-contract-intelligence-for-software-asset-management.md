@@ -1,6 +1,6 @@
 # LinkedIn Post: Contract Intelligence for Software Asset Management: Turning Agreements into Actionable License Controls
 
-Date: 2026-03-19
+Date: 2026-03-06
 Article: https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/contract-intelligence-for-software-asset-management.html
 
 I published a new article on Contract Intelligence for Software Asset Management: Turning Agreements into Actionable License Controls.

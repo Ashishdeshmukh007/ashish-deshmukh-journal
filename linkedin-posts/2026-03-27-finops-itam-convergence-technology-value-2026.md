@@ -1,6 +1,6 @@
 # LinkedIn Post: FinOps and ITAM Are Converging: A 2026 Technology Value Operating Model
 
-Date: 2026-04-09
+Date: 2026-03-27
 Article: https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/finops-itam-convergence-technology-value-2026.html
 
 I published a new article on FinOps and ITAM Are Converging: A 2026 Technology Value Operating Model.

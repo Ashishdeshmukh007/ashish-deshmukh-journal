@@ -1,6 +1,6 @@
 # LinkedIn Post: Audit Defense Using ServiceNow SAM Pro and Flexera: What to Prepare Before the Publisher Calls
 
-Date: 2026-04-02
+Date: 2026-03-20
 Article: https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/audit-defense-using-servicenow-sam-pro-and-flexera.html
 
 I published a new article on Audit Defense Using ServiceNow SAM Pro and Flexera: What to Prepare Before the Publisher Calls.

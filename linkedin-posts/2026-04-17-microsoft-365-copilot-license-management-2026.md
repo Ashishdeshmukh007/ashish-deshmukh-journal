@@ -1,6 +1,6 @@
 # LinkedIn Post: Microsoft 365 Copilot License Management in 2026: From Pilot Excitement to Cost Control
 
-Date: 2026-04-30
+Date: 2026-04-17
 Article: https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/microsoft-365-copilot-license-management-2026.html
 
 I published a new article on Microsoft 365 Copilot License Management in 2026: From Pilot Excitement to Cost Control.

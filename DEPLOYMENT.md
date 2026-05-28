@@ -1,4 +1,4 @@
-# Deploying Ashish Deshmukh Journal
+# Deploying Ashish Deshmukh's Field Notes
 
 This folder is a plain static website and can be hosted for free.
 

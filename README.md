@@ -1,4 +1,4 @@
-# Ashish Deshmukh Journal
+# Ashish Deshmukh's Field Notes
 
 Static personal article site. Deploy this folder to GitHub Pages, Netlify, or Vercel.
 

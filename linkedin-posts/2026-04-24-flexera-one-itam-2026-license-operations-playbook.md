@@ -1,6 +1,6 @@
 # LinkedIn Post: Flexera One ITAM in 2026: A License Operations Playbook for SAM Teams
 
-Date: 2026-05-07
+Date: 2026-04-24
 Article: https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/flexera-one-itam-2026-license-operations-playbook.html
 
 I published a new article on Flexera One ITAM in 2026: A License Operations Playbook for SAM Teams.

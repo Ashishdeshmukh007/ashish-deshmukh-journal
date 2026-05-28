@@ -1,6 +1,6 @@
 # LinkedIn Post: Microsoft Software Asset Management: SQL, Windows Server, M365, EA True-Up and FNMS ELP
 
-Date: 2026-05-21
+Date: 2026-05-08
 Article: https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/microsoft-software-asset-management-sql-windows-m365-ea-fnms-elp.html
 
 I published a new article on Microsoft Software Asset Management: SQL, Windows Server, M365, EA True-Up and FNMS ELP.

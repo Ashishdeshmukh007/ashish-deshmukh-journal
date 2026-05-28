@@ -1,6 +1,6 @@
 # LinkedIn Post: ServiceNow SAM Pro and Now Assist in 2026: A Practical License Management Playbook
 
-Date: 2026-05-28
+Date: 2026-05-22
 Article: https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/servicenow-sam-pro-now-assist-2026-license-management-playbook.html
 
 I published a new article on ServiceNow SAM Pro and Now Assist in 2026: A Practical License Management Playbook.

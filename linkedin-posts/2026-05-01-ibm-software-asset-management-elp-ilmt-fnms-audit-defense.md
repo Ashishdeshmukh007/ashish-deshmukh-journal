@@ -1,6 +1,6 @@
 # LinkedIn Post: IBM Software Asset Management: A Practical Guide to ELP, ILMT, FNMS and Audit Defense
 
-Date: 2026-05-14
+Date: 2026-05-01
 Article: https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/ibm-software-asset-management-elp-ilmt-fnms-audit-defense.html
 
 I published a new article on IBM Software Asset Management: A Practical Guide to ELP, ILMT, FNMS and Audit Defense.

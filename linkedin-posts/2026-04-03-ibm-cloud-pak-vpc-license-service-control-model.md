@@ -1,6 +1,6 @@
 # LinkedIn Post: IBM Cloud Pak VPC Licensing: How to Build a Control Model Around IBM License Service
 
-Date: 2026-04-16
+Date: 2026-04-03
 Article: https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/ibm-cloud-pak-vpc-license-service-control-model.html
 
 I published a new article on IBM Cloud Pak VPC Licensing: How to Build a Control Model Around IBM License Service.

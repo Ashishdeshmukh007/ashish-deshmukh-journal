@@ -1,6 +1,6 @@
 # LinkedIn Post: Oracle Software Asset Management: Processor, NUP, VMware, Options, Java and LMS Defense
 
-Date: 2026-05-28
+Date: 2026-05-15
 Article: https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/oracle-software-asset-management-processor-nup-vmware-options-java-lms-defense.html
 
 I published a new article on Oracle Software Asset Management: Processor, NUP, VMware, Options, Java and LMS Defense.

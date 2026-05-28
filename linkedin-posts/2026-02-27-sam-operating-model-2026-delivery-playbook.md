@@ -1,6 +1,6 @@
 # LinkedIn Post: The 2026 SAM Operating Model: From Compliance Reports to a Delivery Playbook
 
-Date: 2026-03-12
+Date: 2026-02-27
 Article: https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/sam-operating-model-2026-delivery-playbook.html
 
 I published a new article on The 2026 SAM Operating Model: From Compliance Reports to a Delivery Playbook.
