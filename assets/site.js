@@ -476,12 +476,23 @@ function parseRawContentToBlocks(rawText) {
       const sheetsMatch = attrs.match(/sheets="([^"]+)"/i) || attrs.match(/sheets='([^']+)'/i);
       const linkMatch = attrs.match(/link="([^"]+)"/i) || attrs.match(/link='([^']+)'/i);
       
+      const t = titleMatch ? titleMatch[1] : 'SAM Workbook';
+      const s = sizeMatch ? sizeMatch[1] : '37.3 KB';
+      const sh = sheetsMatch ? sheetsMatch[1] : '13 sheets';
+      const l = linkMatch ? linkMatch[1] : '../assets/Oracle_SAM_ELP_Workbook.xlsx';
+      
+      let preset = 'custom';
+      if (l.includes('Oracle_SAM_ELP_Workbook')) preset = 'oracle';
+      else if (l.includes('IBM_SAM_ELP_Workbook')) preset = 'ibm';
+      else if (l.includes('Microsoft_SAM_ELP_Workbook')) preset = 'microsoft';
+      
       blocks.push({
         type: 'excel',
-        title: titleMatch ? titleMatch[1] : 'SAM Workbook',
-        size: sizeMatch ? sizeMatch[1] : '37.3 KB',
-        sheets: sheetsMatch ? sheetsMatch[1] : '13 sheets',
-        link: linkMatch ? linkMatch[1] : '../assets/Oracle_SAM_ELP_Workbook.xlsx'
+        preset,
+        title: t,
+        size: s,
+        sheets: sh,
+        link: l
       });
     } else {
       const content = match[3] || '';
@@ -495,6 +506,38 @@ function parseRawContentToBlocks(rawText) {
     blocks.push({ type: 'paragraph', value: '' });
   }
   return blocks;
+}
+
+function parseTable(mdText) {
+  if (!mdText) return [['Header 1', 'Header 2'], ['Cell 1', 'Cell 2']];
+  const lines = mdText.trim().split('\n');
+  const rows = [];
+  lines.forEach(line => {
+    if (line.includes('---')) return;
+    const cleanLine = line.trim().replace(/^\||\|$/g, '');
+    if (cleanLine) {
+      const cols = cleanLine.split('|').map(c => c.trim());
+      rows.push(cols);
+    }
+  });
+  if (rows.length === 0) {
+    return [['Header 1', 'Header 2'], ['Cell 1', 'Cell 2']];
+  }
+  return rows;
+}
+
+function serializeTable(rows) {
+  if (!rows || rows.length === 0) return '';
+  const headers = rows[0];
+  const dividers = headers.map(() => '---');
+  const body = rows.slice(1);
+  
+  let md = '| ' + headers.join(' | ') + ' |\n';
+  md += '| ' + dividers.join(' | ') + ' |\n';
+  body.forEach(row => {
+    md += '| ' + row.join(' | ') + ' |\n';
+  });
+  return md;
 }
 
 function setupRichEditor(modalContainer, form) {
@@ -555,38 +598,125 @@ function setupRichEditor(modalContainer, form) {
       else if (block.type === 'danger') title = '🟥 Danger Card (Red)';
       else if (block.type === 'info') title = '⬜ Info Notice Card (Gray)';
       else if (block.type === 'formula') title = '🖤 Formula Box (Black background)';
-      else if (block.type === 'table') title = '📊 Grid Table Block';
+      else if (block.type === 'table') title = '📊 Visual Table Editor';
       else if (block.type === 'calculator') title = '🧮 Interactive Calculator';
       else if (block.type === 'excel') title = '📁 Excel Workbook Attachment';
       
       let inputsHtml = '';
       if (block.type === 'calculator') {
         inputsHtml = `
-          <label style="font-weight:700; font-size:12px">Calculator Type<br>
-            <select class="editor-input block-calc-select" style="margin-top:4px">
-              <option value="oracle" ${block.calcType === 'oracle' ? 'selected' : ''}>Oracle Processor Calculator</option>
-              <option value="ibm" ${block.calcType === 'ibm' ? 'selected' : ''}>IBM PVU Calculator</option>
+          <label style="font-weight:700; font-size:12.5px; display:block; margin-bottom:6px; color:var(--ink);">
+            Select Calculator Type
+            <select class="editor-input block-calc-select" style="margin-top:4px; font-weight:600; border-color:var(--line);">
+              <option value="oracle" ${block.calcType === 'oracle' ? 'selected' : ''}>Oracle Processor Calculator (Database & MW)</option>
+              <option value="ibm" ${block.calcType === 'ibm' ? 'selected' : ''}>IBM PVU Calculator (Full vs Sub-capacity)</option>
               <option value="java" ${block.calcType === 'java' ? 'selected' : ''}>Java SE Universal Subscription Calculator</option>
               <option value="copilot" ${block.calcType === 'copilot' ? 'selected' : ''}>M365 Copilot Cost & ROI Calculator</option>
             </select>
           </label>
+          
+          <div class="calc-editor-preview" style="margin-top:12px; padding:14px; border:1px dashed var(--blue); border-radius:10px; background:var(--soft);">
+            <div style="font-size:10px; font-weight:800; color:var(--blue); text-transform:uppercase; margin-bottom:8px; letter-spacing:0.05em;">Interactive Simulator (Try it!):</div>
+            <div class="calc-card" style="padding:14px; margin:0; border:1px solid var(--line); border-radius:10px; background:var(--card);">
+              <h4 class="calc-preview-title" style="margin:0 0 10px; font-size:14px; font-weight:800; color:var(--ink);">Oracle Processor Calculator</h4>
+              <div class="calc-preview-fields" style="display:grid; gap:8px;">
+                <!-- Filled dynamically by JS -->
+              </div>
+              <div class="calc-preview-result" style="margin-top:12px; padding:8px 10px; background:color-mix(in srgb, var(--blue) 8%, var(--card)); border-left:3px solid var(--blue); border-radius:4px; font-weight:700; font-size:13px; color:var(--ink);">
+                Required: 10 Processor licenses
+              </div>
+            </div>
+            <div style="margin-top:8px; font-size:11.5px; color:var(--muted); line-height:1.4;">
+              ℹ️ <em>This interactive form will be automatically embedded in your published article. Readers will be able to type their own numbers to get calculations instantly.</em>
+            </div>
+          </div>
         `;
       } else if (block.type === 'excel') {
         inputsHtml = `
-          <div class="editor-block-grid">
-            <label>Workbook Title<br><input class="editor-input excel-title" style="margin-top:4px" value="${block.title || ''}" placeholder="e.g. Oracle SAM ELP Workbook"></label>
-            <label>File Size<br><input class="editor-input excel-size" style="margin-top:4px" value="${block.size || ''}" placeholder="e.g. 37.3 KB"></label>
-            <label>Sheets Count<br><input class="editor-input excel-sheets" style="margin-top:4px" value="${block.sheets || ''}" placeholder="e.g. 13 sheets"></label>
-            <label>Workbook Link / File Path<br><input class="editor-input excel-link" style="margin-top:4px" value="${block.link || ''}" placeholder="e.g. ../assets/Oracle_SAM_ELP_Workbook.xlsx"></label>
+          <label style="font-weight:700; font-size:12.5px; display:block; margin-bottom:8px; color:var(--ink);">
+            Select Pre-configured Workbook
+            <select class="editor-input excel-preset-select" style="margin-top:4px; font-weight:600; border-color:var(--line);">
+              <option value="oracle" ${block.preset === 'oracle' ? 'selected' : ''}>Oracle SAM ELP Workbook (Preset - 37.3 KB, 13 sheets)</option>
+              <option value="ibm" ${block.preset === 'ibm' ? 'selected' : ''}>IBM SAM ELP Workbook (Preset - 38.8 KB, 11 sheets)</option>
+              <option value="microsoft" ${block.preset === 'microsoft' ? 'selected' : ''}>Microsoft SAM ELP Workbook (Preset - 37.4 KB, 12 sheets)</option>
+              <option value="custom" ${block.preset === 'custom' ? 'selected' : ''}>Custom Workbook Attachment...</option>
+            </select>
+          </label>
+          
+          <div class="custom-excel-fields" style="display: none; padding:12px; border:1px solid var(--line); border-radius:8px; margin-bottom:12px; background:var(--soft);">
+            <div style="font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; margin-bottom:8px;">Custom Workbook Configuration:</div>
+            <div class="editor-block-grid">
+              <label>Workbook Title<br><input class="editor-input excel-title" style="margin-top:4px" value="${block.title || ''}" placeholder="e.g. My SAM Workbook"></label>
+              <label>File Size<br><input class="editor-input excel-size" style="margin-top:4px" value="${block.size || ''}" placeholder="e.g. 24 KB"></label>
+              <label>Sheets Count<br><input class="editor-input excel-sheets" style="margin-top:4px" value="${block.sheets || ''}" placeholder="e.g. 5 sheets"></label>
+              <label>Workbook Link / File Path<br><input class="editor-input excel-link" style="margin-top:4px" value="${block.link || ''}" placeholder="e.g. ../assets/Workbook.xlsx"></label>
+            </div>
+          </div>
+          
+          <div class="excel-editor-preview" style="margin-top:12px; padding:14px; border:1px dashed var(--green); border-radius:10px; background:var(--soft);">
+            <div style="font-size:10px; font-weight:800; color:var(--green); text-transform:uppercase; margin-bottom:8px; letter-spacing:0.05em;">Live Preview in Article:</div>
+            
+            <div class="workbook-glass" style="margin:0; padding:14px; border:1px solid var(--line); border-radius:10px; background:var(--card); display:grid; grid-template-columns:1fr auto; gap:16px; align-items:center;">
+              <div>
+                <span class="eyebrow" style="font-size:11px; border:1px solid var(--line); border-radius:999px; padding:3px 8px; background:var(--soft); font-weight:800; color:var(--blue);">Embedded Excel Workbook</span>
+                <h4 class="excel-preview-title" style="margin:6px 0 4px; font-size:15px; font-weight:800; color:var(--ink);">${block.title || ''}</h4>
+                <div class="workbook-meta" style="display:flex; gap:6px; flex-wrap:wrap;">
+                  <span class="excel-preview-sheets" style="font-size:11px; border:1px solid var(--line); border-radius:999px; padding:3px 8px; background:var(--paper); font-weight:700;">${block.sheets || ''}</span>
+                  <span class="excel-preview-size" style="font-size:11px; border:1px solid var(--line); border-radius:999px; padding:3px 8px; background:var(--paper); font-weight:700;">${block.size || ''}</span>
+                  <span style="font-size:11px; border:1px solid var(--line); border-radius:999px; padding:3px 8px; background:var(--paper); font-weight:700; color:var(--green);">Formula-backed ELP</span>
+                </div>
+              </div>
+              <button type="button" class="download-btn" style="background:var(--blue); border-color:var(--blue); color:white; border-radius:999px; padding:8px 14px; font-weight:800; font-size:12px; cursor:pointer;">Download Excel</button>
+            </div>
+            <div style="margin-top:8px; font-size:11.5px; color:var(--muted); line-height:1.4;">
+              ℹ️ <em>This widget will let your readers download the fully formulated SAM workbook directly. The presets are linked to pre-uploaded files in the assets directory.</em>
+            </div>
+          </div>
+        `;
+      } else if (block.type === 'table') {
+        let grid = parseTable(block.value || '');
+        let tableHtml = `
+          <div style="overflow-x:auto; margin-bottom:8px; border:1px solid var(--line); border-radius:8px; background:var(--card); box-shadow:0 2px 8px rgba(0,0,0,0.02);">
+            <table style="width:100%; border-collapse:collapse; min-width:300px;">
+        `;
+        
+        grid.forEach((row, rIdx) => {
+          tableHtml += `<tr style="border-bottom:1px solid var(--line); transition:background 0.2s;">`;
+          row.forEach((cell, cIdx) => {
+            const isHeader = rIdx === 0;
+            const bg = isHeader ? 'var(--soft)' : 'var(--card)';
+            const fw = isHeader ? 'bold' : 'normal';
+            const color = isHeader ? 'var(--ink)' : 'inherit';
+            
+            tableHtml += `
+              <td style="padding:6px; border-right:1px solid var(--line); background:${bg};">
+                <input class="editor-input table-cell-input" data-row="${rIdx}" data-col="${cIdx}" value="${cell.replace(/"/g, '&quot;')}" style="font-weight:${fw}; color:${color}; padding:8px; font-size:13px; border:1px solid transparent; border-radius:4px; outline:none; background:transparent; width:100%; transition:all 0.2s;" placeholder="${isHeader ? 'Header cell...' : 'Data cell...'}" onfocus="this.style.borderColor='var(--blue)'; this.style.background='var(--paper)';" onblur="this.style.borderColor='transparent'; this.style.background='transparent';">
+              </td>
+            `;
+          });
+          tableHtml += `</tr>`;
+        });
+        tableHtml += `</table></div>`;
+        
+        inputsHtml = `
+          <div style="margin-bottom:8px; font-size:12px; color:var(--muted); line-height:1.4;">
+            💡 <strong>Visual Spreadsheet Editor:</strong> Double-click any cell above to edit text. 
+            The first row (shaded gray) will be formatted as the table header.
+          </div>
+          ${tableHtml}
+          <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:8px;">
+            <button type="button" class="mini-btn add-row-btn" style="border-radius:6px; padding:6px 10px; font-size:11.5px; font-weight:700;">➕ Add Row</button>
+            <button type="button" class="mini-btn add-col-btn" style="border-radius:6px; padding:6px 10px; font-size:11.5px; font-weight:700;">➕ Add Column</button>
+            <button type="button" class="mini-btn del-row-btn" style="border-radius:6px; padding:6px 10px; font-size:11.5px; font-weight:700; color:var(--red); border-color:var(--red);">🗑️ Delete Row</button>
+            <button type="button" class="mini-btn del-col-btn" style="border-radius:6px; padding:6px 10px; font-size:11.5px; font-weight:700; color:var(--red); border-color:var(--red);">🗑️ Delete Column</button>
           </div>
         `;
       } else {
         let ph = 'Write content...';
         if (block.type === 'formula') ph = 'Enter mathematical formulas (e.g. SQL_Cores = Cores * Factor)';
-        else if (block.type === 'table') ph = '| Header 1 | Header 2 |\n| --- | --- |\n| Cell 1 | Cell 2 |';
         
         inputsHtml = `
-          <textarea class="editor-input block-text-input" style="height:70px; resize:vertical; font-family:${block.type === 'formula' || block.type === 'table' ? 'monospace' : 'inherit'}" placeholder="${ph}">${block.value || ''}</textarea>
+          <textarea class="editor-input block-text-input" style="height:70px; resize:vertical; font-family:${block.type === 'formula' ? 'monospace' : 'inherit'}" placeholder="${ph}">${block.value || ''}</textarea>
         `;
       }
       
@@ -606,28 +736,251 @@ function setupRichEditor(modalContainer, form) {
       
       if (block.type === 'calculator') {
         const select = card.querySelector('.block-calc-select');
-        select.onchange = (e) => {
-          block.calcType = e.target.value;
+        const previewFields = card.querySelector('.calc-preview-fields');
+        const previewTitle = card.querySelector('.calc-preview-title');
+        const previewResult = card.querySelector('.calc-preview-result');
+        
+        const renderSimulator = () => {
+          const type = select.value;
+          block.calcType = type;
+          
+          if (type === 'oracle') {
+            previewTitle.textContent = "Oracle Processor Calculator";
+            previewFields.innerHTML = `
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">Cores<br><input class="editor-input sim-core" type="number" value="20" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">Core Factor<br><input class="editor-input sim-factor" type="number" value="0.5" step="0.25" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+              </div>
+            `;
+            const coreIn = previewFields.querySelector('.sim-core');
+            const factorIn = previewFields.querySelector('.sim-factor');
+            const updateResult = () => {
+              const c = +coreIn.value || 0;
+              const f = +factorIn.value || 0;
+              previewResult.textContent = `Required: ${Math.ceil(c * f)} Processor licenses`;
+            };
+            coreIn.oninput = updateResult;
+            factorIn.oninput = updateResult;
+            updateResult();
+            
+          } else if (type === 'ibm') {
+            previewTitle.textContent = "IBM PVU Calculator";
+            previewFields.innerHTML = `
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">Sockets<br><input class="editor-input sim-sockets" type="number" value="2" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">Cores/Socket<br><input class="editor-input sim-cores" type="number" value="8" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">PVU/Core<br><input class="editor-input sim-pvu" type="number" value="70" step="10" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">VM vCPUs<br><input class="editor-input sim-vcpu" type="number" value="4" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+              </div>
+            `;
+            const socketsIn = previewFields.querySelector('.sim-sockets');
+            const coresIn = previewFields.querySelector('.sim-cores');
+            const pvuIn = previewFields.querySelector('.sim-pvu');
+            const vcpuIn = previewFields.querySelector('.sim-vcpu');
+            const updateResult = () => {
+              const s = +socketsIn.value || 0;
+              const c = +coresIn.value || 0;
+              const p = +pvuIn.value || 0;
+              const v = +vcpuIn.value || 0;
+              previewResult.textContent = `Full capacity: ${s*c*p} PVU | Sub-capacity: ${v*p} PVU`;
+            };
+            socketsIn.oninput = updateResult;
+            coresIn.oninput = updateResult;
+            pvuIn.oninput = updateResult;
+            vcpuIn.oninput = updateResult;
+            updateResult();
+            
+          } else if (type === 'java') {
+            previewTitle.textContent = "Java SE Universal Subscription Calculator";
+            previewFields.innerHTML = `
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">Employees<br><input class="editor-input sim-emp" type="number" value="1200" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">Contractors<br><input class="editor-input sim-cont" type="number" value="300" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+              </div>
+            `;
+            const empIn = previewFields.querySelector('.sim-emp');
+            const contIn = previewFields.querySelector('.sim-cont');
+            const updateResult = () => {
+              const e = +empIn.value || 0;
+              const t = +contIn.value || 0;
+              const n = e + t;
+              let a = 0;
+              if (n <= 999) a = 15;
+              else if (n <= 2999) a = 12;
+              else if (n <= 8999) a = 10.5;
+              else if (n <= 19999) a = 8.25;
+              else if (n <= 49999) a = 6.75;
+              else a = 5.25;
+              const r = n * a * 12;
+              previewResult.textContent = `Total Users: ${n} | Tier Price: $${a.toFixed(2)}/mo | Annual: $${r.toLocaleString()} / year`;
+            };
+            empIn.oninput = updateResult;
+            contIn.oninput = updateResult;
+            updateResult();
+            
+          } else if (type === 'copilot') {
+            previewTitle.textContent = "M365 Copilot Cost & ROI Calculator";
+            previewFields.innerHTML = `
+              <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;">
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">Seats<br><input class="editor-input sim-seats" type="number" value="500" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">Inactive<br><input class="editor-input sim-inactive" type="number" value="150" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+                <label style="font-weight:700; font-size:11px; color:var(--muted);">Hours Saved/User<br><input class="editor-input sim-hours" type="number" value="4" style="margin-top:4px; padding:6px; font-size:12px;"></label>
+              </div>
+            `;
+            const seatsIn = previewFields.querySelector('.sim-seats');
+            const inactiveIn = previewFields.querySelector('.sim-inactive');
+            const hoursIn = previewFields.querySelector('.sim-hours');
+            const updateResult = () => {
+              const e = +seatsIn.value || 0;
+              const t = +inactiveIn.value || 0;
+              const n = +hoursIn.value || 0;
+              const a = 360 * e;
+              const r = 360 * t;
+              const c = Math.max(0, e - t);
+              const i = 50 * n;
+              const s = 12 * c * i;
+              const o = s - a;
+              previewResult.textContent = `Spend: $${a.toLocaleString()} | Waste: $${r.toLocaleString()} | Benefit: $${o.toLocaleString()}/year`;
+            };
+            seatsIn.oninput = updateResult;
+            inactiveIn.oninput = updateResult;
+            hoursIn.oninput = updateResult;
+            updateResult();
+          }
           syncToTextarea();
         };
+        
+        select.onchange = renderSimulator;
+        renderSimulator();
       } else if (block.type === 'excel') {
+        const presetSelect = card.querySelector('.excel-preset-select');
+        const customDiv = card.querySelector('.custom-excel-fields');
         const titleEl = card.querySelector('.excel-title');
         const sizeEl = card.querySelector('.excel-size');
         const sheetsEl = card.querySelector('.excel-sheets');
         const linkEl = card.querySelector('.excel-link');
         
-        const updateExcel = () => {
-          block.title = titleEl.value.trim();
-          block.size = sizeEl.value.trim();
-          block.sheets = sheetsEl.value.trim();
-          block.link = linkEl.value.trim();
+        const previewTitle = card.querySelector('.excel-preview-title');
+        const previewSheets = card.querySelector('.excel-preview-sheets');
+        const previewSize = card.querySelector('.excel-preview-size');
+        
+        const toggleFields = () => {
+          if (presetSelect.value === 'custom') {
+            customDiv.style.display = 'block';
+          } else {
+            customDiv.style.display = 'none';
+          }
+        };
+        
+        const updateExcelFromPreset = () => {
+          const val = presetSelect.value;
+          block.preset = val;
+          if (val === 'oracle') {
+            block.title = "Oracle SAM ELP Workbook";
+            block.size = "37.3 KB";
+            block.sheets = "13 sheets";
+            block.link = "../assets/Oracle_SAM_ELP_Workbook.xlsx";
+          } else if (val === 'ibm') {
+            block.title = "IBM SAM ELP Workbook";
+            block.size = "38.8 KB";
+            block.sheets = "11 sheets";
+            block.link = "../assets/IBM_SAM_ELP_Workbook.xlsx";
+          } else if (val === 'microsoft') {
+            block.title = "Microsoft SAM ELP Workbook";
+            block.size = "37.4 KB";
+            block.sheets = "12 sheets";
+            block.link = "../assets/Microsoft_SAM_ELP_Workbook.xlsx";
+          } else {
+            block.title = titleEl.value.trim() || 'Custom SAM Workbook';
+            block.size = sizeEl.value.trim() || '24 KB';
+            block.sheets = sheetsEl.value.trim() || '5 sheets';
+            block.link = linkEl.value.trim() || '../assets/Workbook.xlsx';
+          }
+          
+          previewTitle.textContent = block.title;
+          previewSheets.textContent = block.sheets;
+          previewSize.textContent = block.size;
+          
           syncToTextarea();
         };
         
-        titleEl.oninput = updateExcel;
-        sizeEl.oninput = updateExcel;
-        sheetsEl.oninput = updateExcel;
-        linkEl.oninput = updateExcel;
+        presetSelect.onchange = () => {
+          toggleFields();
+          updateExcelFromPreset();
+        };
+        
+        const onCustomInput = () => {
+          if (presetSelect.value === 'custom') {
+            block.title = titleEl.value.trim() || 'Custom SAM Workbook';
+            block.size = sizeEl.value.trim() || '24 KB';
+            block.sheets = sheetsEl.value.trim() || '5 sheets';
+            block.link = linkEl.value.trim() || '../assets/Workbook.xlsx';
+            
+            previewTitle.textContent = block.title;
+            previewSheets.textContent = block.sheets;
+            previewSize.textContent = block.size;
+            
+            syncToTextarea();
+          }
+        };
+        
+        titleEl.oninput = onCustomInput;
+        sizeEl.oninput = onCustomInput;
+        sheetsEl.oninput = onCustomInput;
+        linkEl.oninput = onCustomInput;
+        
+        toggleFields();
+        updateExcelFromPreset();
+      } else if (block.type === 'table') {
+        let grid = parseTable(block.value || '');
+        
+        card.querySelectorAll('.table-cell-input').forEach(input => {
+          input.oninput = (e) => {
+            const r = +e.target.dataset.row;
+            const c = +e.target.dataset.col;
+            grid[r][c] = e.target.value;
+            block.value = serializeTable(grid);
+            syncToTextarea();
+          };
+        });
+        
+        card.querySelector('.add-row-btn').onclick = () => {
+          const numCols = grid[0].length;
+          const newRow = Array(numCols).fill('New cell');
+          grid.push(newRow);
+          block.value = serializeTable(grid);
+          syncToTextarea();
+          renderBlocks();
+        };
+        
+        card.querySelector('.add-col-btn').onclick = () => {
+          grid.forEach(row => row.push('New col'));
+          block.value = serializeTable(grid);
+          syncToTextarea();
+          renderBlocks();
+        };
+        
+        card.querySelector('.del-row-btn').onclick = () => {
+          if (grid.length <= 2) {
+            alert("Table must have at least a header and one data row.");
+            return;
+          }
+          grid.pop();
+          block.value = serializeTable(grid);
+          syncToTextarea();
+          renderBlocks();
+        };
+        
+        card.querySelector('.del-col-btn').onclick = () => {
+          if (grid[0].length <= 1) {
+            alert("Table must have at least one column.");
+            return;
+          }
+          grid.forEach(row => row.pop());
+          block.value = serializeTable(grid);
+          syncToTextarea();
+          renderBlocks();
+        };
       } else {
         const textareaEl = card.querySelector('.block-text-input');
         textareaEl.oninput = (e) => {
@@ -676,12 +1029,13 @@ function setupRichEditor(modalContainer, form) {
       if (type === 'calculator') {
         newBlock.calcType = 'oracle';
       } else if (type === 'excel') {
+        newBlock.preset = 'oracle';
         newBlock.title = 'Oracle SAM ELP Workbook';
         newBlock.size = '37.3 KB';
         newBlock.sheets = '13 sheets';
         newBlock.link = '../assets/Oracle_SAM_ELP_Workbook.xlsx';
       } else if (type === 'table') {
-        newBlock.value = `| Metric | Rule / Formula | Example | Watchout |\n| --- | --- | --- | --- |\n| Processor | Physical cores * factor | 20 cores * 0.5 = 10 licenses | Virtualization boundary drives cores |`;
+        newBlock.value = `| Column 1 | Column 2 |\n| --- | --- |\n| Cell 1 | Cell 2 |`;
       } else {
         newBlock.value = '';
       }
