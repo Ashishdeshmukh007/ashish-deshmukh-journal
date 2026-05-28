@@ -1,0 +1,132 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title id="viewerTitle">Ashish Deshmukh Journal</title>
+<meta name="description" id="viewerMetaDesc" content="Dynamic article viewer.">
+<link rel="stylesheet" href="../assets/styles.css">
+</head><body data-article-slug=""><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
+<a class="logo" href="../index.html">Ashish Deshmukh <span>Journal</span></a>
+<div class="nav-links">
+  <a href="../index.html#articles">Articles</a>
+  <a href="../index.html#topics">Topics</a>
+  <form class="nav-search" data-site-search role="search"><input data-article-search type="search" placeholder="Search writing"><button type="submit">Go</button></form>
+  <button class="theme-toggle" type="button" data-theme-toggle>Dark</button>
+</div></nav></header>
+<main>
+  <article>
+    <section class="article-hero">
+      <div class="cat" id="viewerCat">Category</div>
+      <h1 id="viewerH1">Article Title</h1>
+      <p class="deck" id="viewerDeck" style="color:#475467">Article summary deck goes here.</p>
+      <div class="byline"><div class="avatar">AD</div><div><strong id="viewerByline">By Ashish Deshmukh</strong><br>10 min read</div></div>
+      <div class="share-row">
+        <a class="primary" href="#" data-share-linkedin target="_blank" rel="noopener">Share on LinkedIn</a>
+        <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
+        <button data-copy-link onclick="copyLink()">Copy link</button>
+      </div>
+    </section>
+    <div class="article-shell">
+      <aside class="toc" id="viewerToc">
+        <strong>In this article</strong>
+        <!-- Dynamic table of contents links will be inserted here -->
+      </aside>
+      <div class="article-body" id="viewerBody">
+        <!-- Dynamic content will be inserted here -->
+      </div>
+    </div>
+  </article>
+</main>
+<footer class="site-footer">By Ashish Deshmukh · Notes on technology, work, learning, systems and practical execution.</footer>
+<script src="../assets/site.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(location.search);
+  const slug = params.get('slug');
+  if (!slug) {
+    location.href = '../index.html';
+    return;
+  }
+  
+  document.body.dataset.articleSlug = slug;
+  
+  const articles = JSON.parse(localStorage.getItem('ashishJournal:dynamicArticles') || '[]');
+  const article = articles.find(a => a.slug === slug);
+  if (!article) {
+    document.getElementById('viewerBody').innerHTML = '<p class="lead">Article not found.</p>';
+    return;
+  }
+  
+  document.title = article.title + ' | Ashish Deshmukh Journal';
+  document.getElementById('viewerMetaDesc').content = article.description;
+  document.getElementById('viewerCat').textContent = article.category;
+  document.getElementById('viewerH1').textContent = article.title;
+  document.getElementById('viewerDeck').textContent = article.description;
+  document.getElementById('viewerByline').innerHTML = `<strong>By ${article.author || 'Ashish Deshmukh'} on ${article.date}</strong><br>10 min read`;
+  
+  const body = document.getElementById('viewerBody');
+  body.innerHTML = article.content;
+  
+  // Generate Table of Contents
+  const toc = document.getElementById('viewerToc');
+  const headings = body.querySelectorAll('h2, h3');
+  if (headings.length > 0) {
+    headings.forEach((h, idx) => {
+      const id = h.id || `section-${idx}`;
+      h.id = id;
+      
+      const link = document.createElement('a');
+      link.href = `#${id}`;
+      link.textContent = h.textContent;
+      toc.appendChild(link);
+      
+      if (h.tagName === 'H2') {
+        const wrap = document.createElement('div');
+        wrap.className = 'section-toolbar';
+        h.parentNode.insertBefore(wrap, h);
+        wrap.appendChild(h);
+        
+        const printBtn = document.createElement('button');
+        printBtn.className = 'mini-btn';
+        printBtn.textContent = 'Print this section';
+        printBtn.onclick = () => window.print();
+        wrap.appendChild(printBtn);
+      }
+    });
+  }
+  
+  // Inject standard engagement panel for dynamic articles
+  const panelHtml = `
+  <section class="engagement-panel" data-engagement-panel="${slug}">
+    <div class="engagement-top">
+      <div>
+        <span class="eyebrow">Reader response</span>
+        <h2 style="margin:8px 0 0">Discuss this article</h2>
+        <p class="meta">Likes, shares and comments are stored in this browser for a static hosted site.</p>
+      </div>
+      <div class="engagement-actions">
+        <button class="primary" type="button" data-like-button>Like</button>
+        <button type="button" onclick="copyLink()">Share</button>
+      </div>
+    </div>
+    <div class="engagement-counts">
+      <span><b data-like-count>0</b> likes</span>
+      <span><b data-share-count>0</b> shares</span>
+      <span><b data-comment-count>0</b> comments</span>
+    </div>
+    <form class="comment-form" data-comment-form>
+      <input name="name" autocomplete="name" placeholder="Your name">
+      <textarea name="comment" required placeholder="Add a thoughtful comment"></textarea>
+      <button type="submit">Post comment</button>
+    </form>
+    <div class="comment-list" data-comment-list></div>
+  </section>`;
+  
+  const panelContainer = document.createElement('div');
+  panelContainer.innerHTML = panelHtml;
+  body.appendChild(panelContainer);
+  
+  // Re-run engagement logic from site.js
+  updateEngagement(slug);
+  panelContainer.querySelector('[data-like-button]').addEventListener('click', toggleLike);
+  panelContainer.querySelector('[data-comment-form]').addEventListener('submit', addComment);
+});
+</script>
+</body></html>
