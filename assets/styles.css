@@ -29,7 +29,7 @@ table{border-collapse:collapse;width:100%;min-width:760px;background:var(--table
 @media(max-width:900px){.article-grid{grid-template-columns:1fr}.article-shell{grid-template-columns:1fr}.toc{position:relative;top:0;border-right:0;border-bottom:1px solid var(--line);padding-bottom:16px}.nav{flex-wrap:wrap}.nav-links{width:100%;margin-left:0}.nav-search{width:100%}.nav-search input{width:100%;flex:1}.hero{min-height:62vh}.hero-inner{padding-top:70px}h1{font-size:48px}.cheat-grid{grid-template-columns:1fr}.workbook-glass{grid-template-columns:1fr}.utility-inner{grid-template-columns:1fr}}
 @media print{.site-header,.toc,.share-row,.mini-btn,.site-footer,.engagement-panel,.reading-progress{display:none}.article-shell{display:block}.article-hero,.article-shell{max-width:none;padding:0}.portal-section{break-inside:avoid}}
 
-/* Visual Editor Toolbar & Visual Live Preview styles */
+/* Visual Block Editor & Visual Live Preview styles */
 .editor-modal-content {
   width: 100%;
   max-width: 850px !important;
@@ -67,39 +67,6 @@ table{border-collapse:collapse;width:100%;min-width:760px;background:var(--table
   color: var(--blue);
   border-bottom-color: var(--blue);
 }
-.editor-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding: 8px;
-  background: var(--soft);
-  border: 1px solid var(--line);
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  border-bottom: none;
-}
-.editor-toolbar-group {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  border-right: 1px solid var(--line);
-  padding-right: 8px;
-  margin-right: 4px;
-}
-.editor-toolbar-group:last-child {
-  border-right: none;
-  padding-right: 0;
-  margin-right: 0;
-}
-.editor-toolbar-label {
-  font-size: 11px;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-right: 4px;
-  display: flex;
-  align-items: center;
-}
 .editor-btn {
   border: 1px solid var(--line);
   background: var(--card);
@@ -126,13 +93,6 @@ table{border-collapse:collapse;width:100%;min-width:760px;background:var(--table
   display: flex;
   flex-direction: column;
 }
-.editor-textarea-wrapper textarea {
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important;
-  border-top: none !important;
-  resize: vertical;
-  min-height: 200px;
-}
 .editor-preview-container {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -156,4 +116,100 @@ table{border-collapse:collapse;width:100%;min-width:760px;background:var(--table
 .editor-input:focus {
   border-color: var(--blue);
   outline: none;
+}
+
+/* Gutenberg Block Editor styling */
+.editor-blocks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 10px 0;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+.editor-block-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  transition: all 0.2s ease;
+}
+.editor-block-card:hover {
+  border-color: var(--muted);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+.editor-block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--soft);
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--line);
+}
+.editor-block-title {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.editor-block-actions {
+  display: flex;
+  gap: 4px;
+}
+.block-move-btn, .block-delete-btn {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.block-move-btn:hover {
+  background: var(--line);
+}
+.block-delete-btn {
+  color: var(--red);
+  border-color: color-mix(in srgb, var(--red) 30%, var(--line));
+}
+.block-delete-btn:hover {
+  background: color-mix(in srgb, var(--red) 8%, var(--card));
+}
+.editor-block-body {
+  padding: 12px 14px;
+}
+.editor-block-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+.editor-block-grid label {
+  font-weight: 700;
+  font-size: 11px;
+  color: var(--muted);
+}
+.editor-add-block-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 12px;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+}
+.editor-add-block-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--muted);
+  width: 100%;
+  text-align: center;
+  margin-bottom: 4px;
 }

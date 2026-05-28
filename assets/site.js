@@ -403,78 +403,126 @@ function injectAdminControls(card, slug, isDynamic){
   card.appendChild(container);
 }
 
-function insertAtCursor(textarea, before, after = '') {
-  const start = textarea.selectionStart;
-  const end = textarea.selectionEnd;
-  const text = textarea.value;
-  const selected = text.substring(start, end);
-  const replacement = before + selected + after;
-  textarea.value = text.substring(0, start) + replacement + text.substring(end);
-  textarea.selectionStart = start + before.length;
-  textarea.selectionEnd = start + before.length + selected.length;
-  textarea.focus();
+function serializeBlocks(blocks) {
+  return blocks.map(b => {
+    if (b.type === 'paragraph') return b.value;
+    if (b.type === 'notes') return `[notes]\n${b.value}\n[/notes]`;
+    if (b.type === 'warning') return `[warning]\n${b.value}\n[/warning]`;
+    if (b.type === 'danger') return `[danger]\n${b.value}\n[/danger]`;
+    if (b.type === 'info') return `[info]\n${b.value}\n[/info]`;
+    if (b.type === 'formula') return `[formula]\n${b.value}\n[/formula]`;
+    if (b.type === 'table') return b.value;
+    if (b.type === 'calculator') return `[calculator type="${b.calcType}"]`;
+    if (b.type === 'excel') return `[excel title="${b.title}" size="${b.size}" sheets="${b.sheets}" link="${b.link}"]`;
+    return '';
+  }).join('\n\n');
 }
 
-function showCalculatorSelectionDialog(textarea) {
-  const choice = prompt("Enter calculator type:\n1 - Oracle Processor\n2 - IBM PVU\n3 - Java SE Universal Cost\n4 - M365 Copilot ROI");
-  if (!choice) return;
-  let type = '';
-  if (choice === '1') type = 'oracle';
-  else if (choice === '2') type = 'ibm';
-  else if (choice === '3') type = 'java';
-  else if (choice === '4') type = 'copilot';
-  else {
-    alert("Invalid choice.");
-    return;
+function parseRawContentToBlocks(rawText) {
+  if (!rawText) return [{ type: 'paragraph', value: '' }];
+  
+  const blocks = [];
+  let remaining = rawText.trim();
+  
+  while (remaining.length > 0) {
+    const shortcodeRegex = /\[(notes|warning|danger|info|formula|calculator|excel)([^\]]*)\]([\s\S]*?)\[\/\1\]|\[(calculator|excel)([^\]]*)\]/i;
+    const match = remaining.match(shortcodeRegex);
+    
+    if (!match) {
+      const paragraphs = remaining.split(/\n\s*\n+/);
+      paragraphs.forEach(p => {
+        const val = p.trim();
+        if (val) {
+          if (val.startsWith('|') && val.includes('\n|')) {
+            blocks.push({ type: 'table', value: val });
+          } else {
+            blocks.push({ type: 'paragraph', value: val });
+          }
+        }
+      });
+      break;
+    }
+    
+    const matchIndex = match.index;
+    if (matchIndex > 0) {
+      const beforeText = remaining.substring(0, matchIndex).trim();
+      if (beforeText) {
+        const paragraphs = beforeText.split(/\n\s*\n+/);
+        paragraphs.forEach(p => {
+          const val = p.trim();
+          if (val) {
+            if (val.startsWith('|') && val.includes('\n|')) {
+              blocks.push({ type: 'table', value: val });
+            } else {
+              blocks.push({ type: 'paragraph', value: val });
+            }
+          }
+        });
+      }
+    }
+    
+    const fullMatch = match[0];
+    const tag = (match[1] || match[4]).toLowerCase();
+    
+    if (tag === 'calculator') {
+      const attrs = match[2] || match[5] || '';
+      const typeMatch = attrs.match(/type="([^"]+)"/i) || attrs.match(/type='([^']+)'/i);
+      const calcType = typeMatch ? typeMatch[1] : 'oracle';
+      blocks.push({ type: 'calculator', calcType });
+    } else if (tag === 'excel') {
+      const attrs = match[2] || match[5] || '';
+      const titleMatch = attrs.match(/title="([^"]+)"/i) || attrs.match(/title='([^']+)'/i);
+      const sizeMatch = attrs.match(/size="([^"]+)"/i) || attrs.match(/size='([^']+)'/i);
+      const sheetsMatch = attrs.match(/sheets="([^"]+)"/i) || attrs.match(/sheets='([^']+)'/i);
+      const linkMatch = attrs.match(/link="([^"]+)"/i) || attrs.match(/link='([^']+)'/i);
+      
+      blocks.push({
+        type: 'excel',
+        title: titleMatch ? titleMatch[1] : 'SAM Workbook',
+        size: sizeMatch ? sizeMatch[1] : '37.3 KB',
+        sheets: sheetsMatch ? sheetsMatch[1] : '13 sheets',
+        link: linkMatch ? linkMatch[1] : '../assets/Oracle_SAM_ELP_Workbook.xlsx'
+      });
+    } else {
+      const content = match[3] || '';
+      blocks.push({ type: tag, value: content.trim() });
+    }
+    
+    remaining = remaining.substring(matchIndex + fullMatch.length).trim();
   }
-  insertAtCursor(textarea, `[calculator type="${type}"]\n`);
-}
-
-function showExcelWorkbookFormDialog(textarea) {
-  const input = prompt(
-    "Enter Excel details (separated by vertical bar |):\nTitle | Size | Sheets Count | File Path\n\nDefault sample:",
-    "Oracle SAM ELP Workbook | 37.3 KB | 13 sheets | ../assets/Oracle_SAM_ELP_Workbook.xlsx"
-  );
-  if (!input) return;
-  const parts = input.split('|').map(p => p.trim());
-  if (parts.length < 4) {
-    alert("Invalid format. Please enter all 4 values separated by '|'.");
-    return;
+  
+  if (blocks.length === 0) {
+    blocks.push({ type: 'paragraph', value: '' });
   }
-  const [title, size, sheets, link] = parts;
-  insertAtCursor(textarea, `[excel title="${title}" size="${size}" sheets="${sheets}" link="${link}"]\n`);
+  return blocks;
 }
 
 function setupRichEditor(modalContainer, form) {
   const textarea = form.querySelector('textarea[name="content"]');
   if (!textarea) return;
   
+  textarea.style.display = 'none';
+  
   const wrapper = document.createElement('div');
   wrapper.className = 'editor-textarea-wrapper';
   wrapper.innerHTML = `
     <div class="editor-tabs">
-      <button type="button" class="editor-tab-btn active" data-tab="write">Write</button>
+      <button type="button" class="editor-tab-btn active" data-tab="write">Visual Blocks</button>
       <button type="button" class="editor-tab-btn" data-tab="preview">Visual Live Preview</button>
     </div>
     <div data-editor-pane="write">
-      <div class="editor-toolbar">
-        <div class="editor-toolbar-group">
-          <span class="editor-toolbar-label">Cards</span>
-          <button type="button" class="editor-btn" data-insert="notes" title="Practitioner Notes Card">🟦 Notes</button>
-          <button type="button" class="editor-btn" data-insert="warning" title="Warning Callout (Amber)">🟨 Warning</button>
-          <button type="button" class="editor-btn" data-insert="danger" title="Danger Callout (Red)">🟥 Danger</button>
-          <button type="button" class="editor-btn" data-insert="info" title="Info callout (Gray)">⬜ Info</button>
-        </div>
-        <div class="editor-toolbar-group">
-          <span class="editor-toolbar-label">Math/Data</span>
-          <button type="button" class="editor-btn" data-insert="formula" title="Math Formula/Code box">🖤 Formula</button>
-          <button type="button" class="editor-btn" data-insert="table" title="Standard Markdown Table">📊 Table</button>
-        </div>
-        <div class="editor-toolbar-group">
-          <span class="editor-toolbar-label">Widgets</span>
-          <button type="button" class="editor-btn" data-insert="calculator" title="Interactive Calculator widget">🧮 Calculator</button>
-          <button type="button" class="editor-btn" data-insert="excel" title="Excel Workbook Attachment">📁 Excel</button>
-        </div>
+      <div class="editor-blocks-container"></div>
+      <div class="editor-add-block-row">
+        <span class="editor-add-block-label">+ Add New Component Block</span>
+        <button type="button" class="editor-btn" data-add="paragraph">🔤 Plain Text</button>
+        <button type="button" class="editor-btn" data-add="notes">🟦 Notes Card</button>
+        <button type="button" class="editor-btn" data-add="warning">🟨 Warning</button>
+        <button type="button" class="editor-btn" data-add="danger">🟥 Danger</button>
+        <button type="button" class="editor-btn" data-add="info">⬜ Info Notice</button>
+        <button type="button" class="editor-btn" data-add="formula">🖤 Formula Box</button>
+        <button type="button" class="editor-btn" data-add="table">📊 Grid Table</button>
+        <button type="button" class="editor-btn" data-add="calculator">🧮 Calculator</button>
+        <button type="button" class="editor-btn" data-add="excel">📁 Excel Workbook</button>
       </div>
     </div>
     <div data-editor-pane="preview" style="display: none;">
@@ -483,13 +531,171 @@ function setupRichEditor(modalContainer, form) {
   `;
   
   const parentLabel = textarea.parentElement;
-  const writePane = wrapper.querySelector('[data-editor-pane="write"]');
   parentLabel.insertBefore(wrapper, textarea);
-  writePane.appendChild(textarea);
   
-  parentLabel.style.display = 'flex';
-  parentLabel.style.flexDirection = 'column';
-  parentLabel.style.gap = '6px';
+  const blocksContainer = wrapper.querySelector('.editor-blocks-container');
+  let blocksState = parseRawContentToBlocks(textarea.value);
+  
+  function syncToTextarea() {
+    textarea.value = serializeBlocks(blocksState);
+  }
+  
+  function renderBlocks() {
+    blocksContainer.innerHTML = '';
+    
+    blocksState.forEach((block, idx) => {
+      const card = document.createElement('div');
+      card.className = 'editor-block-card';
+      card.style.marginBottom = '12px';
+      
+      let title = '';
+      if (block.type === 'paragraph') title = '🔤 Plain Text Paragraph';
+      else if (block.type === 'notes') title = '🟦 Practitioner Notes Card (Blue)';
+      else if (block.type === 'warning') title = '🟨 Warning Card (Amber)';
+      else if (block.type === 'danger') title = '🟥 Danger Card (Red)';
+      else if (block.type === 'info') title = '⬜ Info Notice Card (Gray)';
+      else if (block.type === 'formula') title = '🖤 Formula Box (Black background)';
+      else if (block.type === 'table') title = '📊 Grid Table Block';
+      else if (block.type === 'calculator') title = '🧮 Interactive Calculator';
+      else if (block.type === 'excel') title = '📁 Excel Workbook Attachment';
+      
+      let inputsHtml = '';
+      if (block.type === 'calculator') {
+        inputsHtml = `
+          <label style="font-weight:700; font-size:12px">Calculator Type<br>
+            <select class="editor-input block-calc-select" style="margin-top:4px">
+              <option value="oracle" ${block.calcType === 'oracle' ? 'selected' : ''}>Oracle Processor Calculator</option>
+              <option value="ibm" ${block.calcType === 'ibm' ? 'selected' : ''}>IBM PVU Calculator</option>
+              <option value="java" ${block.calcType === 'java' ? 'selected' : ''}>Java SE Universal Subscription Calculator</option>
+              <option value="copilot" ${block.calcType === 'copilot' ? 'selected' : ''}>M365 Copilot Cost & ROI Calculator</option>
+            </select>
+          </label>
+        `;
+      } else if (block.type === 'excel') {
+        inputsHtml = `
+          <div class="editor-block-grid">
+            <label>Workbook Title<br><input class="editor-input excel-title" style="margin-top:4px" value="${block.title || ''}" placeholder="e.g. Oracle SAM ELP Workbook"></label>
+            <label>File Size<br><input class="editor-input excel-size" style="margin-top:4px" value="${block.size || ''}" placeholder="e.g. 37.3 KB"></label>
+            <label>Sheets Count<br><input class="editor-input excel-sheets" style="margin-top:4px" value="${block.sheets || ''}" placeholder="e.g. 13 sheets"></label>
+            <label>Workbook Link / File Path<br><input class="editor-input excel-link" style="margin-top:4px" value="${block.link || ''}" placeholder="e.g. ../assets/Oracle_SAM_ELP_Workbook.xlsx"></label>
+          </div>
+        `;
+      } else {
+        let ph = 'Write content...';
+        if (block.type === 'formula') ph = 'Enter mathematical formulas (e.g. SQL_Cores = Cores * Factor)';
+        else if (block.type === 'table') ph = '| Header 1 | Header 2 |\n| --- | --- |\n| Cell 1 | Cell 2 |';
+        
+        inputsHtml = `
+          <textarea class="editor-input block-text-input" style="height:70px; resize:vertical; font-family:${block.type === 'formula' || block.type === 'table' ? 'monospace' : 'inherit'}" placeholder="${ph}">${block.value || ''}</textarea>
+        `;
+      }
+      
+      card.innerHTML = `
+        <div class="editor-block-header">
+          <span class="editor-block-title">${title}</span>
+          <div class="editor-block-actions">
+            <button type="button" class="block-move-btn data-up">▲</button>
+            <button type="button" class="block-move-btn data-down">▼</button>
+            <button type="button" class="block-delete-btn">🗑️ Remove</button>
+          </div>
+        </div>
+        <div class="editor-block-body">
+          ${inputsHtml}
+        </div>
+      `;
+      
+      if (block.type === 'calculator') {
+        const select = card.querySelector('.block-calc-select');
+        select.onchange = (e) => {
+          block.calcType = e.target.value;
+          syncToTextarea();
+        };
+      } else if (block.type === 'excel') {
+        const titleEl = card.querySelector('.excel-title');
+        const sizeEl = card.querySelector('.excel-size');
+        const sheetsEl = card.querySelector('.excel-sheets');
+        const linkEl = card.querySelector('.excel-link');
+        
+        const updateExcel = () => {
+          block.title = titleEl.value.trim();
+          block.size = sizeEl.value.trim();
+          block.sheets = sheetsEl.value.trim();
+          block.link = linkEl.value.trim();
+          syncToTextarea();
+        };
+        
+        titleEl.oninput = updateExcel;
+        sizeEl.oninput = updateExcel;
+        sheetsEl.oninput = updateExcel;
+        linkEl.oninput = updateExcel;
+      } else {
+        const textareaEl = card.querySelector('.block-text-input');
+        textareaEl.oninput = (e) => {
+          block.value = e.target.value;
+          syncToTextarea();
+        };
+      }
+      
+      card.querySelector('.data-up').onclick = () => {
+        if (idx === 0) return;
+        const temp = blocksState[idx];
+        blocksState[idx] = blocksState[idx - 1];
+        blocksState[idx - 1] = temp;
+        syncToTextarea();
+        renderBlocks();
+      };
+      
+      card.querySelector('.data-down').onclick = () => {
+        if (idx === blocksState.length - 1) return;
+        const temp = blocksState[idx];
+        blocksState[idx] = blocksState[idx + 1];
+        blocksState[idx + 1] = temp;
+        syncToTextarea();
+        renderBlocks();
+      };
+      
+      card.querySelector('.block-delete-btn').onclick = () => {
+        if (confirm("Remove this block?")) {
+          blocksState.splice(idx, 1);
+          if (blocksState.length === 0) {
+            blocksState.push({ type: 'paragraph', value: '' });
+          }
+          syncToTextarea();
+          renderBlocks();
+        }
+      };
+      
+      blocksContainer.appendChild(card);
+    });
+  }
+  
+  wrapper.querySelectorAll('.editor-add-block-row button').forEach(btn => {
+    btn.onclick = () => {
+      const type = btn.dataset.add;
+      let newBlock = { type };
+      if (type === 'calculator') {
+        newBlock.calcType = 'oracle';
+      } else if (type === 'excel') {
+        newBlock.title = 'Oracle SAM ELP Workbook';
+        newBlock.size = '37.3 KB';
+        newBlock.sheets = '13 sheets';
+        newBlock.link = '../assets/Oracle_SAM_ELP_Workbook.xlsx';
+      } else if (type === 'table') {
+        newBlock.value = `| Metric | Rule / Formula | Example | Watchout |\n| --- | --- | --- | --- |\n| Processor | Physical cores * factor | 20 cores * 0.5 = 10 licenses | Virtualization boundary drives cores |`;
+      } else {
+        newBlock.value = '';
+      }
+      blocksState.push(newBlock);
+      syncToTextarea();
+      renderBlocks();
+      
+      setTimeout(() => {
+        blocksContainer.scrollTop = blocksContainer.scrollHeight;
+      }, 50);
+    };
+  });
+  
+  renderBlocks();
   
   const tabBtns = wrapper.querySelectorAll('.editor-tab-btn');
   const writePaneDiv = wrapper.querySelector('[data-editor-pane="write"]');
@@ -505,7 +711,7 @@ function setupRichEditor(modalContainer, form) {
       if (tab === 'write') {
         writePaneDiv.style.display = 'block';
         previewPaneDiv.style.display = 'none';
-        textarea.focus();
+        renderBlocks();
       } else {
         writePaneDiv.style.display = 'none';
         previewPaneDiv.style.display = 'block';
@@ -514,7 +720,6 @@ function setupRichEditor(modalContainer, form) {
         const compiledHtml = autoFormatContent(rawContent);
         previewContainer.innerHTML = compiledHtml;
         
-        // Setup triggers for any interactive components in the preview
         const orclCores = previewContainer.querySelector('#orclCores');
         const orclFactor = previewContainer.querySelector('#orclFactor');
         if (orclCores && orclFactor) {
@@ -555,31 +760,6 @@ function setupRichEditor(modalContainer, form) {
       }
     };
   });
-  
-  const insertBtns = wrapper.querySelectorAll('.editor-btn');
-  insertBtns.forEach(btn => {
-    btn.onclick = () => {
-      const type = btn.dataset.insert;
-      if (type === 'notes') {
-        insertAtCursor(textarea, '[notes]\n', '\n[/notes]');
-      } else if (type === 'warning') {
-        insertAtCursor(textarea, '[warning]\n', '\n[/warning]');
-      } else if (type === 'danger') {
-        insertAtCursor(textarea, '[danger]\n', '\n[/danger]');
-      } else if (type === 'info') {
-        insertAtCursor(textarea, '[info]\n', '\n[/info]');
-      } else if (type === 'formula') {
-        insertAtCursor(textarea, '[formula]\n', '\n[/formula]');
-      } else if (type === 'table') {
-        const tableText = `\n| Metric | Rule / Formula | Example | Watchout |\n| --- | --- | --- | --- |\n| Processor | Physical cores * factor | 20 cores * 0.5 = 10 licenses | Virtualization boundary drives cores |\n| Named User Plus | Actual users vs minimums | EE: 25 NUP per Processor min | Minimum exceeds active users |\n`;
-        insertAtCursor(textarea, tableText);
-      } else if (type === 'calculator') {
-        showCalculatorSelectionDialog(textarea);
-      } else if (type === 'excel') {
-        showExcelWorkbookFormDialog(textarea);
-      }
-    };
-  });
 }
 
 function showAddArticleModal(){
@@ -607,7 +787,7 @@ function showAddArticleModal(){
         <label style="font-weight:700; font-size:13px">Title<br><input name="title" required placeholder="e.g. Oracle Database Performance Tuning" class="editor-input"></label>
         <label style="font-weight:700; font-size:13px">Category / Topic<br><input name="category" required placeholder="e.g. Oracle Licensing" class="editor-input"></label>
         <label style="font-weight:700; font-size:13px">Summary / Deck<br><textarea name="description" required placeholder="e.g. A field guide to database tuning..." class="editor-input" style="height:60px; resize:vertical"></textarea></label>
-        <label style="font-weight:700; font-size:13px">Content (HTML or Plain Text)<br><textarea name="content" required class="editor-input" style="height:200px; resize:vertical" placeholder="Write article content. Use the visual editor toolbar above to insert styled components."></textarea></label>
+        <label style="font-weight:700; font-size:13px">Content (HTML or Plain Text)<br><textarea name="content" required class="editor-input" style="height:200px; resize:vertical" placeholder="Write article content."></textarea></label>
         <div style="display:flex; gap:10px">
           <label style="flex:1; font-weight:700; font-size:13px">Author<br><input name="author" value="Ashish Deshmukh" class="editor-input"></label>
           <label style="flex:1; font-weight:700; font-size:13px">Date<br><input name="date" value="${new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'})}" class="editor-input"></label>
@@ -699,7 +879,7 @@ function showEditArticleModal(slug, isDynamic){
         <label style="font-weight:700; font-size:13px">Title<br><input name="title" required value="${article.title}" class="editor-input"></label>
         <label style="font-weight:700; font-size:13px">Category / Topic<br><input name="category" required value="${article.category}" class="editor-input"></label>
         <label style="font-weight:700; font-size:13px">Summary / Deck<br><textarea name="description" required class="editor-input" style="height:60px; resize:vertical">${article.description}</textarea></label>
-        <label style="font-weight:700; font-size:13px">Content (HTML or Plain Text)<br><textarea name="content" required class="editor-input" style="height:200px; resize:vertical" placeholder="Write article content. Use the visual editor toolbar above to insert styled components.">${article.rawContent || article.content || ''}</textarea></label>
+        <label style="font-weight:700; font-size:13px">Content (HTML or Plain Text)<br><textarea name="content" required class="editor-input" style="height:200px; resize:vertical" placeholder="Write article content.">${article.rawContent || article.content || ''}</textarea></label>
         <div style="display:flex; gap:10px">
           <label style="flex:1; font-weight:700; font-size:13px">Author<br><input name="author" value="${article.author || 'Ashish Deshmukh'}" class="editor-input"></label>
           <label style="flex:1; font-weight:700; font-size:13px">Date<br><input name="date" value="${article.date}" class="editor-input"></label>
