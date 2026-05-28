@@ -1,0 +1,279 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Microsoft Software Asset Management: SQL, Windows Server, M365, EA True-Up and FNMS ELP</title>
+<meta name="description" content="A field guide to Microsoft licensing across SQL Server, Windows Server, M365, CALs, Azure Hybrid Benefit, EA true-up and FNMS validation.">
+<meta property="og:title" content="Microsoft Software Asset Management: SQL, Windows Server, M365, EA True-Up and FNMS ELP">
+<meta property="og:description" content="A field guide to Microsoft licensing across SQL Server, Windows Server, M365, CALs, Azure Hybrid Benefit, EA true-up and FNMS validation.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../assets/styles.css">
+</head><body data-article-slug="microsoft-software-asset-management-sql-windows-m365-ea-fnms-elp"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
+<a class="logo" href="../index.html">Ashish <span>Deshmukh</span></a>
+<div class="nav-links">
+  <a href="../index.html#articles">Articles</a>
+  <a href="../index.html#topics">Topics</a>
+  <form class="nav-search" data-site-search role="search"><input data-article-search type="search" placeholder="Search writing"><button type="submit">Go</button></form>
+  <button class="theme-toggle" type="button" data-theme-toggle>Dark</button>
+</div></nav></header>
+<main>
+  <article>
+    <section class="article-hero">
+      <div class="cat">Microsoft Licensing</div>
+      <h1>Microsoft Software Asset Management: SQL, Windows Server, M365, EA True-Up and FNMS ELP</h1>
+      <p class="deck" style="color:#475467">A field guide to Microsoft licensing across SQL Server, Windows Server, M365, CALs, Azure Hybrid Benefit, EA true-up and FNMS validation.</p>
+      <div class="byline"><div class="avatar">AD</div><div><strong>By Ashish Deshmukh on May 28, 2026</strong><br>11 min read</div></div>
+      <div class="share-row">
+        <a class="primary" href="#" data-share-linkedin target="_blank" rel="noopener">Share on LinkedIn</a>
+        <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
+        <button data-copy-link onclick="copyLink()">Copy link</button>
+        <a href="../assets/Microsoft_SAM_ELP_Workbook.xlsx" download>Download workbook</a>
+      </div>
+    </section>
+    <div class="article-shell">
+      <aside class="toc"><strong>In this article</strong><a href="#ms-overview--product-portfolio">Overview &amp;amp; Product Portfolio</a>
+<a href="#ms-licensing-metrics--models">Licensing Metrics &amp;amp; Models</a>
+<a href="#ms-windows-server-licensing">Windows Server Licensing</a>
+<a href="#ms-sql-server-licensing">SQL Server Licensing</a>
+<a href="#ms-microsoft-365--office-licensing">Microsoft 365 / Office Licensing</a>
+<a href="#ms-enterprise-agreement--true-up">Enterprise Agreement / True-Up</a>
+<a href="#ms-manual-elp-creation-step-by-step">Manual ELP Creation (Step-by-Step)</a>
+<a href="#ms-data-collection-with-and-without-tools">Data Collection With and Without Tools</a>
+<a href="#ms-fnms-elp-creation-step-by-step">FNMS ELP Creation (Step-by-Step)</a>
+<a href="#ms-fnms-health-check--validation">FNMS Health Check / Validation</a>
+<a href="#ms-microsoft-audits--sam-engagement">Microsoft Audits / SAM Engagement</a>
+<a href="#ms-contracts--entitlements--reconciliation">Contracts / Entitlements / Reconciliation</a>
+<a href="#ms-interactive-elp-workbook-preview">Interactive ELP Workbook Preview</a>
+<a href="#ms-practitioner-q-a">Practitioner Q&amp;amp;A</a>
+<a href="#ms-quick-revision-cheat-sheet">Quick Revision Cheat Sheet</a></aside>
+      <div class="article-body">
+    <section id="ms-overview--product-portfolio" class="portal-section" data-section-title="Overview &amp; Product Portfolio">
+      <div class="section-toolbar">
+        <h2>Overview &amp; Product Portfolio</h2>
+        <button class="mini-btn" onclick="printSection('ms-overview--product-portfolio')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Senior opener: “For Microsoft I separate user subscription posture, server core posture, CAL posture, and cloud benefit posture before reconciling.”</p></div>
+      
+      <p class="lead">Microsoft SAM is a hybrid of contract program logic, on-prem server metrics, subscription user licensing, and cloud benefit governance.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Family</th><th>Products</th><th>Typical Model</th><th>Watchout</th></tr></thead><tbody><tr><td>Microsoft 365 / Office</td><td>M365 E3/E5/F plans, Office ProPlus, Teams, Exchange, SharePoint, OneDrive</td><td>Per User subscription</td><td>Disabled users, shared accounts, duplicate licenses, E5 add-ons, inactive accounts.</td></tr><tr><td>Windows Client</td><td>Windows 10/11 Enterprise, VDA</td><td>Per device/user via upgrade rights or subscription</td><td>Base qualifying OS and VDA rights matter.</td></tr><tr><td>Windows Server</td><td>Standard, Datacenter</td><td>Per Core + CAL</td><td>Minimum 16 cores/server and 8 cores/processor; virtualization rights differ sharply.</td></tr><tr><td>SQL Server</td><td>Standard, Enterprise, Developer, Express</td><td>Per Core or Server + CAL</td><td>Edition detection and passive failover/HA rights drive findings.</td></tr><tr><td>Visual Studio</td><td>Professional, Enterprise, MSDN benefits</td><td>Per User subscription</td><td>Dev/test rights are powerful but user-specific.</td></tr><tr><td>System Center</td><td>Configuration Manager, Operations Manager</td><td>Core-based server ML + client ML</td><td>Often aligned with Windows Server infrastructure.</td></tr><tr><td>Dynamics 365</td><td>Sales, Customer Service, Finance, SCM</td><td>Per User / attach / device</td><td>Base vs attach license and team-member limits.</td></tr><tr><td>Power Platform</td><td>Power BI, Power Apps, Power Automate</td><td>Per User, per app, capacity</td><td>Premium connector usage and seeded rights are common traps.</td></tr><tr><td>Azure</td><td>Azure services, AHB, reservations</td><td>Consumption / subscription</td><td>Hybrid Benefit and dev/test claims require eligible licenses.</td></tr><tr><td>CAL Suites</td><td>Core CAL, Enterprise CAL, RDS CAL</td><td>Per User or Per Device</td><td>CAL shortfalls are invisible without user/device inventory.</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ms-licensing-metrics--models" class="portal-section" data-section-title="Licensing Metrics &amp; Models">
+      <div class="section-toolbar">
+        <h2>Licensing Metrics &amp; Models</h2>
+        <button class="mini-btn" onclick="printSection('ms-licensing-metrics--models')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Show you know both cloud subscription and old-school server/CAL mechanics.</p></div>
+      
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Metric / Model</th><th>Rule</th><th>Evidence</th><th>Trap</th></tr></thead><tbody><tr><td>Per User</td><td>One assigned license per user; check service plan and activity.</td><td>M365 admin center, Entra ID, Intune, HR active users.</td><td>Licenses assigned to inactive users waste cost; unlicensed active use creates exposure.</td></tr><tr><td>Per Device</td><td>Device licensed regardless of user count.</td><td>SCCM/Intune inventory, device ownership.</td><td>Shared and kiosk devices may need device licensing.</td></tr><tr><td>Per Core</td><td>Physical or virtual cores licensed, subject to minimums.</td><td>Hardware inventory, SQL inventory, Windows Server host mapping.</td><td>Minimum core rules and edition mismatch.</td></tr><tr><td>Server + CAL</td><td>Server license plus user/device CALs.</td><td>Server installs, AD users/devices, CAL purchases.</td><td>CALs are not technically installed, so entitlement evidence is critical.</td></tr><tr><td>Subscription</td><td>Right-to-use while subscription active.</td><td>Admin portal subscriptions, EA/MCA/CSP reports.</td><td>Stop-pay generally stops rights; unlike perpetual.</td></tr><tr><td>OSE / VM Rights</td><td>Rights depend on edition and covered cores.</td><td>Hyper-V/VMware mapping, host licensing.</td><td>Windows Server Standard grants limited VM rights; Datacenter grants unlimited on licensed hosts.</td></tr><tr><td>Azure Hybrid Benefit</td><td>Use eligible on-prem licenses to reduce Azure cost.</td><td>Azure portal, license eligibility, SA/subscription status.</td><td>Claiming AHB without eligible licenses or double-counting on-prem and cloud.</td></tr><tr><td>EA True-Up</td><td>Annual reporting of increased qualified devices/users/products.</td><td>EA portal, MLS, procurement, admin exports.</td><td>Missed growth becomes renewal/audit issue.</td></tr></tbody></table></div>
+      <div class='copy-box'><div><strong>Microsoft core formulas</strong></div><button class='mini-btn' onclick='copyText(this)'>Copy</button><pre><code class=''>SQL Core Licenses = MAX(4, Assigned_Cores) for VM licensing, or physical cores for host licensing\nWindows Server Required Core Licenses = MAX(16, Physical_Cores) per server, with 8-core minimum per processor\nPosition = Entitled - Required</code></pre></div>
+    
+    </section>
+    
+    <section id="ms-windows-server-licensing" class="portal-section" data-section-title="Windows Server Licensing">
+      <div class="section-toolbar">
+        <h2>Windows Server Licensing</h2>
+        <button class="mini-btn" onclick="printSection('ms-windows-server-licensing')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Windows Server practitioner answer should include minimums and virtualization rights.</p></div>
+      
+      <p>Windows Server is licensed by physical cores. Standard and Datacenter require licensing all physical cores on the server, with minimum 16 cores per server and 8 cores per processor. Standard grants rights for two OSEs/VMs per full license of the host; Datacenter grants unlimited OSEs on the fully licensed host.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Scenario</th><th>Calculation</th><th>Result</th><th>Consultant Note</th></tr></thead><tbody><tr><td>2-socket host, 10 cores each, Windows Server Standard, 4 VMs</td><td>Physical cores = 20. Need 20 core licenses for first 2 VMs, another 20 for next 2 VMs.</td><td>40 core licenses required.</td><td>Standard stacks; Datacenter may be cheaper in dense virtualization.</td></tr><tr><td>2-socket host, 24 cores each, Windows Server Datacenter, 80 VMs</td><td>Physical cores = 48. License 48 cores once.</td><td>Unlimited Windows Server VMs on that host.</td><td>Validate all host cores covered and SA/AHB if cloud benefit claimed.</td></tr><tr><td>Small 8-core server</td><td>Minimum applies: 16 core licenses.</td><td>16 required.</td><td>Minimums create exposure even on small hardware.</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ms-sql-server-licensing" class="portal-section" data-section-title="SQL Server Licensing">
+      <div class="section-toolbar">
+        <h2>SQL Server Licensing</h2>
+        <button class="mini-btn" onclick="printSection('ms-sql-server-licensing')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Strong line: “SQL ELP accuracy depends on edition and environment classification before the formula.”</p></div>
+      
+      <p>SQL Server is commonly reconciled by edition and metric. Core licensing must detect edition, physical vs VM licensing model, assigned cores, minimum four cores per VM, and Software Assurance benefits such as license mobility or passive failover rights.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Example</th><th>Inputs</th><th>Formula</th><th>Position</th></tr></thead><tbody><tr><td>SQL Enterprise VM</td><td>8 vCPU, Enterprise Core, entitled 12 cores</td><td>Required = MAX(4,8)=8</td><td>Surplus 4 cores</td></tr><tr><td>SQL Standard small VM</td><td>2 vCPU, Standard Core, entitled 2 cores</td><td>Required = MAX(4,2)=4</td><td>Short 2 cores due to minimum</td></tr><tr><td>Server + CAL</td><td>1 SQL Standard server, 120 users, 100 SQL CALs</td><td>Server license + CALs for users/devices</td><td>20 CAL shortfall</td></tr></tbody></table></div>
+      <div class='callout danger'><strong>SQL Edition Mismatch</strong><p>A SQL Enterprise install discovered as Standard in inventory, or a Developer edition used in production, can swing the ELP materially. Validate edition through SQL queries, installer evidence, and application owner confirmation.</p></div>
+      <div class='copy-box'><div><strong>SQL detection request</strong></div><button class='mini-btn' onclick='copyText(this)'>Copy</button><pre><code class=''>Please provide SQL Server inventory with server, instance, edition, version, environment, assigned vCPU/physical cores, cluster role, passive/active status, and output from SELECT @@VERSION plus SERVERPROPERTY(&#x27;Edition&#x27;).</code></pre></div>
+    
+    </section>
+    
+    <section id="ms-microsoft-365--office-licensing" class="portal-section" data-section-title="Microsoft 365 / Office Licensing">
+      <div class="section-toolbar">
+        <h2>Microsoft 365 / Office Licensing</h2>
+        <button class="mini-btn" onclick="printSection('ms-microsoft-365--office-licensing')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>User subscription optimization is a quick win: compliance plus savings.</p></div>
+      
+      <p>M365 ELP compares assigned licenses and service usage against entitlement pools. It also identifies optimization: inactive users, duplicate SKUs, over-assigned E5 features, shared mailboxes, disabled accounts, and license plans assigned outside job need.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Check</th><th>Evidence</th><th>Action</th></tr></thead><tbody><tr><td>Active users without license</td><td>M365 admin export, Entra ID sign-ins</td><td>Assign proper SKU or remove access.</td></tr><tr><td>Licensed inactive users</td><td>Last sign-in, mailbox activity, HR status</td><td>Reclaim license.</td></tr><tr><td>E3 vs E5 fit</td><td>Service plan usage such as Power BI Pro, Phone, Defender</td><td>Downgrade where advanced features unused.</td></tr><tr><td>Office on unmanaged devices</td><td>Intune/SCCM, activation reports</td><td>Validate install rights and shared computer activation.</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ms-enterprise-agreement--true-up" class="portal-section" data-section-title="Enterprise Agreement / True-Up">
+      <div class="section-toolbar">
+        <h2>Enterprise Agreement / True-Up</h2>
+        <button class="mini-btn" onclick="printSection('ms-enterprise-agreement--true-up')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Microsoft SAM reviews often test whether you know SAM engagement vs annual true-up rhythm.</p></div>
+      
+      <p>EA true-up is the annual mechanism for reporting growth in enterprise products, qualified users/devices, and additional products. A good ELP reconciles baseline, adds, reductions where allowed, transitions, online services, and anniversary dates.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>EA Element</th><th>What to Validate</th><th>True-Up Risk</th></tr></thead><tbody><tr><td>Qualified devices/users</td><td>Current count vs baseline</td><td>Growth not reported.</td></tr><tr><td>Enterprise products</td><td>Windows, Office/M365, EMS suites</td><td>Mixed SKU transitions missed.</td></tr><tr><td>Additional products</td><td>SQL, Windows Server, Visio, Project</td><td>Ad hoc deployments outside procurement.</td></tr><tr><td>Online services</td><td>Assigned subscriptions</td><td>CSP/EA double-buy or unlicensed usage.</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ms-manual-elp-creation-step-by-step" class="portal-section" data-section-title="Manual ELP Creation (Step-by-Step)">
+      <div class="section-toolbar">
+        <h2>Manual ELP Creation (Step-by-Step)</h2>
+        <button class="mini-btn" onclick="printSection('ms-manual-elp-creation-step-by-step')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Mirror IBM: entitlement, consumption, metric math, assumptions, executive view.</p></div>
+      
+      <ol class="numbered">
+        <li>Define scope: program (EA/MCA/CSP), products, legal entities, datacenters, cloud tenants, and reporting date.</li>
+        <li>Collect hardware and virtualization data for Windows Server and SQL.</li>
+        <li>Collect software deployment: SCCM/Intune, SQL discovery, installed applications, server roles.</li>
+        <li>Collect users/devices: Entra ID, AD, HR, M365 admin, CAL population.</li>
+        <li>Collect entitlements: MLS, VLSC, EA portal, CSP invoices, reseller records, SA status.</li>
+        <li>Calculate per product metric, including minimums and virtualization rights.</li>
+        <li>Document assumptions, evidence gaps, and optimization opportunities.</li>
+        <li>Present executive RAG plus detailed reconciliation workbook.</li>
+      </ol>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Data Category</th><th>Manual Source / Command</th><th>Expected Output</th><th>Validation</th></tr></thead><tbody><tr><td>Windows hardware</td><td>PowerShell Get-CimInstance Win32_Processor; SCCM export</td><td>Host cores, sockets, OS edition</td><td>Compare to CMDB and virtualization host list.</td></tr><tr><td>Hyper-V VMs</td><td>Get-VM; Get-VMProcessor; Failover Cluster Manager export</td><td>VM name, host, vCPU, cluster</td><td>Confirm production/test/DR role.</td></tr><tr><td>SQL instances</td><td>SELECT @@VERSION; SERVERPROPERTY('Edition'); registry/services</td><td>Instance, edition, version, environment</td><td>Owner confirms production vs dev/test.</td></tr><tr><td>AD users/devices</td><td>Get-ADUser, Get-ADComputer, group exports</td><td>Active users/devices for CAL and M365</td><td>Remove disabled and stale records.</td></tr><tr><td>M365 licensing</td><td>M365 admin center export, Graph reports</td><td>Assigned SKU, activity, last sign-in</td><td>Tie to HR active status.</td></tr><tr><td>Entitlements</td><td>VLSC/EA/CSP exports, MLS, reseller statement</td><td>SKU, quantity, SA, term</td><td>Program and tenant alignment.</td></tr></tbody></table></div>
+      <div class='copy-box'><div><strong>M365/admin export request</strong></div><button class='mini-btn' onclick='copyText(this)'>Copy</button><pre><code class=''>Please provide Microsoft 365 active user, license assignment, service plan, last sign-in, mailbox activity, and tenant subscription exports for all in-scope tenants, including extraction date and admin portal source.</code></pre></div>
+    
+    </section>
+    
+    <section id="ms-data-collection-with-and-without-tools" class="portal-section" data-section-title="Data Collection With and Without Tools">
+      <div class="section-toolbar">
+        <h2>Data Collection With and Without Tools</h2>
+        <button class="mini-btn" onclick="printSection('ms-data-collection-with-and-without-tools')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Data quality weakness equals ELP confidence weakness.</p></div>
+      
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Source</th><th>With Tools</th><th>Without Tools</th><th>Risk</th></tr></thead><tbody><tr><td>SCCM / Intune</td><td>Device, software, OS, Office install, SQL evidence.</td><td>Local scripts, control panel exports, registry/service queries.</td><td>Tool coverage gaps miss deployments.</td></tr><tr><td>AD / Entra ID</td><td>Users, devices, groups, sign-in, tenant identity.</td><td>AD PowerShell exports and HR comparison.</td><td>CAL and M365 counts become unreliable.</td></tr><tr><td>Azure</td><td>AHB claims, reservations, VM inventory.</td><td>Azure portal CSV, Cost Management export.</td><td>Hybrid Benefit misuse or missed savings.</td></tr><tr><td>Procurement</td><td>Business importer / purchase records.</td><td>EA/VLSC/CSP/reseller exports.</td><td>Wrong program or duplicate entitlement.</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ms-fnms-elp-creation-step-by-step" class="portal-section" data-section-title="FNMS ELP Creation (Step-by-Step)">
+      <div class="section-toolbar">
+        <h2>FNMS ELP Creation (Step-by-Step)</h2>
+        <button class="mini-btn" onclick="printSection('ms-fnms-elp-creation-step-by-step')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Say: “FNMS reconciles; I validate the Microsoft commercial logic around it.”</p></div>
+      
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Step</th><th>FNMS Action</th><th>Microsoft-Specific Validation</th></tr></thead><tbody><tr><td>1. Validate inventory</td><td>Check SCCM/Intune/AD/Azure connectors and beacon freshness.</td><td>Coverage across desktops, servers, cloud tenants, and SQL estate.</td></tr><tr><td>2. Normalize applications</td><td>Review ARL recognition for SQL, Office, Visio, Project, Visual Studio.</td><td>Edition and version recognition must be right before reconciliation.</td></tr><tr><td>3. Load entitlements</td><td>Import EA/VLSC/CSP/reseller purchases and SA/subscription dates.</td><td>Ensure purchases attach to correct licenses and program.</td></tr><tr><td>4. Configure license records</td><td>Choose correct license type: core, server/CAL, user subscription, device.</td><td>Windows Server OSE logic and SQL core minimums require careful setup.</td></tr><tr><td>5. Reconcile</td><td>Run reconciliation and review compliance position.</td><td>Investigate SQL edition mismatches, CAL shortfalls, Office activations.</td></tr><tr><td>6. Validate output</td><td>Cross-check M365 admin, Azure AHB, SCCM, SQL owner evidence.</td><td>FNMS may not be authoritative for cloud assignment or SQL feature usage alone.</td></tr></tbody></table></div>
+      <div class='callout warning'><strong>FNMS Microsoft Draft Rule</strong><p>FNMS is strong for inventory and normalization, but final Microsoft ELP still needs portal exports, EA/MLS entitlement review, CAL logic, SQL edition validation, and cloud benefit cross-checks.</p></div>
+    
+    </section>
+    
+    <section id="ms-fnms-health-check--validation" class="portal-section" data-section-title="FNMS Health Check / Validation">
+      <div class="section-toolbar">
+        <h2>FNMS Health Check / Validation</h2>
+        <button class="mini-btn" onclick="printSection('ms-fnms-health-check--validation')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Microsoft health check is less about one tool and more about connector coverage.</p></div>
+      
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Health Check</th><th>Pass Criteria</th><th>Failure Impact</th></tr></thead><tbody><tr><td>SCCM/Intune connectors current</td><td>Recent imports and expected device count</td><td>Missed Windows/Office/SQL installs.</td></tr><tr><td>AD/Entra import current</td><td>Active users and groups imported</td><td>M365 and CAL counts unreliable.</td></tr><tr><td>ARL/PURL current</td><td>Current Flexera libraries</td><td>Wrong recognition or use rights.</td></tr><tr><td>SQL evidence complete</td><td>Instances, edition, version, environment</td><td>Core requirements wrong.</td></tr><tr><td>Virtualization mapping complete</td><td>VM-to-host mapping for Windows Server/SQL</td><td>OSE and core logic wrong.</td></tr><tr><td>Purchases linked</td><td>EA/VLSC/CSP quantities mapped to licenses</td><td>False shortfall or surplus.</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ms-microsoft-audits--sam-engagement" class="portal-section" data-section-title="Microsoft Audits / SAM Engagement">
+      <div class="section-toolbar">
+        <h2>Microsoft Audits / SAM Engagement</h2>
+        <button class="mini-btn" onclick="printSection('ms-microsoft-audits--sam-engagement')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Senior line: “SAM engagement data can become commercial leverage, so I treat it with audit discipline.”</p></div>
+      
+      <p>Microsoft often appears through SAM engagements, license verification, renewal pressure, or formal audit channels. Treat friendly SAM as commercially consequential: validate scope, evidence, and assumptions.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Common Finding</th><th>Defense / Remediation</th></tr></thead><tbody><tr><td>SQL edition mismatch</td><td>Validate edition through SQL queries and owner sign-off; correct license metric or downgrade.</td></tr><tr><td>Windows Server under-coverage</td><td>Recalculate host core licensing and VM rights; consider Datacenter conversion.</td></tr><tr><td>CAL shortfalls</td><td>Define user/device CAL population and reconcile to purchases.</td></tr><tr><td>Unlicensed Office activation</td><td>Compare activation/admin data to assigned licenses.</td></tr><tr><td>Azure Hybrid Benefit misuse</td><td>Confirm eligible licenses, SA/subscription, and no double-counting.</td></tr><tr><td>EA true-up misses</td><td>Reconcile current growth to anniversary reporting.</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ms-contracts--entitlements--reconciliation" class="portal-section" data-section-title="Contracts / Entitlements / Reconciliation">
+      <div class="section-toolbar">
+        <h2>Contracts / Entitlements / Reconciliation</h2>
+        <button class="mini-btn" onclick="printSection('ms-contracts--entitlements--reconciliation')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Program context matters as much as SKU name.</p></div>
+      
+      <p>Microsoft entitlement evidence can come from EA, MPSA, Select Plus legacy, CSP, MCA, VLSC, MLS, and reseller statements. The reconciliation must not mix perpetual, subscription, and cloud entitlements without term and program logic.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Evidence</th><th>Use</th><th>Watchout</th></tr></thead><tbody><tr><td>Microsoft License Statement (MLS)</td><td>Baseline of volume license entitlement</td><td>May lag or omit CSP/cloud.</td></tr><tr><td>VLSC / admin portal</td><td>Downloads, keys, licensing records</td><td>Not every portal-visible item is deployable entitlement.</td></tr><tr><td>EA agreement and CPS</td><td>Program terms and enterprise product commitments</td><td>True-up and transition rights.</td></tr><tr><td>CSP invoices</td><td>Subscription quantities and terms</td><td>Month-to-month changes affect reporting date.</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ms-interactive-elp-workbook-preview" class="portal-section" data-section-title="Interactive ELP Workbook Preview">
+      <div class="section-toolbar">
+        <h2>Interactive ELP Workbook Preview</h2>
+        <button class="mini-btn" onclick="printSection('ms-interactive-elp-workbook-preview')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>The workbook uses these same categories with formulas.</p></div>
+      
+      
+      <div class="workbook-embed" data-practitioner="keep">
+        <div class="workbook-glass">
+          <div>
+            <span class="eyebrow">Embedded Excel Workbook</span>
+            <h3>Microsoft SAM ELP Workbook</h3>
+            <p>This publisher-specific workbook is embedded inside this portal as a real .xlsx file with formulas, sample data, filters, frozen headers, assumptions, FNMS review sheets, and executive summary logic.</p>
+            <div class="workbook-meta"><span>13 sheets</span><span>37.4 KB</span><span>Formula-backed ELP</span></div>
+          </div>
+          <a class="download-btn" download="Microsoft_SAM_ELP_Workbook.xlsx" href="../assets/Microsoft_SAM_ELP_Workbook.xlsx">Download Excel</a>
+        </div>
+        <div class='table-wrap'><table class='data-table workbook-map'><thead><tr><th>Workbook Sheet</th><th>Purpose</th><th>How to Use</th></tr></thead><tbody><tr><td>MS_Hardware_Inventory</td><td>Windows Server host core and VM-rights model.</td><td>Explain Standard stacking vs Datacenter.</td></tr><tr><td>MS_ELP_Reconciliation</td><td>SQL, Windows, M365, CAL formula logic.</td><td>Use worked examples for practitioners.</td></tr><tr><td>MS_FNMS_ELP</td><td>FNMS analyst validation sheet.</td><td>Show connector and recognition review.</td></tr><tr><td>MS_Cloud_User_Input</td><td>M365 assigned/active user optimization model.</td><td>Discuss subscription savings.</td></tr><tr><td>MS_Exec_Summary</td><td>Executive Microsoft risk and opportunity view.</td><td>Present true-up and remediation story.</td></tr></tbody></table></div>
+      </div>
+    
+      <div class='table-wrap'><table class='data-table editable-table'><thead><tr><th>Product</th><th>Metric</th><th>Required</th><th>Entitled</th><th>Position</th><th>Status</th><th>Note</th></tr></thead><tbody><tr><td>SQL Server Enterprise</td><td>Core</td><td>8</td><td>12</td><td>+4</td><td>GREEN</td><td>VM core licensing with 4-core minimum satisfied.</td></tr><tr><td>Windows Server Standard</td><td>Core</td><td>40</td><td>24</td><td>-16</td><td>RED</td><td>Standard stacking required for four VMs.</td></tr><tr><td>M365 E3</td><td>User</td><td>840</td><td>900</td><td>+60</td><td>GREEN</td><td>Inactive user cleanup opportunity.</td></tr><tr><td>SQL CAL</td><td>User CAL</td><td>120</td><td>100</td><td>-20</td><td>RED</td><td>CAL shortfall.</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ms-practitioner-q-a" class="portal-section" data-section-title="Practitioner Q&amp;A">
+      <div class="section-toolbar">
+        <h2>Practitioner Q&amp;A</h2>
+        <button class="mini-btn" onclick="printSection('ms-practitioner-q-a')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Use numbers: core minimums, VM rights, user counts, true-up deltas.</p></div>
+      <div class='qa-bank'><details class='qa' data-practitioner='keep'><summary>How do you calculate Windows Server Standard in virtualization?</summary><p>License all physical cores on the host with minimums. Standard grants two OSEs per fully licensed host; additional VMs require stacking another full set of core licenses.</p><p class='testing-note'><strong>Why it matters:</strong> Whether you know virtualization rights.</p><button class='mini-btn' onclick='copyAnswer(this)'>Copy answer</button></details><details class='qa' data-practitioner='keep'><summary>What is the biggest SQL Server ELP trap?</summary><p>Edition and environment classification. SQL Enterprise vs Standard, Developer in production, passive nodes, and VM core minimums can all change the position.</p><p class='testing-note'><strong>Why it matters:</strong> Whether you validate discovery.</p><button class='mini-btn' onclick='copyAnswer(this)'>Copy answer</button></details><details class='qa' data-practitioner='keep'><summary>How do you handle M365 optimization?</summary><p>Compare assigned licenses to active users, last sign-in, service-plan usage, HR status, and business role, then reclaim or downgrade unused or overpowered SKUs.</p><p class='testing-note'><strong>Why it matters:</strong> Whether you combine compliance and savings.</p><button class='mini-btn' onclick='copyAnswer(this)'>Copy answer</button></details><details class='qa' data-practitioner='keep'><summary>SAM engagement vs audit?</summary><p>A SAM engagement may be positioned as advisory, but the data can still drive commercial pressure. I control scope, evidence, and assumptions like an audit.</p><p class='testing-note'><strong>Why it matters:</strong> Whether you understand vendor dynamics.</p><button class='mini-btn' onclick='copyAnswer(this)'>Copy answer</button></details></div>
+    </section>
+    
+    <section id="ms-quick-revision-cheat-sheet" class="portal-section" data-section-title="Quick Revision Cheat Sheet">
+      <div class="section-toolbar">
+        <h2>Quick Revision Cheat Sheet</h2>
+        <button class="mini-btn" onclick="printSection('ms-quick-revision-cheat-sheet')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Four pillars: M365, SQL, Windows Server, EA true-up.</p></div>
+      
+      <div class="cheat-grid" data-practitioner="keep">
+        <div><h3>Windows Server</h3><p>All physical cores, min 16/server, Standard = 2 OSEs, Datacenter = unlimited OSEs.</p></div>
+        <div><h3>SQL</h3><p>Core min 4 per VM; edition matters; Server+CAL needs CAL population.</p></div>
+        <div><h3>M365</h3><p>Assigned vs active vs used; optimize inactive and over-assigned SKUs.</p></div>
+        <div><h3>EA</h3><p>Baseline + growth + true-up anniversary + SA/subscription status.</p></div>
+      </div>
+    
+    </section>
+    
+<section class="engagement-panel" data-engagement-panel="microsoft-software-asset-management-sql-windows-m365-ea-fnms-elp">
+  <div class="engagement-top">
+    <div>
+      <span class="eyebrow">Reader response</span>
+      <h2 style="margin:8px 0 0">Discuss this article</h2>
+      <p class="meta">Likes, shares and comments are stored in this browser for a static hosted site.</p>
+    </div>
+    <div class="engagement-actions">
+      <button class="primary" type="button" data-like-button>Like</button>
+      <button type="button" onclick="copyLink()">Share</button>
+    </div>
+  </div>
+  <div class="engagement-counts">
+    <span><b data-like-count>0</b> likes</span>
+    <span><b data-share-count>0</b> shares</span>
+    <span><b data-comment-count>0</b> comments</span>
+  </div>
+  <form class="comment-form" data-comment-form>
+    <input name="name" autocomplete="name" placeholder="Your name">
+    <textarea name="comment" required placeholder="Add a thoughtful comment"></textarea>
+    <button type="submit">Post comment</button>
+  </form>
+  <div class="comment-list" data-comment-list></div>
+</section></div>
+    </div>
+  </article>
+</main><footer class="site-footer">By Ashish Deshmukh · Notes on technology, work, learning, systems and practical execution.</footer><script src="../assets/site.js"></script></body></html>

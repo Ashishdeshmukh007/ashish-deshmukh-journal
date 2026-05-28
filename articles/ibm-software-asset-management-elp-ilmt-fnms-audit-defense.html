@@ -1,0 +1,319 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IBM Software Asset Management: A Practical Guide to ELP, ILMT, FNMS and Audit Defense</title>
+<meta name="description" content="A practitioner guide to IBM PVU, VPC, Passport Advantage, ILMT, FNMS reconciliation, contracts, audit defense and executive reporting.">
+<meta property="og:title" content="IBM Software Asset Management: A Practical Guide to ELP, ILMT, FNMS and Audit Defense">
+<meta property="og:description" content="A practitioner guide to IBM PVU, VPC, Passport Advantage, ILMT, FNMS reconciliation, contracts, audit defense and executive reporting.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../assets/styles.css">
+</head><body data-article-slug="ibm-software-asset-management-elp-ilmt-fnms-audit-defense"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
+<a class="logo" href="../index.html">Ashish <span>Deshmukh</span></a>
+<div class="nav-links">
+  <a href="../index.html#articles">Articles</a>
+  <a href="../index.html#topics">Topics</a>
+  <form class="nav-search" data-site-search role="search"><input data-article-search type="search" placeholder="Search writing"><button type="submit">Go</button></form>
+  <button class="theme-toggle" type="button" data-theme-toggle>Dark</button>
+</div></nav></header>
+<main>
+  <article>
+    <section class="article-hero">
+      <div class="cat">IBM Licensing</div>
+      <h1>IBM Software Asset Management: A Practical Guide to ELP, ILMT, FNMS and Audit Defense</h1>
+      <p class="deck" style="color:#475467">A practitioner guide to IBM PVU, VPC, Passport Advantage, ILMT, FNMS reconciliation, contracts, audit defense and executive reporting.</p>
+      <div class="byline"><div class="avatar">AD</div><div><strong>By Ashish Deshmukh on May 28, 2026</strong><br>25 min read</div></div>
+      <div class="share-row">
+        <a class="primary" href="#" data-share-linkedin target="_blank" rel="noopener">Share on LinkedIn</a>
+        <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
+        <button data-copy-link onclick="copyLink()">Copy link</button>
+        <a href="../assets/IBM_SAM_ELP_Workbook.xlsx" download>Download workbook</a>
+      </div>
+    </section>
+    <div class="article-shell">
+      <aside class="toc"><strong>In this article</strong><a href="#ibm-overview--portfolio">Overview &amp;amp; Portfolio</a>
+<a href="#ibm-licensing-metrics-deep-dive">Licensing Metrics Deep Dive</a>
+<a href="#ibm-sub-capacity-licensing-rules">Sub-Capacity Licensing Rules</a>
+<a href="#ibm-cloud-pak--ils-model">Cloud Pak / ILS Model</a>
+<a href="#ibm-manual-elp-creation-step-by-step">Manual ELP Creation (Step-by-Step)</a>
+<a href="#ibm-data-collection-with-and-without-tools">Data Collection With and Without Tools</a>
+<a href="#ibm-fnms-elp-creation-step-by-step">FNMS ELP Creation (Step-by-Step)</a>
+<a href="#ibm-fnms-health-check">FNMS Health Check</a>
+<a href="#ibm-ilmt-deep-knowledge">ILMT Deep Knowledge</a>
+<a href="#ibm-ibm-audits--defence">IBM Audits &amp;amp; Defence</a>
+<a href="#ibm-contracts--entitlements">Contracts &amp;amp; Entitlements</a>
+<a href="#ibm-multi-version--s-s-reconciliation-logic">Multi-Version / S&amp;amp;S Reconciliation Logic</a>
+<a href="#ibm-interactive-elp-workbook-preview">Interactive ELP Workbook Preview</a>
+<a href="#ibm-practitioner-q-a-bank">Practitioner Q&amp;amp;A Bank</a>
+<a href="#ibm-quick-reference-cheat-sheet">Quick-Reference Cheat Sheet</a></aside>
+      <div class="article-body">
+    <section id="ibm-overview--portfolio" class="portal-section" data-section-title="Overview &amp; Portfolio">
+      <div class="section-toolbar">
+        <h2>Overview &amp; Portfolio</h2>
+        <button class="mini-btn" onclick="printSection('ibm-overview--portfolio')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Say: “I first normalize the IBM estate by family, edition, metric, and entitlement source before calculating anything.”</p></div>
+      
+      <p class="lead">IBM SAM practitioner guide starts with product recognition. A senior consultant should be able to hear “WAS, MQ, Db2, Cognos, Tivoli, Rational, QRadar, Cloud Pak” and immediately think of likely metrics, discovery sources, entitlement records, and audit traps.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Family</th><th>Flagship Products</th><th>Typical Metric(s)</th><th>Notes / Licensing Watchouts</th></tr></thead><tbody><tr><td>WebSphere / Middleware</td><td>WAS Network Deployment, WAS Base, WAS Liberty, WAS for z/OS</td><td>PVU, VPC for Cloud Pak versions</td><td>Edition recognition is critical: WAS Base vs ND changes both entitlement and exposure.</td></tr><tr><td>MQ family</td><td>IBM MQ, MQ Advanced, App Connect Enterprise / IIB</td><td>PVU, VPC</td><td>MQ Advanced bundles extra capabilities; do not reconcile Advanced usage against base MQ entitlement.</td></tr><tr><td>Db2 family</td><td>Db2 ESE, AESE/AWSE, Db2 Warehouse, Informix</td><td>PVU, AUSI, VPC</td><td>AUSI minimums and version rights are common findings when S&S has lapsed.</td></tr><tr><td>Tivoli / Systems Mgmt</td><td>ITM, Spectrum Protect, TWS, Netcool</td><td>PVU, RVU, MVS, TB capacity</td><td>RVU tier tables must be product-specific; managed endpoint counts need owner validation.</td></tr><tr><td>Rational</td><td>RTC, ClearCase, ClearQuest, DOORS, Rational Software Architect</td><td>AU, FUL, Concurrent</td><td>License-server logs are often better than entitlement names for optimization.</td></tr><tr><td>Cognos / Analytics</td><td>Cognos Analytics, TM1, Planning Analytics, SPSS</td><td>AU, Concurrent, PVU</td><td>Named users, admin users, and inactive users must be separated before reconciliation.</td></tr><tr><td>IBM Cloud Paks</td><td>Cloud Pak for Integration, Data, AIOps, Security, Business Automation</td><td>VPC</td><td>Measured by IBM License Service on OpenShift, not ILMT. Ratio conversion changes consumption.</td></tr><tr><td>IBM Security</td><td>QRadar, Guardium, MaaS360, Verify, Trusteer</td><td>EPS, MVS, RVU, user-based</td><td>Security products often have event-rate or resource-count evidence outside server inventory.</td></tr><tr><td>z/Mainframe</td><td>CICS, IMS, z/OS, Db2 for z/OS, MQ for z/OS</td><td>MSU / MIPS</td><td>Different commercial model; keep distributed ELP assumptions separate from mainframe evidence.</td></tr><tr><td>Lotus / HCL moved products</td><td>Notes/Domino, Sametime, BigFix, AppScan, Unica, Commerce, Connections, Portal</td><td>AU, Server, PVU depending product</td><td>Many moved to HCL in 2019. Pre-2019 Passport Advantage records may need HCL contract continuity evidence.</td></tr></tbody></table></div>
+      <div class='callout info'><strong>HCL Divestment Note</strong><p>In 2019 IBM divested Notes/Domino, Sametime, BigFix, AppScan, Unica, Commerce, Connections, and Portal to HCL. If a client shows older IBM Passport Advantage records, confirm whether entitlement continuity moved to HCL contracts before treating the evidence as current IBM entitlement.</p></div>
+    
+    </section>
+    
+    <section id="ibm-licensing-metrics-deep-dive" class="portal-section" data-section-title="Licensing Metrics Deep Dive">
+      <div class="section-toolbar">
+        <h2>Licensing Metrics Deep Dive</h2>
+        <button class="mini-btn" onclick="printSection('ibm-licensing-metrics-deep-dive')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Memorize three examples: Intel bare metal, VMware sub-cap VM, POWER9 LPAR. They show you can calculate, not just define.</p></div>
+      
+      <p class="lead">IBM metrics are not interchangeable. Each metric requires a different evidence chain, formula, validation step, and practitioner story.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Metric</th><th>Definition</th><th>Formula / Counting Rule</th><th>Worked Example</th><th>Pitfall</th></tr></thead><tbody><tr><td>PVU</td><td>Processor Value Unit for distributed processor capacity.</td><td>Full Capacity = physical cores x PVU/core. Sub-Capacity = VM/LPAR vCPU or allocated cores x PVU/core, subject to ILMT.</td><td>WebSphere AS ND on 2 x 24-core Intel host at 70 PVU/core = 3,360 PVU full capacity. MQ Advanced VM with 8 vCPU at 70 = 560 PVU if ILMT is healthy. Db2 on POWER9 4-core LPAR at 120 = 480 PVU.</td><td>POWER processors carry higher PVU/core values than Intel. Without ILMT, IBM can default to full-capacity.</td></tr><tr><td>RVU</td><td>Resource Value Unit for managed things such as TB, endpoints, nodes, or devices.</td><td>Apply product tier bands, then sum each tier.</td><td>Spectrum Protect managing 150 TB: first 100 TB x 1.0 = 100 RVU, next 50 x 0.5 = 25 RVU, total 125 RVU.</td><td>Never assume one RVU equals one device; the managed resource changes by product.</td></tr><tr><td>MVS</td><td>Managed Virtual Server; each managed VM, LPAR, or node counts.</td><td>Count managed virtual servers rather than physical hosts.</td><td>QRadar managing 220 VMs consumes 220 MVS if entitlement is per managed server.</td><td>A physical host with ten VMs can be ten MVS. For containers, confirm node vs pod counting in product terms.</td></tr><tr><td>AU</td><td>Authorized User; a named person authorized to access the program from any device.</td><td>Unique authorized people, not concurrent sessions.</td><td>Cognos with 250 named business users consumes 250 AU even if each uses laptop and mobile.</td><td>Inactive AD accounts and service IDs can inflate counts; validate with application owner.</td></tr><tr><td>AUSI</td><td>Authorized User Single Install; named user per installation/server.</td><td>User-server pairs, plus product minimums such as AU per PVU/core.</td><td>The same 80 Db2 users on PROD and DR require 160 AUSI if both installations are in scope.</td><td>Practitioners often count users once; IBM counts access per install.</td></tr><tr><td>FUL / Concurrent</td><td>Floating or concurrent pool based on peak simultaneous usage.</td><td>Peak checked-out licenses or active sessions.</td><td>ClearCase team of 200 with peak 40 users needs 40 FUL if evidence supports the peak.</td><td>Great optimization lever, but needs license-server logs and defined peak window.</td></tr><tr><td>Install / Server</td><td>Flat entitlement per installation, server, protected VM, or agent.</td><td>One unit per defined install target.</td><td>50 protected VMs under an install metric consume 50 install licenses.</td><td>Read the License Information document; install metrics vary by product bundle.</td></tr><tr><td>VPC</td><td>Virtual Processor Core for Cloud Paks.</td><td>vCPU allocated to container x product ratio; measured by ILS over rolling peak.</td><td>CP4I component using 32 vCPU at 1:1 consumes 32 VPC. Aspera 4 vCPU at 0.25:1 consumes 1 VPC.</td><td>Cloud Paks use IBM License Service, not ILMT. 90-day rolling peak still matters.</td></tr><tr><td>MSU / MIPS</td><td>Mainframe capacity units.</td><td>Mainframe capacity by subsystem or contract basis.</td><td>z/OS and CICS positions are handled with mainframe usage and contract evidence.</td><td>Do not mix distributed PVU logic with mainframe MSU terms.</td></tr></tbody></table></div>
+      <div class='copy-box'><div><strong>IBM PVU formulas</strong></div><button class='mini-btn' onclick='copyText(this)'>Copy</button><pre><code class=''>Full Capacity PVU = Sockets * Cores_per_Socket * PVU_per_Core\nSub-Capacity PVU = Allocated_vCPU_or_LPAR_Cores * PVU_per_Core\nPosition = Entitled_PVU - Consumed_PVU</code></pre></div>
+      <div class="calc-card" data-practitioner="keep">
+        <h3>PVU Mini Calculator</h3>
+        <label>Sockets <input id="ibmSockets" type="number" value="2"></label>
+        <label>Cores/socket <input id="ibmCores" type="number" value="24"></label>
+        <label>PVU/core <input id="ibmPvu" type="number" value="70"></label>
+        <label>VM vCPU <input id="ibmVcpu" type="number" value="8"></label>
+        <button onclick="calcIBM()">Calculate</button>
+        <output id="ibmCalcOut">Full capacity: 3360 PVU | Sub-capacity: 560 PVU</output>
+      </div>
+    
+    </section>
+    
+    <section id="ibm-sub-capacity-licensing-rules" class="portal-section" data-section-title="Sub-Capacity Licensing Rules">
+      <div class="section-toolbar">
+        <h2>Sub-Capacity Licensing Rules</h2>
+        <button class="mini-btn" onclick="printSection('ibm-sub-capacity-licensing-rules')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Say: “Health check first, reconcile second. I do not use sub-capacity numbers unless the ILMT evidence is audit-defensible.”</p></div>
+      
+      <p>Sub-capacity is a contractual concession. IBM lets the client license only the virtualized allocation only when the evidence proves continuous eligible tracking. If one requirement fails, full-capacity exposure becomes the defensible fallback.</p>
+      <ol class="numbered">
+        <li>ILMT must be installed within 90 days of first eligible product deployment.</li>
+        <li>ILMT must collect continuously, not only at quarter-end.</li>
+        <li>Reports and snapshots must be retained for at least two years.</li>
+        <li>The hypervisor must be recognized by IBM for sub-capacity.</li>
+        <li>Quarterly reporting must be produced and internally retained.</li>
+      </ol>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Environment</th><th>Supported?</th><th>Practical Notes</th></tr></thead><tbody><tr><td>VMware vSphere ESX/ESXi</td><td>Yes</td><td>Most common; validate vCenter clusters, vMotion paths, host mapping, and processor models.</td></tr><tr><td>IBM PowerVM</td><td>Yes</td><td>LPAR and micro-partition evidence usually comes from HMC plus ILMT.</td></tr><tr><td>Microsoft Hyper-V</td><td>Yes</td><td>Confirm host-to-VM mapping and agent coverage.</td></tr><tr><td>Linux KVM</td><td>Yes</td><td>RHEL/SUSE KVM supported; verify IBM support list for current releases.</td></tr><tr><td>Nutanix AHV</td><td>Yes</td><td>Confirm current recognition and inventory evidence.</td></tr><tr><td>Oracle VM</td><td>Partial</td><td>Restrictions apply; do not assume eligibility without checking current IBM guidance.</td></tr><tr><td>OpenShift Cloud Pak workloads</td><td>Uses ILS</td><td>Cloud Paks are VPC measured by IBM License Service, not traditional ILMT PVU.</td></tr><tr><td>Citrix XenServer</td><td>Limited</td><td>Check current support list before defending sub-cap.</td></tr></tbody></table></div>
+      <div class='callout danger'><strong>Biggest IBM Audit Risk</strong><p>Failing any sub-capacity criterion can turn a 560 PVU VM position into a 3,360 PVU full-capacity host position. That multiplication is why ILMT health is not an admin detail; it is the financial control.</p></div>
+    
+    </section>
+    
+    <section id="ibm-cloud-pak--ils-model" class="portal-section" data-section-title="Cloud Pak / ILS Model">
+      <div class="section-toolbar">
+        <h2>Cloud Pak / ILS Model</h2>
+        <button class="mini-btn" onclick="printSection('ibm-cloud-pak--ils-model')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Most teams forget ratios. Say the ratio table out loud and mention ILS without being prompted.</p></div>
+      
+      <p>Cloud Paks are OpenShift-oriented bundles licensed in Virtual Processor Cores. The entitlement lets the client run eligible bundled products, but consumption depends on the component ratio and rolling peak reported by IBM License Service.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Cloud Pak Component</th><th>Consumption Ratio</th><th>Example</th></tr></thead><tbody><tr><td>MQ Advanced</td><td>1:1</td><td>4 vCPU running MQ Advanced consumes 4 VPC.</td></tr><tr><td>API Connect</td><td>1:1</td><td>10 vCPU consumes 10 VPC.</td></tr><tr><td>App Connect Enterprise</td><td>1:1</td><td>6 vCPU consumes 6 VPC.</td></tr><tr><td>DataPower Gateway</td><td>1:1</td><td>8 vCPU consumes 8 VPC.</td></tr><tr><td>Aspera</td><td>0.25:1</td><td>4 vCPU consumes 1 VPC.</td></tr></tbody></table></div>
+      <p>Traditional PVU estates may be eligible for PVU-to-VPC trade-up using IBM-published conversion ratios. This is both a compliance topic and a commercial optimization topic: the right answer may be a conversion, not a pure true-up.</p>
+      <div class='callout warning'><strong>ILS vs ILMT</strong><p>Cloud Paks use IBM License Service deployed as an operator on OpenShift. ILS reports VPC consumption per product with rolling peak behavior; ILMT remains central for traditional PVU sub-capacity.</p></div>
+    
+    </section>
+    
+    <section id="ibm-manual-elp-creation-step-by-step" class="portal-section" data-section-title="Manual ELP Creation (Step-by-Step)">
+      <div class="section-toolbar">
+        <h2>Manual ELP Creation (Step-by-Step)</h2>
+        <button class="mini-btn" onclick="printSection('ibm-manual-elp-creation-step-by-step')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Open with the equation, then prove defensibility: entitlement evidence, deployment evidence, metric math, assumptions, and audit trail.</p></div>
+      
+      <p class="lead">An IBM ELP is the reconciled gap between entitlements owned and entitlements consumed, calculated per product, edition, metric, and version, factoring in upgrade/downgrade rights and S&S status.</p>
+      <div class='copy-box'><div><strong>Practitioner opener</strong></div><button class='mini-btn' onclick='copyText(this)'>Copy</button><pre><code class=''>An IBM ELP is the reconciled gap between entitlements owned and entitlements consumed, calculated per product, per metric, per version, factoring in version upgrade/downgrade rights and S&amp;S status. The output drives both compliance defence and cost optimization.</code></pre></div>
+      <div class='copy-box'><div><strong>Core ELP equation</strong></div><button class='mini-btn' onclick='copyText(this)'>Copy</button><pre><code class=''>Position = Entitlements Owned - Deployment Consumed\nPosition &gt; 0 = GREEN surplus / optimization\nPosition = 0 = GREEN aligned\nPosition &lt; 0 = RED exposure\nQuantity OK but version/S&amp;S/sub-cap evidence weak = AMBER</code></pre></div>
+      <h3>The Five-Tab Workbook Foundation</h3>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Workbook Tab</th><th>Purpose</th><th>Key Columns</th><th>Senior Validation</th></tr></thead><tbody><tr><td>Hardware Inventory</td><td>Establish full-capacity and sub-capacity compute base.</td><td>Hostname, host cluster, CPU model, sockets, cores/socket, PVU/core, hypervisor, VM mapping.</td><td>Cross-check CMDB against vCenter/HMC/ILMT. VM-to-host mapping corrupts every PVU number if wrong.</td></tr><tr><td>Software Deployment</td><td>Identify exact IBM product, version, edition, install path, and evidence source.</td><td>Server, product, edition, version, metric, install source, IIM installed.xml path, ILMT signature.</td><td>IBM Installation Manager installed.xml is the trump card when generic tools miss IBM evidence.</td></tr><tr><td>Entitlements</td><td>Load the legal right-to-use position.</td><td>PA Site ID, PoE, part number, product, metric, quantity, S&S dates, contract owner.</td><td>Passport Advantage beats procurement summaries in audit disputes.</td></tr><tr><td>Reconciliation</td><td>Calculate consumed vs owned, status, exposure, and optimization.</td><td>Product, metric, consumed, entitled, position, RAG, exposure, opportunity, remediation.</td><td>Formula-driven, with assumptions visible and traceable.</td></tr><tr><td>Assumptions / Exceptions</td><td>Defend every gap, exclusion, fallback, and data weakness.</td><td>Issue, impact, assumption, evidence, owner, action, due date, confidence.</td><td>No silent guessing. Data quality weakness equals ELP confidence weakness.</td></tr></tbody></table></div>
+      <h3>Data Collection Matrix</h3>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Category</th><th>What Data Is Needed</th><th>With FNMS</th><th>With ILMT / IBM Source</th><th>Without Tool / Commands</th><th>Stakeholders</th><th>Expected Output</th></tr></thead><tbody><tr><td>Physical Servers</td><td>Hostname, IP, OS, CPU manufacturer/model, sockets, cores/socket, RAM, location, hypervisor.</td><td>Discovery & Inventory > Hardware Inventory; Beacon agent data.</td><td>ILMT Hardware Inventory export.</td><td>Linux: lscpu, dmidecode -t processor, /proc/cpuinfo. Windows: wmic cpu get Name,NumberOfCores,NumberOfLogicalProcessors,SocketDesignation. AIX: lparstat -i, prtconf.</td><td>Infrastructure lead, server admins, CMDB owner.</td><td>One row per physical host in CSV/XLSX.</td></tr><tr><td>Virtual Machines</td><td>VM name, parent host, cluster, hypervisor, vCPU, RAM, OS, IBM products, sub-cap flag.</td><td>VMware connector / inventory; VM-to-host mapping.</td><td>ILMT computer groups and virtualized host mapping.</td><td>vCenter export, PowerCLI Get-VM, HMC LPAR export, Hyper-V Get-VM, Nutanix Prism export.</td><td>Virtualization team, cloud platform owner.</td><td>One row per VM with host mapping and vCPU.</td></tr><tr><td>Users</td><td>Username, active flag, AD groups, app access, last login, concurrent peak.</td><td>User module from AD plus application access reports.</td><td>Application-specific audit logs where available.</td><td>AD Get-ADGroupMember, Cognos admin export, WebSphere security users, ClearCase/SPSS license-server logs.</td><td>IAM, application owners, HR.</td><td>Named user list and peak concurrent evidence.</td></tr><tr><td>IBM Software Installations</td><td>Exact product, edition, version, install path, install date, server, evidence.</td><td>Software Inventory normalized by ARL.</td><td>ILMT Software Inventory and IBM Software Catalog.</td><td>IBM IIM installed.xml, rpm -qa, wmic product, registry HKLM Software IBM, AIX lslpp -l.</td><td>Middleware and application support.</td><td>One row per installation with evidence path.</td></tr><tr><td>Processors / PVU Lookup</td><td>CPU model mapped to IBM PVU/core, cores, full and sub-cap value.</td><td>Inventory CPU fields plus license calculations.</td><td>ILMT PVU table mapping and reports.</td><td>IBM published PVU table matched manually to CPU model.</td><td>Infrastructure plus SAM analyst.</td><td>PVU/core lookup and calculation evidence.</td></tr><tr><td>Entitlement Data</td><td>PA Site ID, PoE, part number, metric, quantity, version, S&S dates.</td><td>Procurement importer, Contracts and Purchases.</td><td>Passport Advantage export as official entitlement ledger.</td><td>PA portal CSV/XLSX, reseller order history, POs, invoices, IBM account manager confirmation.</td><td>Procurement, finance/AP, reseller, IBM account team.</td><td>Entitlement register with source document reference.</td></tr><tr><td>CMDB</td><td>Business owner, service mapping, environment, criticality, decommission status.</td><td>FNMS linked inventory / CMDB connector where configured.</td><td>Not applicable.</td><td>ServiceNow/Remedy export, app owner validation workshops.</td><td>ITSM, application owners.</td><td>Service-to-server map and ownership list.</td></tr></tbody></table></div>
+      <h3>No SAM Tool: Client Request Templates</h3>
+      <div class='copy-box'><div><strong>Infrastructure hardware request</strong></div><button class='mini-btn' onclick='copyText(this)'>Copy</button><pre><code class=''>Please provide an export of all in-scope physical servers with hostname, OS, datacenter, CPU manufacturer/model, socket count, cores per socket, total cores, RAM, hypervisor role, and lifecycle status. Include source system name and extraction date.</code></pre></div>
+      <div class='copy-box'><div><strong>Virtualization mapping request</strong></div><button class='mini-btn' onclick='copyText(this)'>Copy</button><pre><code class=''>Please provide VM-to-host and VM-to-cluster mapping for all in-scope VMware/PowerVM/Hyper-V/Nutanix platforms, including VM name, host, cluster, vCPU, RAM, power state, last migration date, and export date.</code></pre></div>
+      <div class='copy-box'><div><strong>Procurement / PA request</strong></div><button class='mini-btn' onclick='copyText(this)'>Copy</button><pre><code class=''>Please provide IBM Passport Advantage License Entitlement Report exports, PoEs, renewal quotes, S&amp;S history, reseller purchase records, and any divestiture or HCL transition notes for legacy IBM products.</code></pre></div>
+      <div class='copy-box'><div><strong>Application owner request</strong></div><button class='mini-btn' onclick='copyText(this)'>Copy</button><pre><code class=''>Please confirm product name, edition, version, environment, business owner, user groups, last-use evidence, and whether the application is production, DR, test, or retired. Attach screenshots or exports where available.</code></pre></div>
+      <h3>Sample ELP Reconciliation</h3>
+      <div class='table-wrap'><table class='data-table editable-table'><thead><tr><th>Product</th><th>Metric</th><th>Consumed</th><th>Entitled</th><th>Position</th><th>Status</th><th>Narrative</th></tr></thead><tbody><tr><td>WebSphere AS ND</td><td>PVU</td><td>3,360</td><td>2,000</td><td>-1,360</td><td><span class='rag red'>RED</span></td><td>Under-licensed exposure; validate ILMT sub-cap eligibility before true-up.</td></tr><tr><td>MQ Advanced</td><td>PVU</td><td>560</td><td>1,000</td><td>+440</td><td><span class='rag green'>GREEN</span></td><td>Surplus opportunity; consider renewal reduction or Cloud Pak trade-up.</td></tr><tr><td>Db2 ESE</td><td>PVU</td><td>1,200</td><td>1,200</td><td>0</td><td><span class='rag amber'>AMBER</span></td><td>Quantity aligned but S&S lapsed before deployed version release.</td></tr><tr><td>Cognos Analytics</td><td>AU</td><td>250</td><td>300</td><td>+50</td><td><span class='rag green'>GREEN</span></td><td>Optimization opportunity; remove inactive users before renewal.</td></tr><tr><td>SPSS Statistics</td><td>Concurrent</td><td>25</td><td>25</td><td>0</td><td><span class='rag green'>GREEN</span></td><td>Compliant; retain license-server peak report.</td></tr></tbody></table></div>
+      <div class='callout info'><strong>Executive Output Logic</strong><p>Executives focus on the traffic-light view because it converts technical discovery into decisions: exposure to fund, surplus to optimize, and control weaknesses to remediate. The detailed workbook is the evidence appendix, not the opening slide.</p></div>
+    
+    </section>
+    
+    <section id="ibm-data-collection-with-and-without-tools" class="portal-section" data-section-title="Data Collection With and Without Tools">
+      <div class="section-toolbar">
+        <h2>Data Collection With and Without Tools</h2>
+        <button class="mini-btn" onclick="printSection('ibm-data-collection-with-and-without-tools')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Senior line: “If the data is incomplete, I produce a confidence-rated ELP, not a pretend-final ELP.”</p></div>
+      
+      <p>With tools, the job is source validation. Without tools, the job is controlled reconstruction. In both cases the evidence chain must explain where each number came from, who provided it, when it was extracted, and what weakness remains.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Data Type</th><th>Tool-Based Collection</th><th>No-Tool Collection</th><th>Validation Check</th><th>Fallback if Missing</th><th>Risk if Incomplete</th></tr></thead><tbody><tr><td>Hardware</td><td>FNMS hardware inventory, ILMT hardware report, SCCM asset data.</td><td>OS commands, CMDB export, datacenter inventory, vendor hardware report.</td><td>CPU model matches PVU lookup; active hosts reconcile to virtualization exports.</td><td>Use defensible worst-case full capacity and document owner/date.</td><td>Understated PVU exposure.</td></tr><tr><td>VM Mapping</td><td>FNMS VMware connector, ILMT virtual host mapping.</td><td>vCenter CSV, PowerCLI, HMC, Hyper-V export.</td><td>Every VM has parent host and cluster; powered-off status reviewed.</td><td>Treat unmapped VM as high risk and exclude from sub-cap until resolved.</td><td>Sub-cap figures cannot be defended.</td></tr><tr><td>Software</td><td>FNMS ARL recognition, ILMT software inventory.</td><td>IIM installed.xml, package manager, registry, app admin screenshots.</td><td>Edition/version confirmed with owner and install evidence.</td><td>Use broadest installed edition until validated.</td><td>Wrong edition causes false compliance.</td></tr><tr><td>Users</td><td>FNMS user module, AD connector, app access data.</td><td>AD group exports, app console exports, license server logs.</td><td>Remove disabled users; reconcile service IDs and generic accounts.</td><td>Use authorized group membership as conservative count.</td><td>Named user undercount or overbuy.</td></tr><tr><td>Entitlements</td><td>FNMS purchases/contracts, business importer.</td><td>Passport Advantage, PoE, POs, reseller report, AP records.</td><td>PA Site ID and part number match product/metric.</td><td>Use official PA as primary; procurement as supplement.</td><td>False entitlement from non-licensing PO text.</td></tr></tbody></table></div>
+      <div class='callout warning'><strong>Partial Data Handling</strong><p>Do not guess silently. State the assumption, choose the defensible worst case if risk-bearing, assign an owner, and create a remediation action. A weak ELP can still be useful if its confidence boundaries are explicit.</p></div>
+    
+    </section>
+    
+    <section id="ibm-fnms-elp-creation-step-by-step" class="portal-section" data-section-title="FNMS ELP Creation (Step-by-Step)">
+      <div class="section-toolbar">
+        <h2>FNMS ELP Creation (Step-by-Step)</h2>
+        <button class="mini-btn" onclick="printSection('ibm-fnms-elp-creation-step-by-step')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Say: “FNMS gives me the first reconciled position; my job is to make it defensible.”</p></div>
+      
+      <p class="lead">FNMS accelerates ELP creation, but raw FNMS output is draft until inventory, recognition, purchases, license records, and publisher-specific rules have been validated.</p>
+      <div class="flow">
+        <span>Beacons / Connectors</span><b>→</b><span>Inventory DB</span><b>→</b><span>ARL Recognition</span><b>→</b><span>License Records + PURL</span><b>→</b><span>Reconciliation</span><b>→</b><span>Analyst Validation</span>
+      </div>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>FNMS Component</th><th>Role</th><th>IBM-Relevant Risk</th></tr></thead><tbody><tr><td>Inventory Beacon</td><td>Collects inventory and connects to VMware, SCCM, AD, ILMT, procurement sources.</td><td>Offline beacons create stale or missing inventory.</td></tr><tr><td>Application Server</td><td>Runs FNMS web UI, batch processing, reconciliation workflows.</td><td>Failed reconcile jobs leave old positions visible.</td></tr><tr><td>SQL Database</td><td>Stores inventory, evidence, purchases, license records, compliance results.</td><td>Bad imports can duplicate purchases or stale devices.</td></tr><tr><td>ARL</td><td>Normalizes raw evidence into recognized applications.</td><td>Stale ARL can miss IBM installs or confuse WAS Base vs ND.</td></tr><tr><td>PURL</td><td>Encodes product use rights, upgrade/downgrade rules, metrics, bundling.</td><td>Stale PURL weakens version rights and license mapping.</td></tr><tr><td>ILMT Connector</td><td>Feeds IBM sub-capacity PVU evidence.</td><td>FNMS current snapshot may differ from ILMT 90-day peak; audit uses ILMT.</td></tr></tbody></table></div>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Step</th><th>FNMS Navigation / Action</th><th>What to Verify</th><th>Bad Configuration Looks Like</th><th>Cross-Validation</th></tr></thead><tbody><tr><td>1. Verify inventory completeness</td><td>Discovery & Inventory > All Inventory; Beacon status; VMware/AD/SCCM imports.</td><td>>95% active devices fresh, hosts and VMs mapped, no unexpected gaps.</td><td>Stale devices, missing vCenter clusters, no VM host relationship.</td><td>Compare FNMS device count to CMDB/vCenter/ILMT.</td></tr><tr><td>2. Load / verify IBM entitlements</td><td>Procurement > Purchases; Contracts; Business Importer.</td><td>Purchases linked to licenses, PA Site ID and part numbers preserved, S&S dates captured.</td><td>Unprocessed purchases, duplicate quantities, metric mismatch.</td><td>Reconcile FNMS quantities to Passport Advantage export.</td></tr><tr><td>3. Create / verify IBM license records</td><td>License Compliance > All Licenses > IBM licenses.</td><td>Correct license type: IBM PVU vs IBM PVU sub-capacity, AU, MVS, RVU; linked applications; version rights.</td><td>Generic processor license, no linked applications, wrong edition, missing downgrade rights.</td><td>Check license consumption logic against manual examples.</td></tr><tr><td>4. Run reconciliation</td><td>License Compliance > Reconcile; verify latest completion.</td><td>Reconcile job completed cleanly; exceptions reviewed.</td><td>Old reconcile date, failed import, changed purchases not reflected.</td><td>Export before/after position and explain movement.</td></tr><tr><td>5. Review IBM PVU sub-capacity</td><td>IBM PVU reports; linked ILMT evidence.</td><td>ILMT connector synced; 90-day peak understood; VM mapping correct.</td><td>FNMS lower than ILMT due to current snapshot or missing ILMT devices.</td><td>Use ILMT report as audit anchor.</td></tr><tr><td>6. Export ELP report</td><td>Reports / Saved views filtered Publisher = IBM.</td><td>Export includes product, metric, entitlement, consumption, position, evidence, notes.</td><td>Raw export shown as final to executives without analyst notes.</td><td>Rebuild in Excel/PowerPoint for executive-ready narrative.</td></tr></tbody></table></div>
+      <div class='callout danger'><strong>Linked Licenses Matter</strong><p>In FNMS, entitlement may sit in purchases while consumption sits in applications. If applications are not linked to the correct IBM license record, the ELP is structurally wrong even if inventory discovery is perfect.</p></div>
+      <div class='callout warning'><strong>Draft vs Final FNMS Output</strong><p>FNMS output is draft when health checks, entitlement links, ARL/PURL currency, ILMT reconciliation, and analyst assumptions are not complete. It becomes final only when it is cross-validated and evidence-backed.</p></div>
+    
+    </section>
+    
+    <section id="ibm-fnms-health-check" class="portal-section" data-section-title="FNMS Health Check">
+      <div class="section-toolbar">
+        <h2>FNMS Health Check</h2>
+        <button class="mini-btn" onclick="printSection('ibm-fnms-health-check')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>The phrase “12-point FNMS health check” sounds operational and senior. Use it before discussing results.</p></div>
+      
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>#</th><th>Health Check Item</th><th>Where to Look</th><th>Pass Criteria</th><th>Why It Matters</th><th>If Failed</th></tr></thead><tbody><tr><td>1</td><td>Beacon health</td><td>System tasks / beacon status</td><td>All expected beacons reporting recently</td><td>Missing source feeds weaken inventory</td><td>Pause final ELP; remediate collection.</td></tr><tr><td>2</td><td>Inventory freshness</td><td>All Inventory last inventory date</td><td>>95% active devices fresh</td><td>Stale devices distort deployment</td><td>Refresh agents/imports.</td></tr><tr><td>3</td><td>ARL currency</td><td>System settings / content libraries</td><td>Current monthly ARL</td><td>Recognition quality depends on it</td><td>Update before reconciliation.</td></tr><tr><td>4</td><td>PURL currency</td><td>Content libraries</td><td>Current monthly PURL</td><td>Use rights and version logic depend on it</td><td>Update before entitlement decisions.</td></tr><tr><td>5</td><td>Unrecognized evidence</td><td>Discovery evidence reports</td><td><5% material unrecognized evidence</td><td>Missed IBM software can hide exposure</td><td>Review and create local evidence rules.</td></tr><tr><td>6</td><td>VM-to-host mapping</td><td>Virtualization inventory</td><td>100% in-scope VMs mapped</td><td>Sub-cap PVU depends on host relation</td><td>Fix connector or import mapping.</td></tr><tr><td>7</td><td>ILMT connector</td><td>IBM PVU / inventory source status</td><td>Latest ILMT data imported</td><td>IBM audit anchor is ILMT</td><td>Reconnect and compare ILMT exports.</td></tr><tr><td>8</td><td>License records complete</td><td>All Licenses filtered IBM</td><td>All material products have correct license type</td><td>Consumption cannot reconcile without records</td><td>Create/repair license records.</td></tr><tr><td>9</td><td>Purchases linked</td><td>License purchase tab</td><td>Entitlements linked to licenses</td><td>Unlinked purchases create false shortfall</td><td>Link purchases or import properly.</td></tr><tr><td>10</td><td>Reconciliation recent</td><td>Reconcile status</td><td>Completed after latest imports</td><td>Old output is not current ELP</td><td>Re-run reconcile.</td></tr><tr><td>11</td><td>Sub-cap flags</td><td>IBM PVU license settings</td><td>Sub-cap only where ILMT evidence exists</td><td>Wrong flag creates false low consumption</td><td>Use full-cap fallback where needed.</td></tr><tr><td>12</td><td>Upgrade/downgrade rights</td><td>License use rights</td><td>Version rights match S&S and contract</td><td>Version compliance can be AMBER/RED</td><td>Correct rights and document S&S.</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ibm-ilmt-deep-knowledge" class="portal-section" data-section-title="ILMT Deep Knowledge">
+      <div class="section-toolbar">
+        <h2>ILMT Deep Knowledge</h2>
+        <button class="mini-btn" onclick="printSection('ibm-ilmt-deep-knowledge')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Say: “ILMT is not a reporting nicety; it is the evidence IBM accepts for sub-capacity.”</p></div>
+      
+      <p>IBM License Metric Tool is the control system for IBM sub-capacity PVU. It is built on the BigFix/TEM stack: agents collect software/hardware evidence, BigFix relays it, ILMT imports and classifies it, and reports retain sub-capacity peaks.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>ILMT Area</th><th>What to Know</th><th>Audit Evidence Expected</th><th>Common Issue</th><th>Fix</th></tr></thead><tbody><tr><td>Architecture</td><td>BigFix server, agents, relays, ILMT server, IBM software catalog.</td><td>Topology, agent coverage, version, catalog level.</td><td>Missing agents on PVU servers.</td><td>Deploy agents and document full-cap fallback for uncovered period.</td></tr><tr><td>Calculation</td><td>PVU based on eligible virtual allocation and PVU/core, capped by host full capacity.</td><td>90-day peak reports and computer group scope.</td><td>VM mapping absent or wrong host processor.</td><td>Correct virtualization discovery and rerun imports.</td></tr><tr><td>Reporting</td><td>Quarterly snapshots retained for at least two years.</td><td>Signed/archived PDF/CSV reports.</td><td>Reports not retained or generated late.</td><td>Archive process and governance owner.</td></tr><tr><td>Classification</td><td>Charged vs Bundled vs Excluded classification affects consumption.</td><td>Classification review notes and approvals.</td><td>Bundled component charged as standalone.</td><td>Classify with product evidence and retain rationale.</td></tr><tr><td>Catalog</td><td>IBM software catalog detects signatures.</td><td>Catalog version and import history.</td><td>Missing signature or unclassified software.</td><td>Update catalog, review unmatched evidence.</td></tr><tr><td>FNMS Integration</td><td>FNMS can ingest ILMT data for IBM PVU reconciliation.</td><td>Connector logs and comparison report.</td><td>FNMS differs from ILMT due to current vs 90-day peak.</td><td>Use ILMT as binding audit anchor; explain timing.</td></tr></tbody></table></div>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>10-Point ILMT Checklist</th><th>Pass Signal</th></tr></thead><tbody><tr><td>ILMT version current</td><td>Supported version with current fix pack.</td></tr><tr><td>Software Catalog current</td><td>Recent IBM catalog imported.</td></tr><tr><td>All agents reporting</td><td>Critical devices have recent scans.</td></tr><tr><td>No unknown hardware</td><td>Processor and virtualization details recognized.</td></tr><tr><td>Correct PVU/core values</td><td>CPU models map to current IBM PVU table.</td></tr><tr><td>VM-to-host mapping correct</td><td>Virtualized devices mapped to physical hosts.</td></tr><tr><td>Sub-cap eligible flags set</td><td>Only supported platforms claim sub-cap.</td></tr><tr><td>No material data gaps</td><td>Scan/import gaps investigated.</td></tr><tr><td>Quarterly snapshots archived</td><td>Two years retained.</td></tr><tr><td>Bundled vs charged reviewed</td><td>Classifications approved with evidence.</td></tr></tbody></table></div>
+      <div class='callout danger'><strong>Absent ILMT Consequence</strong><p>If ILMT is absent, late, unhealthy, or incomplete for sub-capacity PVU products, calculate the defensible fallback as full capacity and flag the exposure. Never present an unsupported sub-cap number as final.</p></div>
+    
+    </section>
+    
+    <section id="ibm-ibm-audits--defence" class="portal-section" data-section-title="IBM Audits &amp; Defence">
+      <div class="section-toolbar">
+        <h2>IBM Audits &amp; Defence</h2>
+        <button class="mini-btn" onclick="printSection('ibm-ibm-audits--defence')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Strong line: “A clean ELP is negotiation leverage because every number has evidence behind it.”</p></div>
+      
+      <p>IBM audit defense is evidence management plus scope control. The SAM consultant should build a counter-ELP before the vendor view arrives, then challenge only where the evidence supports challenge.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Audit Phase</th><th>Consultant Role</th><th>Defensive Control</th><th>Common Trap</th></tr></thead><tbody><tr><td>Notice and scope</td><td>Clarify legal entity, geography, products, period, and data requests.</td><td>Written scope log and legal review.</td><td>Accepting “all IBM everywhere” without boundaries.</td></tr><tr><td>Questionnaire</td><td>Answer exactly what is asked with source references.</td><td>Sanitized, scoped responses.</td><td>Over-disclosing unrelated product or environment data.</td></tr><tr><td>Data collection</td><td>Collect ILMT, PA, deployment, user, contract evidence.</td><td>Evidence index and chain of custody.</td><td>Submitting raw exports without methodology.</td></tr><tr><td>Vendor analysis</td><td>Compare vendor findings against counter-ELP.</td><td>Challenge log with proof.</td><td>Arguing unsupported positions instead of evidence-backed deltas.</td></tr><tr><td>Settlement / remediation</td><td>Negotiate true-up, reinstatement, migration, or commercial offset.</td><td>Remediation roadmap and governance.</td><td>Buying licenses without fixing the control gap.</td></tr></tbody></table></div>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Common Finding</th><th>Defense / Response</th></tr></thead><tbody><tr><td>Full-capacity claim due to ILMT gap</td><td>Show ILMT deployment timeline, agent coverage, quarterly reports, or accept documented full-cap fallback for only affected hosts/period.</td></tr><tr><td>Bundled component charged separately</td><td>Provide bundling evidence, installation role, product relationship, and ILMT classification notes.</td></tr><tr><td>Edition mismatch</td><td>Use IIM installed.xml, product admin screenshots, and feature usage to prove actual edition.</td></tr><tr><td>S&S lapsed version use</td><td>Determine release date vs S&S date; negotiate reinstatement or downgrade/remediation.</td></tr><tr><td>Unscoped affiliate included</td><td>Tie legal entity and PA Site ID to contract scope.</td></tr></tbody></table></div>
+      <div class='callout info'><strong>Audit Evidence Pack</strong><p>Include scope memo, PA entitlement exports, PoEs, S&S history, ILMT quarterly reports, ILMT health checks, FNMS health checks, software evidence, VM mapping, assumptions register, challenge log, executive summary, and remediation plan.</p></div>
+    
+    </section>
+    
+    <section id="ibm-contracts--entitlements" class="portal-section" data-section-title="Contracts &amp; Entitlements">
+      <div class="section-toolbar">
+        <h2>Contracts &amp; Entitlements</h2>
+        <button class="mini-btn" onclick="printSection('ibm-contracts--entitlements')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Say: “Procurement tells me what the client thinks they bought; Passport Advantage tells me what IBM will recognize.”</p></div>
+      
+      <p>IBM entitlement analysis starts with Passport Advantage and ends with contractual rights: metric, quantity, version, S&S, site ID, legal entity, and special terms.</p>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Document</th><th>What It Proves</th><th>Extract These Fields</th><th>Practitioner Watchout</th></tr></thead><tbody><tr><td>PAA / IPAA</td><td>Master Passport Advantage agreement and international terms.</td><td>Customer/legal entity, site ID, affiliates, territory, program terms.</td><td>A purchase under one site may not cover another legal entity.</td></tr><tr><td>License Information (LI)</td><td>Product-specific use rights and restrictions.</td><td>Metric definition, minimums, virtualization terms, bundling, DR/test rights.</td><td>LI can override generic assumptions.</td></tr><tr><td>Proof of Entitlement (PoE)</td><td>Title deed for purchased license.</td><td>Part number, product, metric, quantity, S&S dates, order reference.</td><td>Part numbers distinguish similar-looking editions.</td></tr><tr><td>IPLA</td><td>Underlying license framework for IBM programs.</td><td>General license rights and restrictions.</td><td>Use with LI and PA, not alone.</td></tr><tr><td>Service Description</td><td>Subscription/SaaS service rights.</td><td>Term, usage unit, support, service scope.</td><td>SaaS is usually usage/subscription, not perpetual ELP.</td></tr></tbody></table></div>
+      <p>Upgrade rights usually require active S&S when the newer version became available. Downgrade rights can help with older deployments, but only within the same eligible product and metric. If S&S lapsed, the client keeps the right to use the version available at lapse date but not later versions, patches, or support.</p>
+      <div class='callout warning'><strong>When Portal Conflicts With Procurement</strong><p>Use Passport Advantage as the official IBM entitlement ledger, then reconcile procurement records as supporting evidence. If procurement shows more, ask reseller/IBM to prove the PA record or identify a different site/legal entity.</p></div>
+    
+    </section>
+    
+    <section id="ibm-multi-version--s-s-reconciliation-logic" class="portal-section" data-section-title="Multi-Version / S&amp;S Reconciliation Logic">
+      <div class="section-toolbar">
+        <h2>Multi-Version / S&amp;S Reconciliation Logic</h2>
+        <button class="mini-btn" onclick="printSection('ibm-multi-version--s-s-reconciliation-logic')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Practitioner cue: version compliance can be separate from quantity compliance.</p></div>
+      
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Scenario</th><th>Quantity Position</th><th>Version / S&amp;S Position</th><th>ELP Status</th><th>Action</th></tr></thead><tbody><tr><td>Own WAS ND 1,000 PVU v8.5 with active S&S; deploy v9 900 PVU</td><td>Surplus 100</td><td>Upgrade right valid</td><td>GREEN</td><td>Retain evidence of S&S active at v9 release.</td></tr><tr><td>Own Db2 ESE 1,200 PVU; S&S lapsed before deployed version release</td><td>Aligned</td><td>Version not supported by entitlement date</td><td>AMBER / possible RED</td><td>Validate release dates; consider downgrade, reinstatement, or commercial settlement.</td></tr><tr><td>Own MQ Advanced but deploy MQ Base only</td><td>Surplus higher edition</td><td>Potential optimization</td><td>GREEN opportunity</td><td>Review renewal reduction or metric conversion.</td></tr><tr><td>Own base MQ but deploy MQ Advanced features</td><td>Shortfall by edition</td><td>Wrong entitlement for deployed capability</td><td>RED</td><td>True-up or disable Advanced features.</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ibm-interactive-elp-workbook-preview" class="portal-section" data-section-title="Interactive ELP Workbook Preview">
+      <div class="section-toolbar">
+        <h2>Interactive ELP Workbook Preview</h2>
+        <button class="mini-btn" onclick="printSection('ibm-interactive-elp-workbook-preview')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Use this preview to explain the workbook sheet flow in stakeholder discussions.</p></div>
+      
+      <p>The companion workbook contains the same tables as editable sheets: hardware, software, entitlements, reconciliation, assumptions, FNMS, ILMT input, and executive summary.</p>
+      
+      <div class="workbook-embed" data-practitioner="keep">
+        <div class="workbook-glass">
+          <div>
+            <span class="eyebrow">Embedded Excel Workbook</span>
+            <h3>IBM SAM ELP Workbook</h3>
+            <p>This publisher-specific workbook is embedded inside this portal as a real .xlsx file with formulas, sample data, filters, frozen headers, assumptions, FNMS review sheets, and executive summary logic.</p>
+            <div class="workbook-meta"><span>14 sheets</span><span>38.8 KB</span><span>Formula-backed ELP</span></div>
+          </div>
+          <a class="download-btn" download="IBM_SAM_ELP_Workbook.xlsx" href="../assets/IBM_SAM_ELP_Workbook.xlsx">Download Excel</a>
+        </div>
+        <div class='table-wrap'><table class='data-table workbook-map'><thead><tr><th>Workbook Sheet</th><th>Purpose</th><th>How to Use</th></tr></thead><tbody><tr><td>IBM_Hardware_Inventory</td><td>PVU full-cap and sub-cap hardware model.</td><td>Explain Intel vs POWER PVU and VM-to-host mapping.</td></tr><tr><td>IBM_ELP_Reconciliation</td><td>Formula-driven entitlement minus consumption view.</td><td>Walk through RED/AMBER/GREEN audit exposure.</td></tr><tr><td>IBM_FNMS_ELP</td><td>Analyst review of FNMS-discovered software and license links.</td><td>Show why FNMS output is draft until validated.</td></tr><tr><td>IBM_ILMT_Input</td><td>90-day peak and bundled/charged evidence.</td><td>Defend sub-capacity with ILMT evidence.</td></tr><tr><td>IBM_Exec_Summary</td><td>Executive RAG, exposure, opportunity, roadmap.</td><td>Explain findings to leadership.</td></tr></tbody></table></div>
+      </div>
+    
+      <div class='table-wrap'><table class='data-table editable-table'><thead><tr><th>Server</th><th>Product</th><th>Metric</th><th>Calc Basis</th><th>Consumed</th><th>Entitled</th><th>Position</th><th>Status</th><th>Evidence</th></tr></thead><tbody><tr><td>WAS-PROD-01</td><td>WebSphere AS ND</td><td>PVU</td><td>48 cores x 70</td><td>3360</td><td>2000</td><td>=-1360</td><td>RED</td><td>IIM + ILMT + PVU lookup</td></tr><tr><td>MQ-PROD-01</td><td>MQ Advanced</td><td>PVU</td><td>8 vCPU x 70</td><td>560</td><td>1000</td><td>=440</td><td>GREEN</td><td>ILMT sub-cap report</td></tr><tr><td>DB2-PROD</td><td>Db2 ESE</td><td>PVU</td><td>10 LPAR cores x 120</td><td>1200</td><td>1200</td><td>=0</td><td>AMBER</td><td>S&S lapsed</td></tr></tbody></table></div>
+    
+    </section>
+    
+    <section id="ibm-practitioner-q-a-bank" class="portal-section" data-section-title="Practitioner Q&amp;A Bank">
+      <div class="section-toolbar">
+        <h2>Practitioner Q&amp;A Bank</h2>
+        <button class="mini-btn" onclick="printSection('ibm-practitioner-q-a-bank')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Keep answers process-led, evidence-led, and number-led.</p></div>
+      <div class='qa-bank'><details class='qa' data-practitioner='keep'><summary>Walk me through a manual IBM ELP.</summary><p>I scope products and legal entities, collect deployment and entitlement evidence, normalize product/edition/metric, calculate consumption per metric, reconcile against Passport Advantage/PoE entitlements, flag assumptions, and present a RAG executive position backed by evidence.</p><p class='testing-note'><strong>Why it matters:</strong> Whether you understand method, evidence, and executive output.</p><button class='mini-btn' onclick='copyAnswer(this)'>Copy answer</button></details><details class='qa' data-practitioner='keep'><summary>Why is ILMT mandatory?</summary><p>IBM grants sub-capacity only when the client can prove eligible virtualized consumption continuously. ILMT is the accepted evidence source. Without healthy ILMT, I calculate full capacity for affected workloads and document the exposure.</p><p class='testing-note'><strong>Why it matters:</strong> Whether you know sub-capacity risk.</p><button class='mini-btn' onclick='copyAnswer(this)'>Copy answer</button></details><details class='qa' data-practitioner='keep'><summary>How do you validate FNMS IBM output?</summary><p>I run the FNMS health check, confirm ARL/PURL currency, validate inventory freshness, link purchases to licenses, compare PVU products against ILMT 90-day peaks, and investigate recognition or mapping discrepancies before calling it final.</p><p class='testing-note'><strong>Why it matters:</strong> Whether you treat tools as draft evidence.</p><button class='mini-btn' onclick='copyAnswer(this)'>Copy answer</button></details><details class='qa' data-practitioner='keep'><summary>What is the IBM Installation Manager trump card?</summary><p>IBM Installation Manager maintains installed.xml, often under /var/ibm/InstallationManager or C:\ProgramData\IBM\Installation Manager. It records IBM-installed products and is a strong manual discovery source when generic tools miss evidence.</p><p class='testing-note'><strong>Why it matters:</strong> Whether you know practical discovery.</p><button class='mini-btn' onclick='copyAnswer(this)'>Copy answer</button></details><details class='qa' data-practitioner='keep'><summary>How do you explain findings to executives?</summary><p>I lead with a traffic-light summary, total exposure, total optimization opportunity, top risks, and a 30/60/90-day roadmap. The detailed workbook remains the evidence appendix.</p><p class='testing-note'><strong>Why it matters:</strong> Whether you can translate technical SAM into decisions.</p><button class='mini-btn' onclick='copyAnswer(this)'>Copy answer</button></details><details class='qa' data-practitioner='keep'><summary>How do you keep IBM licensing knowledge current?</summary><p>I keep the position current by validating against the current PVU table, Cloud Pak VPC rules, ILS vs ILMT requirements, FNMS/ILMT behavior, and recent audit-defense patterns.</p><p class='testing-note'><strong>Why it matters:</strong> Whether you combine integrity with confidence.</p><button class='mini-btn' onclick='copyAnswer(this)'>Copy answer</button></details></div>
+      <div class='table-wrap'><table class='data-table'><thead><tr><th>Bad Answer</th><th>Strong Answer</th></tr></thead><tbody><tr><td>I trust FNMS because it calculates compliance.</td><td>FNMS gives a draft position. I validate inventory freshness, ARL/PURL, license links, ILMT 90-day peaks, and assumptions before presenting.</td></tr><tr><td>If the client has no ILMT, I estimate VM consumption.</td><td>If ILMT is missing, I calculate full capacity as the defensible fallback and document remediation.</td></tr><tr><td>Procurement gave me purchases, so entitlement is complete.</td><td>I reconcile procurement to Passport Advantage and PoE because that is what IBM recognizes in audit.</td></tr></tbody></table></div>
+      <div class='copy-box'><div><strong>10 senior IBM lines</strong></div><button class='mini-btn' onclick='copyText(this)'>Copy</button><pre><code class=''>1. Health check first, reconcile second.\n2. Passport Advantage is the entitlement ground truth.\n3. IBM Installation Manager installed.xml is the manual discovery trump card.\n4. ILMT 90-day peak is the audit anchor, not a current snapshot.\n5. VM-to-host mapping can corrupt every sub-cap PVU result.\n6. FNMS output is draft until cross-validated.\n7. Every assumption belongs in the assumptions tab.\n8. Cloud Paks use VPC and IBM License Service, not ILMT.\n9. Quantity compliance and version compliance are different checks.\n10. A defensible ELP is also negotiation leverage.</code></pre></div>
+    
+    </section>
+    
+    <section id="ibm-quick-reference-cheat-sheet" class="portal-section" data-section-title="Quick-Reference Cheat Sheet">
+      <div class="section-toolbar">
+        <h2>Quick-Reference Cheat Sheet</h2>
+        <button class="mini-btn" onclick="printSection('ibm-quick-reference-cheat-sheet')">Print this section</button>
+      </div>
+      <div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>Night-before revision: metrics, ILMT, FNMS health, PA entitlement, manual ELP flow.</p></div>
+      
+      <div class="cheat-grid" data-practitioner="keep">
+        <div><h3>Metrics</h3><p>PVU, VPC, RVU, MVS, AU, AUSI, FUL, Concurrent, Install, MSU.</p></div>
+        <div><h3>Formula</h3><p>Position = Entitled - Consumed. Sub-cap PVU = allocated cores x PVU/core. Full-cap PVU = physical cores x PVU/core.</p></div>
+        <div><h3>Audit Defense</h3><p>Scope, ILMT reports, PA/PoE evidence, assumptions register, challenge log.</p></div>
+        <div><h3>Top ELP Mistakes</h3><p>Trusting raw tools, bad VM mapping, assuming sub-cap without ILMT, wrong edition, ignoring S&S.</p></div>
+        <div><h3>RAG</h3><p>RED exposure. AMBER quantity okay but evidence/version/control weakness. GREEN compliant or surplus.</p></div>
+        <div><h3>Executive View</h3><p>Exposure, opportunity, top risks, top actions, 30/60/90 roadmap.</p></div>
+      </div>
+    
+    </section>
+<section class="engagement-panel" data-engagement-panel="ibm-software-asset-management-elp-ilmt-fnms-audit-defense">
+  <div class="engagement-top">
+    <div>
+      <span class="eyebrow">Reader response</span>
+      <h2 style="margin:8px 0 0">Discuss this article</h2>
+      <p class="meta">Likes, shares and comments are stored in this browser for a static hosted site.</p>
+    </div>
+    <div class="engagement-actions">
+      <button class="primary" type="button" data-like-button>Like</button>
+      <button type="button" onclick="copyLink()">Share</button>
+    </div>
+  </div>
+  <div class="engagement-counts">
+    <span><b data-like-count>0</b> likes</span>
+    <span><b data-share-count>0</b> shares</span>
+    <span><b data-comment-count>0</b> comments</span>
+  </div>
+  <form class="comment-form" data-comment-form>
+    <input name="name" autocomplete="name" placeholder="Your name">
+    <textarea name="comment" required placeholder="Add a thoughtful comment"></textarea>
+    <button type="submit">Post comment</button>
+  </form>
+  <div class="comment-list" data-comment-list></div>
+</section></div>
+    </div>
+  </article>
+</main><footer class="site-footer">By Ashish Deshmukh · Notes on technology, work, learning, systems and practical execution.</footer><script src="../assets/site.js"></script></body></html>
