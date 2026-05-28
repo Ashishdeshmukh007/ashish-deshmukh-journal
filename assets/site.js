@@ -769,14 +769,14 @@ function setupRichEditor(modalContainer, form) {
             <label style="font-weight:700; font-size:12px; display:block; margin-bottom:10px;">Calculation Formula<br>
               <input class="editor-input calc-custom-formula" style="margin-top:4px; font-family:monospace;" value="${block.formula || 'Cores * Factor'}" placeholder="e.g. Cores * Factor">
               <span style="font-size:11px; color:var(--muted); font-weight:normal; display:block; margin-top:4px;">
-                💡 <em>Use the Variable names above in your mathematical expression (e.g. `Cores * Factor`). Supported: `*`, `/`, `+`, `-`, `(`, `)`.</em>
+                💡 <em>Use the Variable names above in your mathematical expression (e.g. \`Cores * Factor\`). Supported: \`*\`, \`/\`, \`+\`, \`-\`, \`(\`, \`)\`.</em>
               </span>
             </label>
             
             <label style="font-weight:700; font-size:12px; display:block; margin-bottom:6px;">Output Text Template<br>
               <input class="editor-input calc-custom-output" style="margin-top:4px;" value="${block.output || 'Required Licenses: {result} Cores'}" placeholder="e.g. Total cost: {result}">
               <span style="font-size:11px; color:var(--muted); font-weight:normal; display:block; margin-top:4px;">
-                💡 <em>Use `{result}` where the calculated number should be placed.</em>
+                💡 <em>Use \`{result}\` where the calculated number should be placed.</em>
               </span>
             </label>
           </div>
