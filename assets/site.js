@@ -1730,7 +1730,199 @@ function showAdminDashboard(){
   };
 }
 
-document.addEventListener('scroll',()=>{const bar=document.querySelector('[data-reading-progress]');if(!bar)return;const max=document.documentElement.scrollHeight-innerHeight;bar.style.width=`${max>0?(scrollY/max)*100:0}%`},{passive:true})
+const ARTICLE_LIBRARY = [
+  {slug:'flexera-one-vs-servicenow-sam-pro-2026-comparison',title:'Flexera One vs ServiceNow SAM Pro in 2026: An Architecture and Operations Comparison',category:'Tool Comparison',date:'May 29, 2026',description:'Enterprise SAM teams are rarely choosing between Flexera and ServiceNow on a blank slate. Here is how they compare across discovery, publisher logical engines, automation, SaaS/Cloud ITAM convergence, and audit defensibility.'},
+  {slug:'servicenow-sam-pro-now-assist-2026-license-management-playbook',title:'ServiceNow SAM Pro and Now Assist in 2026: A Practical License Management Playbook',category:'ServiceNow SAM Pro',date:'May 22, 2026',description:'A practical guide to ServiceNow SAM Pro, Now Assist for SAM, AI-driven license operations, implementation controls, publisher compliance and audit readiness.'},
+  {slug:'oracle-software-asset-management-processor-nup-vmware-options-java-lms-defense',title:'Oracle Software Asset Management: Processor, NUP, VMware, Options, Java and LMS Defense',category:'Oracle Licensing',date:'May 15, 2026',description:'A practical Oracle SAM article covering processor metrics, NUP minimums, virtualization, options and packs, Java, ULA logic, FNMS and audit mechanics.'},
+  {slug:'microsoft-software-asset-management-sql-windows-m365-ea-fnms-elp',title:'Microsoft Software Asset Management: SQL, Windows Server, M365, EA True-Up and FNMS ELP',category:'Microsoft Licensing',date:'May 8, 2026',description:'A field guide to Microsoft licensing across SQL Server, Windows Server, M365, CALs, Azure Hybrid Benefit, EA true-up and FNMS validation.'},
+  {slug:'ibm-software-asset-management-elp-ilmt-fnms-audit-defense',title:'IBM Software Asset Management: A Practical Guide to ELP, ILMT, FNMS and Audit Defense',category:'IBM Licensing',date:'May 1, 2026',description:'A practitioner guide to IBM PVU, VPC, Passport Advantage, ILMT, FNMS reconciliation, contracts, audit defense and executive reporting.'},
+  {slug:'flexera-one-itam-2026-license-operations-playbook',title:'Flexera One ITAM in 2026: A License Operations Playbook for SAM Teams',category:'Flexera ITAM',date:'April 24, 2026',description:'Flexera One ITAM is becoming a broader technology value platform. Here is how SAM teams should use it for ELP quality, SaaS visibility, IBM sub-capacity, and audit defense.'},
+  {slug:'microsoft-365-copilot-license-management-2026',title:'Microsoft 365 Copilot License Management in 2026: From Pilot Excitement to Cost Control',category:'Microsoft Licensing',date:'April 17, 2026',description:'Microsoft 365 Copilot licensing now needs the same discipline as any major enterprise software program: eligibility, assignment, usage, governance, and renewal control.'},
+  {slug:'oracle-java-employee-metric-audit-readiness-2026',title:'Oracle Java Employee Metric in 2026: The Audit Readiness Guide Most Teams Still Need',category:'Oracle Licensing',date:'April 10, 2026',description:'Oracle Java is no longer just an install-count cleanup exercise. The employee metric changes the evidence model, negotiation posture, and audit defense plan.'},
+  {slug:'ibm-cloud-pak-vpc-license-service-control-model',title:'IBM Cloud Pak VPC Licensing: How to Build a Control Model Around IBM License Service',category:'IBM Licensing',date:'April 3, 2026',description:'Cloud Pak licensing is not just PVU with a new label. VPC ratios, container reporting, IBM License Service, and OpenShift operations change the SAM control model.'},
+  {slug:'finops-itam-convergence-technology-value-2026',title:'FinOps and ITAM Are Converging: A 2026 Technology Value Operating Model',category:'Cloud & FinOps',date:'March 27, 2026',description:'FinOps has expanded beyond public cloud. SaaS, licensing, AI, data centers, and software contracts now belong in one technology value conversation.'},
+  {slug:'audit-defense-using-servicenow-sam-pro-and-flexera',title:'Audit Defense Using ServiceNow SAM Pro and Flexera: What to Prepare Before the Publisher Calls',category:'Audit Defense',date:'March 20, 2026',description:'SAM tools help audit defense only when the evidence trail is stronger than the dashboard. Here is a practical audit pack for ServiceNow SAM Pro and Flexera environments.'},
+  {slug:'ai-at-work-governance-license-risk-playbook',title:'AI at Work Governance: The License and Compliance Risks Hiding Behind Productivity Pilots',category:'AI at Work',date:'March 13, 2026',description:'Enterprise AI adoption creates a new SAM problem: subscriptions, model access, data controls, software supply-chain licensing, and usage accountability all need governance.'},
+  {slug:'contract-intelligence-for-software-asset-management',title:'Contract Intelligence for Software Asset Management: Turning Agreements into Actionable License Controls',category:'Enterprise Software',date:'March 6, 2026',description:'AI contract extraction is useful only if SAM teams convert extracted terms into entitlement, obligation, renewal, and audit controls.'},
+  {slug:'sam-operating-model-2026-delivery-playbook',title:'The 2026 SAM Operating Model: From Compliance Reports to a Delivery Playbook',category:'Operating Models',date:'February 27, 2026',description:'A modern SAM function needs workflow ownership, evidence standards, tooling discipline, FinOps alignment, audit readiness, and business-facing service design.'}
+];
+
+function escapeHtml(value){
+  return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
+function articleUrl(slug){
+  const prefix = location.pathname.includes('/articles/') ? '' : 'articles/';
+  return `${prefix}${slug}.html`;
+}
+
+function estimateArticleMinutes(){
+  const body = document.querySelector('.article-body');
+  if(!body) return null;
+  const words = (body.innerText || '').trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 220));
+}
+
+function ensureEngagementPanel(slug){
+  if(!slug || document.querySelector('.engagement-panel')) return;
+  const main = document.querySelector('main') || document.body;
+  const panel = document.createElement('section');
+  panel.className = 'engagement-panel article-extras';
+  panel.dataset.engagementPanel = slug;
+  panel.innerHTML = `
+    <div class="engagement-top">
+      <div><strong>Reader response</strong><p class="meta">Like, share, or leave a note for this article.</p></div>
+      <div class="engagement-actions">
+        <button type="button" class="primary" data-like-button>Like</button>
+        <button type="button" onclick="copyLink()">Copy link</button>
+      </div>
+    </div>
+    <div class="engagement-counts"><span><b data-like-count>0</b> likes</span><span><b data-share-count>0</b> shares</span><span><b data-comment-count>0</b> comments</span></div>
+    <form class="comment-form" data-comment-form>
+      <input name="name" autocomplete="name" placeholder="Your name">
+      <textarea name="comment" placeholder="Add a comment"></textarea>
+      <button type="submit">Post comment</button>
+    </form>
+    <div class="comment-list" data-comment-list></div>`;
+  main.insertAdjacentElement('afterend', panel);
+  panel.querySelectorAll('[data-like-button]').forEach(b => b.addEventListener('click', toggleLike));
+  panel.querySelectorAll('[data-comment-form]').forEach(f => f.addEventListener('submit', addComment));
+}
+
+function initArticleEnhancements(){
+  const slug = getSlug();
+  if(!slug) return;
+  const current = ARTICLE_LIBRARY.find(a => a.slug === slug);
+  const article = document.querySelector('article');
+  const body = document.querySelector('.article-body');
+  const hero = document.querySelector('.article-hero');
+  if(!article || !body) return;
+
+  if(hero && current && !hero.querySelector('.article-meta-strip')){
+    const minutes = estimateArticleMinutes();
+    const strip = document.createElement('div');
+    strip.className = 'article-meta-strip';
+    strip.innerHTML = `<a href="../index.html">Home</a><span>${escapeHtml(current.category)}</span><span>${escapeHtml(current.date)}</span>${minutes ? `<span>${minutes} min read</span>` : ''}`;
+    const byline = hero.querySelector('.byline');
+    if(byline) byline.insertAdjacentElement('afterend', strip);
+  }
+
+  ensureEngagementPanel(slug);
+
+  if(!document.querySelector('.article-extras[data-reader-extras]')){
+    const index = ARTICLE_LIBRARY.findIndex(a => a.slug === slug);
+    const previous = ARTICLE_LIBRARY[index + 1];
+    const next = ARTICLE_LIBRARY[index - 1];
+    let related = ARTICLE_LIBRARY.filter(a => a.slug !== slug && current && a.category === current.category).slice(0,3);
+    if(related.length < 3){
+      related = related.concat(ARTICLE_LIBRARY.filter(a => a.slug !== slug && !related.some(r => r.slug === a.slug)).slice(0, 3 - related.length));
+    }
+    const extras = document.createElement('section');
+    extras.className = 'article-extras';
+    extras.dataset.readerExtras = 'true';
+    extras.innerHTML = `
+      <nav class="post-nav" aria-label="Article navigation">
+        ${previous ? `<a href="${articleUrl(previous.slug)}"><span>Previous article</span><strong>${escapeHtml(previous.title)}</strong></a>` : '<span></span>'}
+        ${next ? `<a href="${articleUrl(next.slug)}"><span>Next article</span><strong>${escapeHtml(next.title)}</strong></a>` : '<span></span>'}
+      </nav>
+      <div class="related-block">
+        <h3>Read next</h3>
+        <div class="related-grid">
+          ${related.map(a => `<a class="related-card" href="${articleUrl(a.slug)}"><span>${escapeHtml(a.category)}</span><strong>${escapeHtml(a.title)}</strong><p>${escapeHtml(a.description)}</p></a>`).join('')}
+        </div>
+      </div>
+      <div class="author-card">
+        <div class="avatar">AD</div>
+        <div>
+          <h3>About Ashish Deshmukh</h3>
+          <p>Enterprise technology and licensing practitioner writing practical notes on software, cloud, AI, operating models, delivery, and measurable business value.</p>
+        </div>
+      </div>
+      <div class="newsletter-card">
+        <h3>Get future notes</h3>
+        <p>Save your email locally in this browser so you have a ready subscription placeholder when the site is connected to a mailing service.</p>
+        <form class="newsletter-form" data-newsletter-form>
+          <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+          <button type="submit">Save email</button>
+        </form>
+        <div class="newsletter-note" data-newsletter-note></div>
+      </div>`;
+    article.insertAdjacentElement('afterend', extras);
+  }
+}
+
+function initNewsletter(){
+  document.querySelectorAll('[data-newsletter-form]').forEach(form => {
+    const note = form.parentElement.querySelector('[data-newsletter-note]');
+    const saved = localStorage.getItem('ashishLedgerSubscriber');
+    if(saved && note) note.textContent = `Saved locally: ${saved}`;
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const email = form.querySelector('input[name="email"]').value.trim();
+      if(!email) return;
+      localStorage.setItem('ashishLedgerSubscriber', email);
+      if(note) note.textContent = `Saved locally: ${email}`;
+      form.reset();
+    });
+  });
+}
+
+function initBackToTop(){
+  if(document.querySelector('[data-back-to-top]')) return;
+  const btn = document.createElement('button');
+  btn.className = 'back-to-top';
+  btn.type = 'button';
+  btn.dataset.backToTop = 'true';
+  btn.textContent = 'Top';
+  btn.addEventListener('click', () => scrollTo({top:0, behavior:'smooth'}));
+  document.body.appendChild(btn);
+}
+
+function updateActiveToc(){
+  const sections = [...document.querySelectorAll('.portal-section[id]')];
+  const links = [...document.querySelectorAll('.toc a[href^="#"]')];
+  if(!sections.length || !links.length) return;
+  const current = sections.reduce((best, sec) => {
+    const top = sec.getBoundingClientRect().top;
+    return top < 150 ? sec : best;
+  }, sections[0]);
+  links.forEach(link => link.classList.toggle('is-active', link.getAttribute('href') === `#${current.id}`));
+}
+
+function updateBackToTop(){
+  const btn = document.querySelector('[data-back-to-top]');
+  if(btn) btn.classList.toggle('is-visible', scrollY > 700);
+}
+
+function initTopicFilters(){
+  const chips = [...document.querySelectorAll('.topic-chip')];
+  if(!chips.length || !document.querySelector('[data-article-card]')) return;
+  chips.forEach(chip => {
+    chip.setAttribute('role', 'button');
+    chip.setAttribute('tabindex', '0');
+    const activate = () => {
+      const topic = chip.textContent.trim();
+      const isActive = chip.classList.contains('is-active');
+      chips.forEach(c => c.classList.remove('is-active'));
+      if(isActive){
+        filterArticles('');
+      } else {
+        chip.classList.add('is-active');
+        filterArticles(topic);
+        document.getElementById('articles')?.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    };
+    chip.addEventListener('click', activate);
+    chip.addEventListener('keydown', event => {
+      if(event.key === 'Enter' || event.key === ' '){
+        event.preventDefault();
+        activate();
+      }
+    });
+  });
+}
+
+document.addEventListener('scroll',()=>{const bar=document.querySelector('[data-reading-progress]');if(bar){const max=document.documentElement.scrollHeight-innerHeight;bar.style.width=`${max>0?(scrollY/max)*100:0}%`}updateActiveToc();updateBackToTop()},{passive:true})
 document.addEventListener('DOMContentLoaded',()=> {
   const saved = localStorage.getItem('samJournalTheme');
   const preferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -1751,9 +1943,16 @@ document.addEventListener('DOMContentLoaded',()=> {
   document.querySelectorAll('[data-like-button]').forEach(b => b.addEventListener('click', toggleLike));
   document.querySelectorAll('[data-comment-form]').forEach(f => f.addEventListener('submit', addComment));
   updateEngagement(getSlug());
+  initBackToTop();
+  initArticleEnhancements();
+  initNewsletter();
+  initTopicFilters();
+  updateEngagement(getSlug());
+  updateActiveToc();
+  updateBackToTop();
 
   const navLinks = document.querySelector('.nav-links');
-  if (navLinks) {
+  if (navLinks && (isAdmin() || params.get('admin') === '1')) {
     const adminBtn = document.createElement('button');
     adminBtn.className = 'theme-toggle';
     adminBtn.style.marginLeft = '8px';
