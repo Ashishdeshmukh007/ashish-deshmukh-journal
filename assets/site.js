@@ -726,6 +726,9 @@ function setupRichEditor(modalContainer, form) {
       card.className = 'editor-block-card';
       card.style.marginBottom = '12px';
       
+      card.addEventListener('focusin', () => card.classList.add('focused'));
+      card.addEventListener('focusout', () => card.classList.remove('focused'));
+      
       let title = '';
       if (block.type === 'paragraph') title = '🔤 Plain Text Paragraph';
       else if (block.type === 'notes') title = '🟦 Practitioner Notes Card (Blue)';
@@ -891,7 +894,7 @@ function setupRichEditor(modalContainer, form) {
         if (block.type === 'formula') ph = 'Enter mathematical formulas (e.g. SQL_Cores = Cores * Factor)';
         
         inputsHtml = `
-          <textarea class="editor-input block-text-input" style="height:70px; resize:vertical; font-family:${block.type === 'formula' ? 'monospace' : 'inherit'}" placeholder="${ph}">${block.value || ''}</textarea>
+          <textarea class="editor-input block-text-input" style="height:130px; resize:vertical; font-family:${block.type === 'formula' ? 'monospace' : 'inherit'}" placeholder="${ph}">${block.value || ''}</textarea>
         `;
       }
       
