@@ -1,4 +1,4 @@
-# Ashish Deshmukh's Field Notes
+# Ashish’s Enterprise Ledger
 
 Static personal article site. Deploy this folder to GitHub Pages, Netlify, or Vercel.
 
