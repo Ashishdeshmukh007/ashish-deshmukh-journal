@@ -166,7 +166,7 @@ function autoFormatContent(rawText) {
           <script>
             setTimeout(() => {
               if (typeof evaluateCustomCalc === 'function') {
-                evaluateCustomCalc('${calcId}', '${formula.replace(/'/g, "\\'")}', '${output.replace(/'/g, "\\")}');
+                evaluateCustomCalc('${calcId}', '${formula.replace(/'/g, "\\'")}', '${output.replace(/'/g, "\\'")}');
               }
             }, 100);
           </script>
@@ -1757,6 +1757,90 @@ document.addEventListener('DOMContentLoaded',()=> {
     adminBtn.textContent = isAdmin() ? 'Admin: On' : 'Admin';
     adminBtn.addEventListener('click', handleAdminToggle);
     navLinks.appendChild(adminBtn);
+  }
+
+  // Seed a demo showcase article with all visual blocks if it doesn't already exist
+  let dynamics = JSON.parse(localStorage.getItem('ashishJournal:dynamicArticles') || '[]');
+  const hasDemo = dynamics.some(a => a.slug === 'visual-elements-feature-showcase');
+  if (!hasDemo) {
+    const demoArticle = {
+      slug: 'visual-elements-feature-showcase',
+      title: 'Visual Elements & Interactive Features Showcase',
+      category: 'Feature Demo',
+      description: 'A comprehensive live demonstration of all visual blocks, interactive calculators, Excel attachment components, and custom builder elements available in the new editor.',
+      author: 'Ashish Deshmukh',
+      date: 'May 28, 2026',
+      rawContent: `Here is a complete live demonstration of all visual blocks and elements that you can build using the new visual article editor popup.
+
+[notes]
+This is a Practitioner Notes block. It is rendered with a dark blue title and left border to highlight senior perspectives or executive quotes.
+[/notes]
+
+### Callout Boxes
+
+[info]
+This is a standard Notice Callout Box. Use it to highlight neutral, useful informational updates.
+[/info]
+
+[warning]
+This is a Warning Callout Box. Use it to highlight key risks, warnings, or action items that need attention.
+[/warning]
+
+[danger]
+This is a Danger Callout Box. Use it to highlight critical failures, high-risk non-compliance situations, or audit penalties.
+[/danger]
+
+### Code & Formula Boxes
+
+[formula]
+// This is a Formula or Code box with syntax-like styling and an instant copy button
+function calculateEnterpriseRisk(cores, factor) {
+  return cores * factor;
+}
+[/formula]
+
+### Visual Grid Tables
+
+Here is a standard grid table showing a comparison of software asset metrics:
+
+| Metric Type | Legacy Standard | New 2026 Paradigm | Dynamic Risk Impact |
+| --- | --- | --- | --- |
+| Oracle Database | Named User Plus / Processor | Cloud Virtualization Rules | Medium-High |
+| IBM Licensing | PVU Sub-capacity | VPC Container Ratios | High |
+| Microsoft 365 | User Subscription | Copilot Productivity ROI | Medium |
+
+### Interactive Calculators (Presets)
+
+Below are the pre-configured interactive calculators available in the editor:
+
+[calculator type="oracle"]
+
+[calculator type="ibm"]
+
+[calculator type="java"]
+
+[calculator type="copilot"]
+
+### Visual Custom Calculator
+
+Here is a live custom calculator built dynamically using variables, a custom formula, and an output text template:
+
+[calculator type="custom" title="SQL Server License & Cost Calculator" formula="Cores * Factor * CostPerCore" output="Total Estimated License Cost: USD {result}" inputs="Cores:8|Factor:1.0|CostPerCore:3717"]
+
+### Excel Workbook Attachments (Presets)
+
+Here is a pre-configured Excel workbook preset linked to the native assets:
+
+[excel title="Oracle SAM ELP Workbook" size="37.3 KB" sheets="13 sheets" link="../assets/Oracle_SAM_ELP_Workbook.xlsx"]
+
+### Custom Excel Workbook Attachment
+
+Here is an uploaded custom workbook attachment showing a success status and base64 integration:
+
+[excel title="Q1_Internal_SAM_Audit_Report.xlsx" size="18.4 KB" sheets="5 sheets" link="data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,UEsDBBQAAAA="]`
+    };
+    dynamics.push(demoArticle);
+    localStorage.setItem('ashishJournal:dynamicArticles', JSON.stringify(dynamics));
   }
 
   renderDynamicArticles();
