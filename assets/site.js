@@ -810,19 +810,21 @@ function setupRichEditor(modalContainer, form) {
           </label>
           
           <div class="custom-excel-fields" style="display: none; padding:14px; border:1px solid var(--line); border-radius:10px; margin-bottom:12px; background:var(--soft);">
-            <div style="font-size:11.5px; font-weight:800; color:var(--green); text-transform:uppercase; margin-bottom:10px; letter-spacing:0.03em;">📂 Custom Excel Guideline:</div>
+            <div style="font-size:11.5px; font-weight:800; color:var(--green); text-transform:uppercase; margin-bottom:10px; letter-spacing:0.03em;">📂 Upload Custom Excel File:</div>
             
-            <div style="font-size:12px; color:var(--muted); line-height:1.45; margin-bottom:12px; background:var(--card); padding:10px; border-radius:6px; border-left:3px solid var(--green);">
-              1️⃣ Place your Excel file inside the project's <code>/assets/</code> folder (or upload it to a cloud hosting URL).<br>
-              2️⃣ Paste the link (e.g. <code>../assets/My_Workbook.xlsx</code> or direct URL) in the Link field below.<br>
-              3️⃣ Provide a title, estimated file size, and sheet count for your readers.
+            <div style="margin-bottom:14px; background:var(--paper); padding:12px; border:1px dashed var(--green); border-radius:8px;">
+              <label style="font-weight:700; font-size:12px; display:block; cursor:pointer;">
+                Select custom Excel file (.xlsx, .xls) to upload:<br>
+                <input type="file" class="excel-file-upload-input" accept=".xlsx,.xls" style="margin-top:6px; font-size:12px; width:100%;">
+              </label>
+              <div class="excel-upload-status" style="margin-top:8px; font-size:12px; font-weight:700; color:var(--green); display:none;"></div>
             </div>
             
             <div class="editor-block-grid">
-              <label>Workbook Title<br><input class="editor-input excel-title" style="margin-top:4px" value="${block.title || ''}" placeholder="e.g. Oracle SAM ELP Workbook"></label>
-              <label>File Size<br><input class="editor-input excel-size" style="margin-top:4px" value="${block.size || ''}" placeholder="e.g. 37.3 KB"></label>
-              <label>Sheets Count<br><input class="editor-input excel-sheets" style="margin-top:4px" value="${block.sheets || ''}" placeholder="e.g. 13 sheets"></label>
-              <label>Workbook Link / File Path<br><input class="editor-input excel-link" style="margin-top:4px" value="${block.link || ''}" placeholder="e.g. ../assets/Oracle_SAM_ELP_Workbook.xlsx"></label>
+              <label>Workbook Title<br><input class="editor-input excel-title" style="margin-top:4px" value="${block.title || ''}" placeholder="e.g. My SAM Workbook"></label>
+              <label>File Size<br><input class="editor-input excel-size" style="margin-top:4px" value="${block.size || ''}" placeholder="e.g. 24 KB"></label>
+              <label>Sheets Count<br><input class="editor-input excel-sheets" style="margin-top:4px" value="${block.sheets || ''}" placeholder="e.g. 5 sheets"></label>
+              <label>Workbook Link / File Path / Data URL<br><input class="editor-input excel-link" style="margin-top:4px" value="${block.link || ''}" placeholder="e.g. data:application/..."></label>
             </div>
           </div>
           
@@ -1187,6 +1189,9 @@ function setupRichEditor(modalContainer, form) {
         const previewSheets = card.querySelector('.excel-preview-sheets');
         const previewSize = card.querySelector('.excel-preview-size');
         
+        const fileInput = card.querySelector('.excel-file-upload-input');
+        const uploadStatus = card.querySelector('.excel-upload-status');
+        
         const toggleFields = () => {
           if (presetSelect.value === 'custom') {
             customDiv.style.display = 'block';
@@ -1225,6 +1230,41 @@ function setupRichEditor(modalContainer, form) {
           previewSize.textContent = block.size;
           
           syncToTextarea();
+        };
+        
+        fileInput.onchange = (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const base64Data = event.target.result;
+            
+            let formattedSize = '';
+            if (file.size < 1024) formattedSize = `${file.size} B`;
+            else if (file.size < 1024 * 1024) formattedSize = `${(file.size / 1024).toFixed(1)} KB`;
+            else formattedSize = `${(file.size / (1024 * 1024)).toFixed(1)} MB`;
+            
+            block.title = file.name.replace(/\.[^/.]+$/, "");
+            block.size = formattedSize;
+            block.sheets = "1 sheet";
+            block.link = base64Data;
+            
+            titleEl.value = block.title;
+            sizeEl.value = block.size;
+            sheetsEl.value = block.sheets;
+            linkEl.value = block.link;
+            
+            previewTitle.textContent = block.title;
+            previewSheets.textContent = block.sheets;
+            previewSize.textContent = block.size;
+            
+            uploadStatus.textContent = `✅ Successfully uploaded: ${file.name} (${formattedSize})`;
+            uploadStatus.style.display = 'block';
+            
+            syncToTextarea();
+          };
+          reader.readAsDataURL(file);
         };
         
         presetSelect.onchange = () => {
