@@ -1,7 +1,12 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IBM Cloud Pak VPC Licensing: How to Build a Control Model Around IBM License Service</title><meta name="description" content="Cloud Pak licensing is not just PVU with a new label. VPC ratios, container reporting, IBM License Service, and OpenShift operations change the SAM control model.">
-<meta property="og:title" content="IBM Cloud Pak VPC Licensing: How to Build a Control Model Around IBM License Service"><meta property="og:description" content="Cloud Pak licensing is not just PVU with a new label. VPC ratios, container reporting, IBM License Service, and OpenShift operations change the SAM control model."><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../assets/styles.css"></head><body data-article-slug="ibm-cloud-pak-vpc-license-service-control-model"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
+<title>IBM Cloud Pak VPC Licensing: How to Build a Control Model Around IBM License Service</title>
+<meta name="description" content="Cloud Pak licensing is not just PVU with a new label. VPC ratios, container reporting, IBM License Service, and OpenShift operations change the SAM control model.">
+<meta property="og:title" content="IBM Cloud Pak VPC Licensing: How to Build a Control Model Around IBM License Service">
+<meta property="og:description" content="Cloud Pak licensing is not just PVU with a new label. VPC ratios, container reporting, IBM License Service, and OpenShift operations change the SAM control model.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../assets/styles.css">
+</head><body data-article-slug="ibm-cloud-pak-vpc-license-service-control-model"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
 <a class="logo" href="../index.html">Ashish <span>Deshmukh</span></a>
 <div class="nav-links">
   <a href="../index.html#articles">Articles</a>
@@ -9,22 +14,340 @@
   <form class="nav-search" data-site-search role="search"><input data-article-search type="search" placeholder="Search writing"><button type="submit">Go</button></form>
   <button class="theme-toggle" type="button" data-theme-toggle>Dark</button>
 </div></nav></header>
-<main><article><section class="article-hero"><div class="cat">IBM Licensing</div><h1>IBM Cloud Pak VPC Licensing: How to Build a Control Model Around IBM License Service</h1><p class="deck" style="color:#475467">Cloud Pak licensing is not just PVU with a new label. VPC ratios, container reporting, IBM License Service, and OpenShift operations change the SAM control model.</p><div class="byline"><div class="avatar">AD</div><div><strong>By Ashish Deshmukh on April 16, 2026</strong><br>12 min read</div></div><div class="share-row"><a class="primary" href="#" data-share-linkedin target="_blank" rel="noopener">Share on LinkedIn</a><a href="#" data-share-x target="_blank" rel="noopener">Share on X</a><button data-copy-link onclick="copyLink()">Copy link</button></div></section><div class="article-shell"><aside class="toc"><strong>In this article</strong><a href="#executive-view">Executive View</a>
-<a href="#what-changed">What Changed</a>
-<a href="#operating-playbook">Operating Playbook</a>
-<a href="#practical-examples">Practical Examples</a>
-<a href="#audit-and-governance-lens">Audit and Governance Lens</a>
-<a href="#30-60-90-day-roadmap">30/60/90 Day Roadmap</a>
-<a href="#sources">Sources</a></aside><div class="article-body"><section id="executive-view" class="portal-section" data-section-title="Executive View"><div class="section-toolbar"><h2>Executive View</h2><button class="mini-btn" onclick="printSection('executive-view')">Print this section</button></div><p class="lead">IBM documentation continues to emphasize VPC licensing for Cloud Paks and the use of IBM License Service or other licensing tools to measure containerized deployments. For SAM teams, the key question is not whether a dashboard exists; it is whether clusters, namespaces, bundled components, ratios, peaks, and entitlements can be defended.</p><div class="callout warning"><strong>Senior takeaway</strong><p>IBM Cloud Pak VPC and IBM License Service operations should be managed as an operating control, not a one-off reporting exercise. The practical question is always: what decision will this evidence support, and can the organization defend it later?</p></div></section>
-<section id="what-changed" class="portal-section" data-section-title="What Changed"><div class="section-toolbar"><h2>What Changed</h2><button class="mini-btn" onclick="printSection('what-changed')">Print this section</button></div><p>The market is pushing SAM, ITAM, FinOps, SaaS governance, and AI governance closer together. For this topic, the change is less about one feature and more about a new expectation: license managers must connect discovery, contracts, usage, cost, risk, and remediation into a single decision trail.</p><p>That means a modern article or operating playbook must answer four questions: what changed, who is affected, what evidence is required, and what action should be taken before renewal, audit, or budget review.</p></section>
-<section id="operating-playbook" class="portal-section" data-section-title="Operating Playbook"><div class="section-toolbar"><h2>Operating Playbook</h2><button class="mini-btn" onclick="printSection('operating-playbook')">Print this section</button></div><div class="table-wrap"><table><thead><tr><th>Control area</th><th>How to run it</th><th>Failure pattern</th></tr></thead><tbody><tr><td>Cluster and namespace ownership map</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>IBM License Service deployment and version check</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>VPC ratio table by Cloud Pak component</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>Entitlement source from Passport Advantage and transaction documents</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>Peak usage archive and executive RAG reporting</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr></tbody></table></div></section>
-<section id="practical-examples" class="portal-section" data-section-title="Practical Examples"><div class="section-toolbar"><h2>Practical Examples</h2><button class="mini-btn" onclick="printSection('practical-examples')">Print this section</button></div><div class="table-wrap"><table><thead><tr><th>Scenario</th><th>Practical response</th><th>Evidence to keep</th></tr></thead><tbody><tr><td>A Cloud Pak entitlement can cover multiple supporting programs, but consumption must still be measured and aggregated correctly.</td><td>Validate the fact pattern, document the assumption, and route the decision to the correct owner before presenting it as final.</td><td>Export, source system, owner sign-off, date, and remediation record.</td></tr><tr><td>A namespace without business owner makes remediation difficult even when License Service reports usage.</td><td>Validate the fact pattern, document the assumption, and route the decision to the correct owner before presenting it as final.</td><td>Export, source system, owner sign-off, date, and remediation record.</td></tr><tr><td>A VPC surplus in one product area may not offset a metric or entitlement mismatch elsewhere without contractual validation.</td><td>Validate the fact pattern, document the assumption, and route the decision to the correct owner before presenting it as final.</td><td>Export, source system, owner sign-off, date, and remediation record.</td></tr></tbody></table></div></section>
-<section id="audit-and-governance-lens" class="portal-section" data-section-title="Audit and Governance Lens"><div class="section-toolbar"><h2>Audit and Governance Lens</h2><button class="mini-btn" onclick="printSection('audit-and-governance-lens')">Print this section</button></div><p>Every license-management topic eventually becomes an evidence topic. If a publisher, internal auditor, CFO, or CIO challenges the conclusion, the team must show more than a dashboard. It must show how the data was collected, how it was normalized, what entitlement source was used, what assumptions were made, and what action was approved.</p><div class="copy-box"><div><strong>Reusable governance line</strong></div><button class="mini-btn" onclick="copyText(this)">Copy</button><pre><code>A defensible license position is not a tool screenshot. It is a traceable chain from discovery to entitlement to calculation to assumption to approved action.</code></pre></div></section>
-<section id="30-60-90-day-roadmap" class="portal-section" data-section-title="30/60/90 Day Roadmap"><div class="section-toolbar"><h2>30/60/90 Day Roadmap</h2><button class="mini-btn" onclick="printSection('30-60-90-day-roadmap')">Print this section</button></div><div class="table-wrap"><table><thead><tr><th>Period</th><th>Focus</th><th>Outcome</th></tr></thead><tbody><tr><td>First 30 days</td><td>Baseline evidence, scope, owners, and data quality.</td><td>A visible risk and confidence view.</td></tr><tr><td>Days 31-60</td><td>Pilot workflow controls and validate assumptions with business owners.</td><td>First closed-loop remediations and cleaner executive reporting.</td></tr><tr><td>Days 61-90</td><td>Scale the playbook into renewal, audit, and optimization routines.</td><td>A repeatable operating model rather than a one-time project.</td></tr></tbody></table></div></section>
-<section id="sources" class="portal-section" data-section-title="Sources"><div class="section-toolbar"><h2>Sources</h2><button class="mini-btn" onclick="printSection('sources')">Print this section</button></div><p>Selected public reference sources used for this article:</p><ul><li><a href="https://www.ibm.com/docs/cloudpaks_start/cp_start/cp_licensing.html" target="_blank" rel="noopener">IBM Cloud Pak licensing</a></li><li><a href="https://www.ibm.com/docs/en/SSGT7J_latest/planning/licensing.html" target="_blank" rel="noopener">IBM Cloud Pak for Integration licensing</a></li><li><a href="https://www.ibm.com/software/passportadvantage/containerlicenses.html" target="_blank" rel="noopener">IBM container license guidance</a></li></ul></section>
-<section class="engagement-panel" data-engagement-panel="ibm-cloud-pak-vpc-license-service-control-model">
-  <div class="engagement-top"><div><span class="eyebrow">Reader response</span><h2 style="margin:8px 0 0">Discuss this article</h2><p class="meta">Likes, shares and comments are stored in this browser for a static hosted site.</p></div><div class="engagement-actions"><button class="primary" type="button" data-like-button>Like</button><button type="button" onclick="copyLink()">Share</button></div></div>
-  <div class="engagement-counts"><span><b data-like-count>0</b> likes</span><span><b data-share-count>0</b> shares</span><span><b data-comment-count>0</b> comments</span></div>
-  <form class="comment-form" data-comment-form><input name="name" autocomplete="name" placeholder="Your name"><textarea name="comment" required placeholder="Add a thoughtful comment"></textarea><button type="submit">Post comment</button></form>
-  <div class="comment-list" data-comment-list></div>
-</section></div></div></article></main><footer class="site-footer">By Ashish Deshmukh · Notes on technology, work, learning, systems and practical execution.</footer><script src="../assets/site.js"></script></body></html>
+<main>
+  <article>
+    <section class="article-hero">
+      <div class="cat">IBM Licensing</div>
+      <h1>IBM Cloud Pak VPC Licensing: How to Build a Control Model Around IBM License Service</h1>
+      <p class="deck" style="color:#475467">Cloud Pak licensing is not just PVU with a new label. VPC ratios, container reporting, IBM License Service, and OpenShift operations change the SAM control model.</p>
+      <div class="byline"><div class="avatar">AD</div><div><strong>By Ashish Deshmukh on April 16, 2026</strong><br>12 min read</div></div>
+      <div class="share-row">
+        <a class="primary" href="#" data-share-linkedin target="_blank" rel="noopener">Share on LinkedIn</a>
+        <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
+        <button data-copy-link onclick="copyLink()">Copy link</button>
+      </div>
+    </section>
+    <div class="article-shell">
+      <aside class="toc">
+        <strong>In this article</strong>
+        <a href="#ibm-executive-view">Executive View</a>
+        <a href="#ibm-what-changed">What Changed</a>
+        <a href="#ibm-vpc-model">The VPC Model &amp; Cloud Paks</a>
+        <a href="#ibm-license-service">IBM License Service (ILS)</a>
+        <a href="#ibm-subcapacity">Sub-Capacity Container Rules</a>
+        <a href="#ibm-ratios">VPC Ratios &amp; Bundling</a>
+        <a href="#ibm-data-collection">ILS Data Collection API</a>
+        <a href="#ibm-ilmt-coexistence">ILS &amp; ILMT Coexistence</a>
+        <a href="#ibm-vpc-calculator">Interactive VPC Calculator</a>
+        <a href="#ibm-practitioner-qa">Practitioner Q&amp;A</a>
+        <a href="#ibm-cheat-sheet">Quick Revision Cheat Sheet</a>
+      </aside>
+      <div class="article-body">
+        
+        <section id="ibm-executive-view" class="portal-section" data-section-title="Executive View">
+          <div class="section-toolbar">
+            <h2>Executive View</h2>
+            <button class="mini-btn" onclick="printSection('ibm-executive-view')">Print this section</button>
+          </div>
+          <p class="lead">As IBM workloads transition from virtual machines to containerized microservices (using Red Hat OpenShift and Kubernetes), the traditional Processor Value Unit (PVU) licensing model is being replaced by Virtual Processor Core (VPC) metrics. This architectural shift requires a completely new compliance approach.</p>
+          <div class="practitioner-card" data-practitioner="keep">
+            <h4>Practitioner Notes</h4>
+            <p>Senior perspective: "VPC licensing on containers seems flexible, but IBM's sub-capacity rules are extremely rigid. If your cluster is not configured with IBM License Service (ILS), or if your ILS reporting has gaps, IBM can demand full-capacity physical licensing during audits."</p>
+          </div>
+          <p>This article outlines the operational controls required to manage IBM Cloud Pak licensing, configure the IBM License Service (ILS) correctly, and defend your containerized sub-capacity positions.</p>
+          <div class="callout warning">
+            <strong>Senior Takeaway</strong>
+            <p>Do not assume that container orchestrators (like Kubernetes or OpenShift) automatically manage licensing. Kubernetes restricts resource allocation, but IBM licensing is determined by peak active vCPU usage over a historical 90-day window, tracked at the container level.</p>
+          </div>
+        </section>
+
+        <section id="ibm-what-changed" class="portal-section" data-section-title="What Changed">
+          <div class="section-toolbar">
+            <h2>What Changed</h2>
+            <button class="mini-btn" onclick="printSection('ibm-what-changed')">Print this section</button>
+          </div>
+          <p>Under traditional models, sub-capacity PVU calculations required deploying and maintaining the IBM License Metric Tool (ILMT) at the operating system level. For containerized Cloud Pak workloads, IBM introduced the IBM License Service (ILS), which runs inside Kubernetes clusters to track vCPU usage directly.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Dimension</th>
+                  <th>Traditional VM Model (ILMT)</th>
+                  <th>Container Model (ILS)</th>
+                  <th>Operational Shift</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Tracking Agent</td>
+                  <td>ILMT agents installed on every VM OS</td>
+                  <td>IBM License Service pod per cluster</td>
+                  <td>Reduces operating system management overhead.</td>
+                </tr>
+                  <td>Measurement Unit</td>
+                  <td>Processor Value Units (PVU) based on core factors</td>
+                  <td>Virtual Processor Cores (VPC) at pod level</td>
+                  <td>Decouples licensing from physical core factor multipliers.</td>
+                </tr>
+                <tr>
+                  <td>Peak Calculation</td>
+                  <td>Full virtual machine capacity peak</td>
+                  <td>Actual active pod CPU limits and allocations</td>
+                  <td>Allows granular scaling but requires active pod resource limits.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="ibm-vpc-model" class="portal-section" data-section-title="The VPC Model &amp; Cloud Paks">
+          <div class="section-toolbar">
+            <h2>The VPC Model &amp; Cloud Paks</h2>
+            <button class="mini-btn" onclick="printSection('ibm-vpc-model')">Print this section</button>
+          </div>
+          <p>IBM Cloud Paks bundle multiple IBM applications (e.g., WebSphere, MQ, Db2, API Connect) into unified, industry-specific suites (e.g., Cloud Pak for Integration, Cloud Pak for Data). These suites are licensed using Virtual Processor Cores (VPC) that represent a pooled capacity allocation.</p>
+          <div class="callout danger">
+            <strong>The Shared-Pool Trap</strong>
+            <p>Because Cloud Paks allow you to deploy different bundled products under a single VPC license pool, developers can inadvertently consume the entire company-wide VPC entitlement by deploying highly resource-intensive components without budget approvals.</p>
+          </div>
+        </section>
+
+        <section id="ibm-license-service" class="portal-section" data-section-title="IBM License Service (ILS)">
+          <div class="section-toolbar">
+            <h2>IBM License Service (ILS)</h2>
+            <button class="mini-btn" onclick="printSection('ibm-license-service')">Print this section</button>
+          </div>
+          <p>The IBM License Service (ILS) is a lightweight collector pod deployed via a Kubernetes operator. It automatically scans all namespaces, identifies active IBM container images, and records the maximum allocated vCPU cores. Deploying ILS is a strict requirement for sub-capacity container licensing.</p>
+          <div class="practitioner-card" data-practitioner="keep">
+            <h4>Practitioner Notes</h4>
+            <p>"If you run containerized IBM software (like MQ or WebSphere) on OpenShift without having the IBM License Service active in the cluster, IBM auditors will calculate your compliance requirements using the full physical core capacity of all worker nodes in the cluster."</p>
+          </div>
+        </section>
+
+        <section id="ibm-subcapacity" class="portal-section" data-section-title="Sub-Capacity Container Rules">
+          <div class="section-toolbar">
+            <h2>Sub-Capacity Container Rules</h2>
+            <button class="mini-btn" onclick="printSection('ibm-subcapacity')">Print this section</button>
+          </div>
+          <p>To qualify for container sub-capacity licensing (which allows you to pay only for the virtual cores allocated to your IBM pods rather than the entire physical cluster), you must configure your deployments to meet IBM's compliance criteria.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Requirement</th>
+                  <th>Technical Action</th>
+                  <th>Failure Pattern</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Active ILS Pod</td>
+                  <td>Ensure the IBM License Service pod is running continuously in every cluster.</td>
+                  <td>Workloads are deployed on a new cluster before ILS is installed.</td>
+                </tr>
+                <tr>
+                  <td>Resource Limits</td>
+                  <td>Enforce mandatory CPU limits on all IBM pods in the Kubernetes spec.</td>
+                  <td>Failing to set pod limits, causing IBM to count the full node capacity.</td>
+                </tr>
+                <tr>
+                  <td>90-Day Retention</td>
+                  <td>Extract and archive ILS audit snapshots every 90 days.</td>
+                  <td>Failing to retain history, violating sub-capacity record-keeping rules.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="ibm-ratios" class="portal-section" data-section-title="VPC Ratios &amp; Bundling">
+          <div class="section-toolbar">
+            <h2>VPC Ratios &amp; Bundling</h2>
+            <button class="mini-btn" onclick="printSection('ibm-ratios')">Print this section</button>
+          </div>
+          <p>Different bundled components in a Cloud Pak require different conversion ratios. For example, deploying one VPC of IBM MQ might consume only 0.5 VPC of your Cloud Pak for Integration pool, while deploying one VPC of API Connect consumes 1.0 VPC. These ratios must be modeled to track actual pool usage.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Cloud Pak Suite</th>
+                  <th>Bundled Component</th>
+                  <th>Conversion Ratio (Component to Pak)</th>
+                  <th>Calculated VPC Consumed</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Cloud Pak for Integration</td>
+                  <td>IBM MQ</td>
+                  <td>1:2 (0.5 Pak VPC per core)</td>
+                  <td>10 MQ cores = 5 Pak VPCs consumed</td>
+                </tr>
+                <tr>
+                  <td>Cloud Pak for Integration</td>
+                  <td>IBM API Connect</td>
+                  <td>1:1 (1.0 Pak VPC per core)</td>
+                  <td>10 API Connect cores = 10 Pak VPCs consumed</td>
+                </tr>
+                <tr>
+                  <td>Cloud Pak for Integration</td>
+                  <td>IBM App Connect Enterprise</td>
+                  <td>2:1 (2.0 Pak VPC per core)</td>
+                  <td>10 App Connect cores = 20 Pak VPCs consumed</td>
+                </tr>
+                <tr>
+                  <td>Cloud Pak for Data</td>
+                  <td>IBM Db2 Enterprise Edition</td>
+                  <td>1:1 (1.0 Pak VPC per core)</td>
+                  <td>10 Db2 cores = 10 Pak VPCs consumed</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="ibm-data-collection" class="portal-section" data-section-title="ILS Data Collection API">
+          <div class="section-toolbar">
+            <h2>ILS Data Collection API</h2>
+            <button class="mini-btn" onclick="printSection('ibm-data-collection')">Print this section</button>
+          </div>
+          <p>The IBM License Service exposes REST API endpoints to retrieve your peak VPC usage and generate compliant audit reports. You can write scripts to query these endpoints and pull the data directly into your central SAM tools.</p>
+          <div class="copy-box">
+            <div><strong>REST API Call to Retrieve ILS Peak VPC Usage</strong></div>
+            <button class="mini-btn" onclick="copyText(this)">Copy</button>
+            <pre><code class=""># Pull peak VPC usage for the last 90 days via ILS API
+curl -k -H "Authorization: Bearer <API_TOKEN>" \
+  https://<ILS_HOST>:<ILS_PORT>/v1/metric?startDate=2026-02-01&amp;endDate=2026-05-01
+# Response contains: productCode, productName, metricName, maxMetricValue</code></pre>
+          </div>
+        </section>
+
+        <section id="ibm-ilmt-coexistence" class="portal-section" data-section-title="ILS &amp; ILMT Coexistence">
+          <div class="section-toolbar">
+            <h2>ILS &amp; ILMT Coexistence</h2>
+            <button class="mini-btn" onclick="printSection('ibm-ilmt-coexistence')">Print this section</button>
+          </div>
+          <p>Most large enterprises run a hybrid model: legacy virtual machines monitored by ILMT, and containerized clusters monitored by ILS. Reconciling these dual data sources requires integrating both platforms into your Flexera or ServiceNow system.</p>
+          <div class="callout warning">
+            <strong>The Double-Reporting Trap</strong>
+            <p>Ensure that virtual machine hosts running Kubernetes nodes are excluded from ILMT scanning, or marked as excluded, to prevent double-counting the CPU cores in both your VM-based PVU reports and your container-based VPC reports.</p>
+          </div>
+        </section>
+
+        <section id="ibm-vpc-calculator" class="portal-section" data-section-title="Interactive VPC Calculator">
+          <div class="section-toolbar">
+            <h2>Interactive VPC Calculator</h2>
+            <button class="mini-btn" onclick="printSection('ibm-vpc-calculator')">Print this section</button>
+          </div>
+          <p>Model your Cloud Pak for Integration VPC license consumption. Input the core allocations for different bundled products to calculate your total pooled VPC requirements.</p>
+          
+          <div class="calc-card" data-practitioner="keep">
+            <h3>Cloud Pak for Integration VPC Pool Calculator</h3>
+            <label>IBM MQ vCPUs: <input id="ibmCPMQ" type="number" value="16" oninput="calcCloudPakVPC()"></label>
+            <label>API Connect vCPUs: <input id="ibmCPAPI" type="number" value="8" oninput="calcCloudPakVPC()"></label>
+            <label>App Connect vCPUs: <input id="ibmCPApp" type="number" value="8" oninput="calcCloudPakVPC()"></label>
+            <button onclick="calcCloudPakVPC()">Calculate Total VPCs</button>
+            <div style="margin-top: 14px; font-weight: 700;" id="ibmCPCalcOut">Total Pool VPCs Required: 32</div>
+          </div>
+        </section>
+
+        <section id="ibm-practitioner-qa" class="portal-section" data-section-title="Practitioner Q&amp;A">
+          <div class="section-toolbar">
+            <h2>Practitioner Q&amp;A</h2>
+            <button class="mini-btn" onclick="printSection('ibm-practitioner-qa')">Print this section</button>
+          </div>
+          <div class="qa-bank">
+            <details class="qa" data-practitioner="keep">
+              <summary>What happens if a pod runs without a CPU limit specified?</summary>
+              <p>Under IBM's sub-capacity rules, if a containerized IBM product pod is deployed without explicit resource limits in the Kubernetes pod specification, the IBM License Service will calculate the required cores using the maximum capacity of the Kubernetes worker node where that pod is currently scheduled. This can inflate your VPC requirements instantly.</p>
+              <button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button>
+            </details>
+            <details class="qa" data-practitioner="keep">
+              <summary>How does ILS calculate VPC when pods move between worker nodes?</summary>
+              <p>The IBM License Service aggregates the peak concurrent VPC usage within each cluster. If Kubernetes reschedules a pod to a different worker node, the service filters out duplicates and reports only the concurrent peak, avoiding double-counting due to migration.</p>
+              <button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button>
+            </details>
+            <details class="qa" data-practitioner="keep">
+              <summary>Are Red Hat OpenShift Core licenses included in Cloud Paks?</summary>
+              <p>Yes. Many IBM Cloud Pak licenses (such as Cloud Pak for Integration or Data) are bundled with "Red Hat OpenShift Container Platform" entitlements. These bundled OpenShift entitlements are restricted and can only be used to host the IBM Cloud Pak components, not general third-party applications.</p>
+              <button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button>
+            </details>
+          </div>
+        </section>
+
+        <section id="ibm-cheat-sheet" class="portal-section" data-section-title="Quick Revision Cheat Sheet">
+          <div class="section-toolbar">
+            <h2>Quick Revision Cheat Sheet</h2>
+            <button class="mini-btn" onclick="printSection('ibm-cheat-sheet')">Print this section</button>
+          </div>
+          <div class="cheat-grid" data-practitioner="keep">
+            <div>
+              <h3>ILS Mandate</h3>
+              <p>ILS must run continuously in every container cluster. Missing service = Full-capacity physical host risk.</p>
+            </div>
+            <div>
+              <h3>VPC Ratios</h3>
+              <p>MQ is 0.5 Pak VPCs per core, App Connect is 2.0 Pak VPCs per core. Ratios must be managed to avoid pool exhaustion.</p>
+            </div>
+            <div>
+              <h3>90-Day Peak</h3>
+              <p>License usage is determined by the peak concurrent allocated vCPUs over a 90-day window, not the average usage.</p>
+            </div>
+            <div>
+              <h3>Resource Limits</h3>
+              <p>Mandatory control: Enforce CPU resource limits on all IBM pod specs. Unrestricted pods trigger full-node calculations.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="engagement-panel" data-engagement-panel="ibm-cloud-pak-vpc-license-service-control-model">
+          <div class="engagement-top">
+            <div>
+              <span class="eyebrow">Reader response</span>
+              <h2 style="margin:8px 0 0">Discuss this article</h2>
+              <p class="meta">Likes, shares and comments are stored in this browser for a static hosted site.</p>
+            </div>
+            <div class="engagement-actions">
+              <button class="primary" type="button" data-like-button>Like</button>
+              <button type="button" onclick="copyLink()">Share</button>
+            </div>
+          </div>
+          <div class="engagement-counts">
+            <span><b data-like-count>0</b> likes</span>
+            <span><b data-share-count>0</b> shares</span>
+            <span><b data-comment-count>0</b> comments</span>
+          </div>
+          <form class="comment-form" data-comment-form>
+            <input name="name" autocomplete="name" placeholder="Your name">
+            <textarea name="comment" required placeholder="Add a thoughtful comment"></textarea>
+            <button type="submit">Post comment</button>
+          </form>
+          <div class="comment-list" data-comment-list></div>
+        </section>
+
+      </div>
+    </div>
+  </article>
+</main>
+<footer class="site-footer">By Ashish Deshmukh · Notes on technology, work, learning, systems and practical execution.</footer>
+<script src="../assets/site.js"></script>
+<script>
+function calcCloudPakVPC() {
+  const mq = +document.getElementById('ibmCPMQ').value || 0;
+  const api = +document.getElementById('ibmCPAPI').value || 0;
+  const app = +document.getElementById('ibmCPApp').value || 0;
+  
+  // Ratios: MQ is 0.5, API is 1.0, App is 2.0
+  const mqVPC = mq * 0.5;
+  const apiVPC = api * 1.0;
+  const appVPC = app * 2.0;
+  const total = mqVPC + apiVPC + appVPC;
+  
+  const out = document.getElementById('ibmCPCalcOut');
+  if (out) {
+    out.textContent = `MQ (ratio 0.5): ${mqVPC} VPC | API (ratio 1.0): ${apiVPC} VPC | App Connect (ratio 2.0): ${appVPC} VPC | Total Pool VPCs Required: ${total}`;
+  }
+}
+document.addEventListener('DOMContentLoaded', calcCloudPakVPC);
+</script>
+</body></html>

@@ -1,7 +1,12 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI at Work Governance: The License and Compliance Risks Hiding Behind Productivity Pilots</title><meta name="description" content="Enterprise AI adoption creates a new SAM problem: subscriptions, model access, data controls, software supply-chain licensing, and usage accountability all need governance.">
-<meta property="og:title" content="AI at Work Governance: The License and Compliance Risks Hiding Behind Productivity Pilots"><meta property="og:description" content="Enterprise AI adoption creates a new SAM problem: subscriptions, model access, data controls, software supply-chain licensing, and usage accountability all need governance."><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../assets/styles.css"></head><body data-article-slug="ai-at-work-governance-license-risk-playbook"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
+<title>AI at Work Governance: The License and Compliance Risks Hiding Behind Productivity Pilots</title>
+<meta name="description" content="Enterprise AI adoption creates a new SAM problem: subscriptions, model access, data controls, software supply-chain licensing, and usage accountability all need governance.">
+<meta property="og:title" content="AI at Work Governance: The License and Compliance Risks Hiding Behind Productivity Pilots">
+<meta property="og:description" content="Enterprise AI adoption creates a new SAM problem: subscriptions, model access, data controls, software supply-chain licensing, and usage accountability all need governance.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../assets/styles.css">
+</head><body data-article-slug="ai-at-work-governance-license-risk-playbook"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
 <a class="logo" href="../index.html">Ashish <span>Deshmukh</span></a>
 <div class="nav-links">
   <a href="../index.html#articles">Articles</a>
@@ -9,22 +14,348 @@
   <form class="nav-search" data-site-search role="search"><input data-article-search type="search" placeholder="Search writing"><button type="submit">Go</button></form>
   <button class="theme-toggle" type="button" data-theme-toggle>Dark</button>
 </div></nav></header>
-<main><article><section class="article-hero"><div class="cat">AI at Work</div><h1>AI at Work Governance: The License and Compliance Risks Hiding Behind Productivity Pilots</h1><p class="deck" style="color:#475467">Enterprise AI adoption creates a new SAM problem: subscriptions, model access, data controls, software supply-chain licensing, and usage accountability all need governance.</p><div class="byline"><div class="avatar">AD</div><div><strong>By Ashish Deshmukh on March 26, 2026</strong><br>12 min read</div></div><div class="share-row"><a class="primary" href="#" data-share-linkedin target="_blank" rel="noopener">Share on LinkedIn</a><a href="#" data-share-x target="_blank" rel="noopener">Share on X</a><button data-copy-link onclick="copyLink()">Copy link</button></div></section><div class="article-shell"><aside class="toc"><strong>In this article</strong><a href="#executive-view">Executive View</a>
-<a href="#what-changed">What Changed</a>
-<a href="#operating-playbook">Operating Playbook</a>
-<a href="#practical-examples">Practical Examples</a>
-<a href="#audit-and-governance-lens">Audit and Governance Lens</a>
-<a href="#30-60-90-day-roadmap">30/60/90 Day Roadmap</a>
-<a href="#sources">Sources</a></aside><div class="article-body"><section id="executive-view" class="portal-section" data-section-title="Executive View"><div class="section-toolbar"><h2>Executive View</h2><button class="mini-btn" onclick="printSection('executive-view')">Print this section</button></div><p class="lead">AI tools are moving into daily work, regulated environments, and enterprise workflows. OpenAI enterprise materials emphasize data control and compliance capabilities, while ServiceNow has expanded AI governance through AI Control Tower. At the same time, research on AI supply chains shows license evidence can break across datasets, models, and applications. SAM teams need a seat at the AI governance table.</p><div class="callout warning"><strong>Senior takeaway</strong><p>AI at work, enterprise governance, and license risk should be managed as an operating control, not a one-off reporting exercise. The practical question is always: what decision will this evidence support, and can the organization defend it later?</p></div></section>
-<section id="what-changed" class="portal-section" data-section-title="What Changed"><div class="section-toolbar"><h2>What Changed</h2><button class="mini-btn" onclick="printSection('what-changed')">Print this section</button></div><p>The market is pushing SAM, ITAM, FinOps, SaaS governance, and AI governance closer together. For this topic, the change is less about one feature and more about a new expectation: license managers must connect discovery, contracts, usage, cost, risk, and remediation into a single decision trail.</p><p>That means a modern article or operating playbook must answer four questions: what changed, who is affected, what evidence is required, and what action should be taken before renewal, audit, or budget review.</p></section>
-<section id="operating-playbook" class="portal-section" data-section-title="Operating Playbook"><div class="section-toolbar"><h2>Operating Playbook</h2><button class="mini-btn" onclick="printSection('operating-playbook')">Print this section</button></div><div class="table-wrap"><table><thead><tr><th>Control area</th><th>How to run it</th><th>Failure pattern</th></tr></thead><tbody><tr><td>Approved AI tool catalog and license owner</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>Workspace and model access controls</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>Data handling and retention policy</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>AI subscription usage and renewal review</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>Open-source/model/dataset license evidence chain</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr></tbody></table></div></section>
-<section id="practical-examples" class="portal-section" data-section-title="Practical Examples"><div class="section-toolbar"><h2>Practical Examples</h2><button class="mini-btn" onclick="printSection('practical-examples')">Print this section</button></div><div class="table-wrap"><table><thead><tr><th>Scenario</th><th>Practical response</th><th>Evidence to keep</th></tr></thead><tbody><tr><td>Shadow AI is a license, privacy, and data-leakage issue, not only a security issue.</td><td>Validate the fact pattern, document the assumption, and route the decision to the correct owner before presenting it as final.</td><td>Export, source system, owner sign-off, date, and remediation record.</td></tr><tr><td>An AI pilot without a deprovisioning plan becomes another expensive SaaS subscription.</td><td>Validate the fact pattern, document the assumption, and route the decision to the correct owner before presenting it as final.</td><td>Export, source system, owner sign-off, date, and remediation record.</td></tr><tr><td>AI-generated code and model outputs may introduce software supply-chain obligations that procurement never sees.</td><td>Validate the fact pattern, document the assumption, and route the decision to the correct owner before presenting it as final.</td><td>Export, source system, owner sign-off, date, and remediation record.</td></tr></tbody></table></div></section>
-<section id="audit-and-governance-lens" class="portal-section" data-section-title="Audit and Governance Lens"><div class="section-toolbar"><h2>Audit and Governance Lens</h2><button class="mini-btn" onclick="printSection('audit-and-governance-lens')">Print this section</button></div><p>Every license-management topic eventually becomes an evidence topic. If a publisher, internal auditor, CFO, or CIO challenges the conclusion, the team must show more than a dashboard. It must show how the data was collected, how it was normalized, what entitlement source was used, what assumptions were made, and what action was approved.</p><div class="copy-box"><div><strong>Reusable governance line</strong></div><button class="mini-btn" onclick="copyText(this)">Copy</button><pre><code>A defensible license position is not a tool screenshot. It is a traceable chain from discovery to entitlement to calculation to assumption to approved action.</code></pre></div></section>
-<section id="30-60-90-day-roadmap" class="portal-section" data-section-title="30/60/90 Day Roadmap"><div class="section-toolbar"><h2>30/60/90 Day Roadmap</h2><button class="mini-btn" onclick="printSection('30-60-90-day-roadmap')">Print this section</button></div><div class="table-wrap"><table><thead><tr><th>Period</th><th>Focus</th><th>Outcome</th></tr></thead><tbody><tr><td>First 30 days</td><td>Baseline evidence, scope, owners, and data quality.</td><td>A visible risk and confidence view.</td></tr><tr><td>Days 31-60</td><td>Pilot workflow controls and validate assumptions with business owners.</td><td>First closed-loop remediations and cleaner executive reporting.</td></tr><tr><td>Days 61-90</td><td>Scale the playbook into renewal, audit, and optimization routines.</td><td>A repeatable operating model rather than a one-time project.</td></tr></tbody></table></div></section>
-<section id="sources" class="portal-section" data-section-title="Sources"><div class="section-toolbar"><h2>Sources</h2><button class="mini-btn" onclick="printSection('sources')">Print this section</button></div><p>Selected public reference sources used for this article:</p><ul><li><a href="https://openai.com/policies/api-data-usage-policies/" target="_blank" rel="noopener">OpenAI enterprise privacy</a></li><li><a href="https://help.openai.com/en/articles/9261474-openai-compliance-platform-for-enterprise-customers/" target="_blank" rel="noopener">OpenAI compliance platform</a></li><li><a href="https://newsroom.servicenow.com/press-releases/details/2026/ServiceNow-expands-AI-Control-Tower-to-discover-observe-govern-secure-and-measure-AI-deployed-across-any-system-in-the-enterprise/default.aspx" target="_blank" rel="noopener">ServiceNow AI Control Tower announcement</a></li><li><a href="https://arxiv.org/abs/2602.08816" target="_blank" rel="noopener">Permissive-washing in the open AI supply chain</a></li></ul></section>
-<section class="engagement-panel" data-engagement-panel="ai-at-work-governance-license-risk-playbook">
-  <div class="engagement-top"><div><span class="eyebrow">Reader response</span><h2 style="margin:8px 0 0">Discuss this article</h2><p class="meta">Likes, shares and comments are stored in this browser for a static hosted site.</p></div><div class="engagement-actions"><button class="primary" type="button" data-like-button>Like</button><button type="button" onclick="copyLink()">Share</button></div></div>
-  <div class="engagement-counts"><span><b data-like-count>0</b> likes</span><span><b data-share-count>0</b> shares</span><span><b data-comment-count>0</b> comments</span></div>
-  <form class="comment-form" data-comment-form><input name="name" autocomplete="name" placeholder="Your name"><textarea name="comment" required placeholder="Add a thoughtful comment"></textarea><button type="submit">Post comment</button></form>
-  <div class="comment-list" data-comment-list></div>
-</section></div></div></article></main><footer class="site-footer">By Ashish Deshmukh · Notes on technology, work, learning, systems and practical execution.</footer><script src="../assets/site.js"></script></body></html>
+<main>
+  <article>
+    <section class="article-hero">
+      <div class="cat">AI at Work</div>
+      <h1>AI at Work Governance: The License and Compliance Risks Hiding Behind Productivity Pilots</h1>
+      <p class="deck" style="color:#475467">Enterprise AI adoption creates a new SAM problem: subscriptions, model access, data controls, software supply-chain licensing, and usage accountability all need governance.</p>
+      <div class="byline"><div class="avatar">AD</div><div><strong>By Ashish Deshmukh on March 26, 2026</strong><br>12 min read</div></div>
+      <div class="share-row">
+        <a class="primary" href="#" data-share-linkedin target="_blank" rel="noopener">Share on LinkedIn</a>
+        <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
+        <button data-copy-link onclick="copyLink()">Copy link</button>
+      </div>
+    </section>
+    <div class="article-shell">
+      <aside class="toc">
+        <strong>In this article</strong>
+        <a href="#ai-executive-view">Executive View</a>
+        <a href="#ai-what-changed">What Changed</a>
+        <a href="#ai-shadow">Shadow AI &amp; Subscription Creep</a>
+        <a href="#ai-openai-pricing">OpenAI Enterprise vs APIs</a>
+        <a href="#ai-open-source">Open Source LLM Licenses</a>
+        <a href="#ai-code-exposures">AI-Generated Code Exposures</a>
+        <a href="#ai-discovery">Discovering AI Software</a>
+        <a href="#ai-control-tower">ServiceNow AI Control Tower</a>
+        <a href="#ai-matrix">Compliance Scoring Matrix</a>
+        <a href="#ai-practitioner-qa">Practitioner Q&amp;A</a>
+        <a href="#ai-cheat-sheet">Quick Revision Cheat Sheet</a>
+      </aside>
+      <div class="article-body">
+        
+        <section id="ai-executive-view" class="portal-section" data-section-title="Executive View">
+          <div class="section-toolbar">
+            <h2>Executive View</h2>
+            <button class="mini-btn" onclick="printSection('ai-executive-view')">Print this section</button>
+          </div>
+          <p class="lead">The rapid adoption of Artificial Intelligence across enterprise workflows has outpaced traditional IT governance. While business leaders focus on productivity gains, SAM managers are uncovering significant commercial liabilities: unsanctioned SaaS subscriptions, open-source license violations, and copyright exposure.</p>
+          <div class="practitioner-card" data-practitioner="keep">
+            <h4>Practitioner Notes</h4>
+            <p>Senior perspective: "AI is the new 'shadow IT'. Employees are uploading proprietary source code and sensitive customer contracts to public, consumer-grade AI models. Simultaneously, developers are deploying 'open source' models without realizing they carry strict commercial restrictions."</p>
+          </div>
+          <p>This article provides an operational framework to discover enterprise AI sprawl, evaluate OpenAI api vs commercial licenses, enforce open-source model compliance, and establish defensive governance rules.</p>
+          <div class="callout warning">
+            <strong>Senior Takeaway</strong>
+            <p>Do not let AI deployments bypass your software procurement validation gates. Unmanaged AI usage creates severe legal, financial, and intellectual property exposures that standard software agreements do not cover.</p>
+          </div>
+        </section>
+
+        <section id="ai-what-changed" class="portal-section" data-section-title="What Changed">
+          <div class="section-toolbar">
+            <h2>What Changed</h2>
+            <button class="mini-btn" onclick="printSection('ai-what-changed')">Print this section</button>
+          </div>
+          <p>In the early phases of AI, risk was centered on basic security guidelines. In 2026, the focus has shifted to the software supply chain: model licensing, data training compliance, copyright indemnity clauses, and API token billing optimization.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Compliance Dimension</th>
+                  <th>Classic SaaS Risk Profile</th>
+                  <th>Modern AI Risk Profile</th>
+                  <th>Defensive Action Required</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Intellectual Property</td>
+                  <td>Unlicensed software installation</td>
+                  <td>AI-generated code containing GPL copyleft blocks</td>
+                  <td>Mandatory source code scanning (e.g., Black Duck, Snyk).</td>
+                </tr>
+                <tr>
+                  <td>Pricing Model</td>
+                  <td>Predictable cost per user per month</td>
+                  <td>Usage-based token consumption and model tiers</td>
+                  <td>API budget caps and central key orchestration.</td>
+                </tr>
+                <tr>
+                  <td>Model Licenses</td>
+                  <td>Standard End User License Agreements</td>
+                  <td>OpenRAIL-M behavior-use restrictions</td>
+                  <td>Legal review of custom usage restrictions in models.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="ai-shadow" class="portal-section" data-section-title="Shadow AI &amp; Subscription Creep">
+          <div class="section-toolbar">
+            <h2>Shadow AI &amp; Subscription Creep</h2>
+            <button class="mini-btn" onclick="printSection('ai-shadow')">Print this section</button>
+          </div>
+          <p>Shadow AI refers to the unsanctioned use of AI applications by individual employees. This occurs when users purchase consumer-grade subscriptions (like ChatGPT Plus or Midjourney) on corporate credit cards, bypassing IT security, data classification policies, and procurement standards.</p>
+          <div class="callout danger">
+            <strong>The Data Leak Trap</strong>
+            <p>Standard consumer terms for free AI tools allow the publisher to use your prompt data to train future public models. Uploading a proprietary software algorithm or a confidential customer contract to these models constitutes an active, irreversible data breach.</p>
+          </div>
+        </section>
+
+        <section id="ai-openai-pricing" class="portal-section" data-section-title="OpenAI Enterprise vs APIs">
+          <div class="section-toolbar">
+            <h2>OpenAI Enterprise vs APIs</h2>
+            <button class="mini-btn" onclick="printSection('ai-openai-pricing')">Print this section</button>
+          </div>
+          <p>OpenAI provides two primary commercial pathways: user-based Enterprise subscriptions, and consumption-based developer APIs. Selecting the correct model requires evaluating your active user footprint and token density.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Commercial Plan</th>
+                  <th>Licensing Metric</th>
+                  <th>Data Privacy Level</th>
+                  <th>Best Fit Scenario</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>OpenAI Enterprise</td>
+                  <td>Fixed cost per user (annual commitment)</td>
+                  <td>Enterprise grade; prompt data excluded from training</td>
+                  <td>Broad corporate knowledge workers using standard chat interfaces.</td>
+                </tr>
+                <tr>
+                  <td>OpenAI Developer APIs</td>
+                  <td>Consumption per 1M input/output tokens</td>
+                  <td>Enterprise grade; prompt data excluded from training</td>
+                  <td>Custom application development, integrations, and low-volume scripts.</td>
+                </tr>
+                <tr>
+                  <td>Consumer ChatGPT Plus</td>
+                  <td>Credit card subscription ($20/user/mo)</td>
+                  <td>None by default; data is used for model training</td>
+                  <td>Prohibited for enterprise business use.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="ai-open-source" class="portal-section" data-section-title="Open Source LLM Licenses">
+          <div class="section-toolbar">
+            <h2>Open Source LLM Licenses</h2>
+            <button class="mini-btn" onclick="printSection('ai-open-source')">Print this section</button>
+          </div>
+          <p>Many developers assume that pre-trained Large Language Models (LLMs) downloaded from Hugging Face are completely free. In reality, models like Meta's LLaMA 3 or various OpenRAIL models carry strict commercial and behavioral use restrictions.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Pre-Trained Model</th>
+                  <th>Governing License</th>
+                  <th>Commercial Restriction</th>
+                  <th>Compliance Watchout</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>LLaMA 3 (Meta)</td>
+                  <td>Meta LLaMA 3 Community License</td>
+                  <td>Free up to 700M monthly active users</td>
+                  <td>If your application exceeds Meta's MAU ceiling, you must request a commercial license.</td>
+                </tr>
+                <tr>
+                  <td>BLOOM / Stable Diffusion</td>
+                  <td>OpenRAIL-M / OpenRAIL-S</td>
+                  <td>Behavior-use restrictions apply</td>
+                  <td>Prohibits usage in high-risk domains (legal, medical, or law enforcement decisions).</td>
+                </tr>
+                <tr>
+                  <td>Mistral 7B</td>
+                  <td>Apache 2.0</td>
+                  <td>Permissive commercial use</td>
+                  <td>Requires retaining copyright notices and patent grant claims in modifications.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="ai-code-exposures" class="portal-section" data-section-title="AI-Generated Code Exposures">
+          <div class="section-toolbar">
+            <h2>AI-Generated Code Exposures</h2>
+            <button class="mini-btn" onclick="printSection('ai-code-exposures')">Print this section</button>
+          </div>
+          <p>AI coding assistants (GitHub Copilot, Amazon Q) accelerate software development. However, these tools are trained on public open-source repositories. Under certain conditions, they can generate code blocks that duplicate copyleft GPL or AGPL code.</p>
+          <div class="practitioner-card" data-practitioner="keep">
+            <h4>Practitioner Notes</h4>
+            <p>"If an AI assistant injects a GPL-licensed block of code into your proprietary commercial software, your entire application can be subject to 'copyleft infectivity', forcing your legal team to publish your proprietary source code publicly."</p>
+          </div>
+          <div class="copy-box">
+            <div><strong>Mandatory Developer Guardrail Spec</strong></div>
+            <button class="mini-btn" onclick="copyText(this)">Copy</button>
+            <pre><code class="">1. Configure GitHub Copilot to block suggestions matching public code (Enable "Block public code matching").
+2. Enforce Snyk/Black Duck code scanning on all deployment pull requests.
+3. Establish a standard open-source compliance audit for all external software deliveries.</code></pre>
+          </div>
+        </section>
+
+        <section id="ai-discovery" class="portal-section" data-section-title="Discovering AI Software">
+          <div class="section-toolbar">
+            <h2>Discovering AI Software</h2>
+            <button class="mini-btn" onclick="printSection('ai-discovery')">Print this section</button>
+          </div>
+          <p>To audit AI exposure, you must discover both installed runtimes and SaaS connections. Standard asset scans must be expanded to search for AI packages and web endpoints.</p>
+          <ol class="numbered">
+            <li>Search desktop and server process inventories for active python packages containing `torch`, `transformers`, `llama.cpp`, or `ollama`.</li>
+            <li>Audit single-sign-on (SSO) logs and corporate expense receipts for unsanctioned subscriptions to OpenAI, Anthropic, Jasper, or Runway.</li>
+            <li>Scan codebase repositories using software composition analysis (SCA) tools to catalog downloaded pre-trained models.</li>
+          </ol>
+        </section>
+
+        <section id="ai-control-tower" class="portal-section" data-section-title="ServiceNow AI Control Tower">
+          <div class="section-toolbar">
+            <h2>ServiceNow AI Control Tower</h2>
+            <button class="mini-btn" onclick="printSection('ai-control-tower')">Print this section</button>
+          </div>
+          <p>ServiceNow's expanded AI Control Tower allows SAM and security teams to discover, observe, and govern deployed AI models across any system in the enterprise. Integrating this with your active catalog ensures role-based provisioning.</p>
+          <div class="callout warning">
+            <strong>Automated AI Control Flow</strong>
+            <p>Ensure that all AI request items route through a central approval chain in ServiceNow. A user requesting an API key must provide a data impact assessment, and the system must enforce automatic token quotas to prevent cost overruns.</p>
+          </div>
+        </section>
+
+        <section id="ai-matrix" class="portal-section" data-section-title="Compliance Scoring Matrix">
+          <div class="section-toolbar">
+            <h2>Compliance Scoring Matrix</h2>
+            <button class="mini-btn" onclick="printSection('ai-matrix')">Print this section</button>
+          </div>
+          <p>Evaluate your enterprise's AI compliance risk profile using our interactive compliance scoring calculator. Model different licensing scenarios to determine your risk posture.</p>
+          
+          <div class="calc-card" data-practitioner="keep">
+            <h3>AI Model &amp; IP Compliance Calculator</h3>
+            <label>Meta LLaMA 3 Monthly Users: <input id="aiLlamaUsers" type="number" value="10000" oninput="calcAICheck()"></label>
+            <label>Unscanned Codebase Repositories (%): <input id="aiUnscanned" type="number" value="20" oninput="calcAICheck()"></label>
+            <label>Unsanctioned SaaS AI Subscriptions: <input id="aiShadowSaaS" type="number" value="45" oninput="calcAICheck()"></label>
+            <button onclick="calcAICheck()">Calculate Risk Score</button>
+            <div style="margin-top: 14px; font-weight: 700;" id="aiCalcOut">IP Compliance Risk: Low Risk (Score: 12)</div>
+          </div>
+        </section>
+
+        <section id="ai-practitioner-qa" class="portal-section" data-section-title="Practitioner Q&amp;A">
+          <div class="section-toolbar">
+            <h2>Practitioner Q&amp;A</h2>
+            <button class="mini-btn" onclick="printSection('ai-practitioner-qa')">Print this section</button>
+          </div>
+          <div class="qa-bank">
+            <details class="qa" data-practitioner="keep">
+              <summary>What is an OpenRAIL-M license?</summary>
+              <p>An OpenRAIL-M license is a "Responsible AI License" for large language models. While it allows free commercial redistribution and modifications, it carries binding "behavioral use" restrictions. For example, it legally prohibits using the model to generate medical diagnoses, make criminal justice decisions, or build automated military weapon systems. Your legal team must validate these clauses before deployment.</p>
+              <button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button>
+            </details>
+            <details class="qa" data-practitioner="keep">
+              <summary>How does copyright indemnity work in commercial AI tools?</summary>
+              <p>Publishers like Microsoft (for Copilot) and OpenAI (for Enterprise plans) offer "Copyright Commitment" clauses. They promise to defend and indemnify commercial customers against copyright infringement lawsuits arising from their AI-generated outputs. However, this indemnity is typically conditional: the user must have used standard safety filters and prompt guards, and must not have intentionally prompted the model to replicate copyrighted works.</p>
+              <button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button>
+            </details>
+            <details class="qa" data-practitioner="keep">
+              <summary>Are open-source models downloaded from Hugging Face considered IT assets?</summary>
+              <p>Yes. Any pre-trained model downloaded into your enterprise repositories constitutes a proprietary IT asset with licensing obligations. You must record the model name, version, publisher, governing license (such as Apache 2.0 or Meta LLaMA 3 Community), and active developer owner in your central software asset registry.</p>
+              <button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button>
+            </details>
+          </div>
+        </section>
+
+        <section id="ai-cheat-sheet" class="portal-section" data-section-title="Quick Revision Cheat Sheet">
+          <div class="section-toolbar">
+            <h2>Quick Revision Cheat Sheet</h2>
+            <button class="mini-btn" onclick="printSection('ai-cheat-sheet')">Print this section</button>
+          </div>
+          <div class="cheat-grid" data-practitioner="keep">
+            <div>
+              <h3>Shadow AI</h3>
+              <p>Consumer subscriptions upload corporate data to public training sets. Enforce standard SSO locks.</p>
+            </div>
+            <div>
+              <h3>Model Licenses</h3>
+              <p>Pre-trained models are not free. meta LLaMA carries user-count limits; OpenRAIL has behavior restrictions.</p>
+            </div>
+            <div>
+              <h3>GPL Infectivity</h3>
+              <p>AI-generated code blocks can replicate copyleft source code. Enforce mandatory code scans on all pull requests.</p>
+            </div>
+            <div>
+              <h3>API Budget Caps</h3>
+              <p>Consumption-based AI APIs can trigger rapid cost spikes. Configure automated token limits in gateways.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="engagement-panel" data-engagement-panel="ai-at-work-governance-license-risk-playbook">
+          <div class="engagement-top">
+            <div>
+              <span class="eyebrow">Reader response</span>
+              <h2 style="margin:8px 0 0">Discuss this article</h2>
+              <p class="meta">Likes, shares and comments are stored in this browser for a static hosted site.</p>
+            </div>
+            <div class="engagement-actions">
+              <button class="primary" type="button" data-like-button>Like</button>
+              <button type="button" onclick="copyLink()">Share</button>
+            </div>
+          </div>
+          <div class="engagement-counts">
+            <span><b data-like-count>0</b> likes</span>
+            <span><b data-share-count>0</b> shares</span>
+            <span><b data-comment-count>0</b> comments</span>
+          </div>
+          <form class="comment-form" data-comment-form>
+            <input name="name" autocomplete="name" placeholder="Your name">
+            <textarea name="comment" required placeholder="Add a thoughtful comment"></textarea>
+            <button type="submit">Post comment</button>
+          </form>
+          <div class="comment-list" data-comment-list></div>
+        </section>
+
+      </div>
+    </div>
+  </article>
+</main>
+<footer class="site-footer">By Ashish Deshmukh · Notes on technology, work, learning, systems and practical execution.</footer>
+<script src="../assets/site.js"></script>
+<script>
+function calcAICheck() {
+  const llama = +document.getElementById('aiLlamaUsers').value || 0;
+  const unscanned = +document.getElementById('aiUnscanned').value || 0;
+  const shadow = +document.getElementById('aiShadowSaaS').value || 0;
+  
+  // Model user limit: 700M active users.
+  // Risk score based on unscanned codebase percentage and active shadow SaaS tool count
+  const unscannedRisk = unscanned * 2.5;
+  const shadowRisk = shadow * 1.5;
+  const total = Math.min(100, Math.max(0, unscannedRisk + shadowRisk));
+  
+  let rating = 'Low Risk';
+  if (total >= 70) rating = 'CRITICAL RISK';
+  else if (total >= 40) rating = 'High Risk';
+  else if (total >= 20) rating = 'Moderate Risk';
+  
+  const out = document.getElementById('aiCalcOut');
+  if (out) {
+    out.textContent = `LLaMA Users: ${llama.toLocaleString()} | IP Risk Score: ${total.toFixed(0)}/100 | IP Compliance Risk: ${rating}`;
+  }
+}
+document.addEventListener('DOMContentLoaded', calcAICheck);
+</script>
+</body></html>

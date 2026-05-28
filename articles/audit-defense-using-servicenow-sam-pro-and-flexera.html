@@ -1,7 +1,12 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Audit Defense Using ServiceNow SAM Pro and Flexera: What to Prepare Before the Publisher Calls</title><meta name="description" content="SAM tools help audit defense only when the evidence trail is stronger than the dashboard. Here is a practical audit pack for ServiceNow SAM Pro and Flexera environments.">
-<meta property="og:title" content="Audit Defense Using ServiceNow SAM Pro and Flexera: What to Prepare Before the Publisher Calls"><meta property="og:description" content="SAM tools help audit defense only when the evidence trail is stronger than the dashboard. Here is a practical audit pack for ServiceNow SAM Pro and Flexera environments."><meta property="og:type" content="article"><meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="../assets/styles.css"></head><body data-article-slug="audit-defense-using-servicenow-sam-pro-and-flexera"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
+<title>Audit Defense Using ServiceNow SAM Pro and Flexera: What to Prepare Before the Publisher Calls</title>
+<meta name="description" content="SAM tools help audit defense only when the evidence trail is stronger than the dashboard. Here is a practical audit pack for ServiceNow SAM Pro and Flexera environments.">
+<meta property="og:title" content="Audit Defense Using ServiceNow SAM Pro and Flexera: What to Prepare Before the Publisher Calls">
+<meta property="og:description" content="SAM tools help audit defense only when the evidence trail is stronger than the dashboard. Here is a practical audit pack for ServiceNow SAM Pro and Flexera environments.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="../assets/styles.css">
+</head><body data-article-slug="audit-defense-using-servicenow-sam-pro-and-flexera"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
 <a class="logo" href="../index.html">Ashish <span>Deshmukh</span></a>
 <div class="nav-links">
   <a href="../index.html#articles">Articles</a>
@@ -9,22 +14,302 @@
   <form class="nav-search" data-site-search role="search"><input data-article-search type="search" placeholder="Search writing"><button type="submit">Go</button></form>
   <button class="theme-toggle" type="button" data-theme-toggle>Dark</button>
 </div></nav></header>
-<main><article><section class="article-hero"><div class="cat">Audit Defense</div><h1>Audit Defense Using ServiceNow SAM Pro and Flexera: What to Prepare Before the Publisher Calls</h1><p class="deck" style="color:#475467">SAM tools help audit defense only when the evidence trail is stronger than the dashboard. Here is a practical audit pack for ServiceNow SAM Pro and Flexera environments.</p><div class="byline"><div class="avatar">AD</div><div><strong>By Ashish Deshmukh on April 2, 2026</strong><br>12 min read</div></div><div class="share-row"><a class="primary" href="#" data-share-linkedin target="_blank" rel="noopener">Share on LinkedIn</a><a href="#" data-share-x target="_blank" rel="noopener">Share on X</a><button data-copy-link onclick="copyLink()">Copy link</button></div></section><div class="article-shell"><aside class="toc"><strong>In this article</strong><a href="#executive-view">Executive View</a>
-<a href="#what-changed">What Changed</a>
-<a href="#operating-playbook">Operating Playbook</a>
-<a href="#practical-examples">Practical Examples</a>
-<a href="#audit-and-governance-lens">Audit and Governance Lens</a>
-<a href="#30-60-90-day-roadmap">30/60/90 Day Roadmap</a>
-<a href="#sources">Sources</a></aside><div class="article-body"><section id="executive-view" class="portal-section" data-section-title="Executive View"><div class="section-toolbar"><h2>Executive View</h2><button class="mini-btn" onclick="printSection('executive-view')">Print this section</button></div><p class="lead">ServiceNow and Flexera both provide serious SAM capabilities, but audit defense still depends on evidence discipline: inventory quality, normalization, entitlement proof, publisher rules, assumptions, and remediation history. A dashboard number without an evidence pack is a weak negotiating position.</p><div class="callout warning"><strong>Senior takeaway</strong><p>Audit-facing tips using ServiceNow SAM Pro and Flexera should be managed as an operating control, not a one-off reporting exercise. The practical question is always: what decision will this evidence support, and can the organization defend it later?</p></div></section>
-<section id="what-changed" class="portal-section" data-section-title="What Changed"><div class="section-toolbar"><h2>What Changed</h2><button class="mini-btn" onclick="printSection('what-changed')">Print this section</button></div><p>The market is pushing SAM, ITAM, FinOps, SaaS governance, and AI governance closer together. For this topic, the change is less about one feature and more about a new expectation: license managers must connect discovery, contracts, usage, cost, risk, and remediation into a single decision trail.</p><p>That means a modern article or operating playbook must answer four questions: what changed, who is affected, what evidence is required, and what action should be taken before renewal, audit, or budget review.</p></section>
-<section id="operating-playbook" class="portal-section" data-section-title="Operating Playbook"><div class="section-toolbar"><h2>Operating Playbook</h2><button class="mini-btn" onclick="printSection('operating-playbook')">Print this section</button></div><div class="table-wrap"><table><thead><tr><th>Control area</th><th>How to run it</th><th>Failure pattern</th></tr></thead><tbody><tr><td>Freeze scope and reporting date</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>Export evidence with extraction timestamps</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>Retain entitlement source files, not only imported records</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>Document publisher-specific calculations outside the tool when needed</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr><tr><td>Run a counter-ELP before sharing data externally</td><td>Assign an owner, define a review cadence, retain evidence, and connect the finding to a workflow action.</td><td>The team reports the risk but no one owns closure.</td></tr></tbody></table></div></section>
-<section id="practical-examples" class="portal-section" data-section-title="Practical Examples"><div class="section-toolbar"><h2>Practical Examples</h2><button class="mini-btn" onclick="printSection('practical-examples')">Print this section</button></div><div class="table-wrap"><table><thead><tr><th>Scenario</th><th>Practical response</th><th>Evidence to keep</th></tr></thead><tbody><tr><td>Use the tool for evidence aggregation; use licensing expertise for interpretation.</td><td>Validate the fact pattern, document the assumption, and route the decision to the correct owner before presenting it as final.</td><td>Export, source system, owner sign-off, date, and remediation record.</td></tr><tr><td>If ServiceNow and Flexera disagree, treat that as a data-quality investigation, not a choice of favorite tool.</td><td>Validate the fact pattern, document the assumption, and route the decision to the correct owner before presenting it as final.</td><td>Export, source system, owner sign-off, date, and remediation record.</td></tr><tr><td>Never send raw exports to a publisher without legal and SAM review.</td><td>Validate the fact pattern, document the assumption, and route the decision to the correct owner before presenting it as final.</td><td>Export, source system, owner sign-off, date, and remediation record.</td></tr></tbody></table></div></section>
-<section id="audit-and-governance-lens" class="portal-section" data-section-title="Audit and Governance Lens"><div class="section-toolbar"><h2>Audit and Governance Lens</h2><button class="mini-btn" onclick="printSection('audit-and-governance-lens')">Print this section</button></div><p>Every license-management topic eventually becomes an evidence topic. If a publisher, internal auditor, CFO, or CIO challenges the conclusion, the team must show more than a dashboard. It must show how the data was collected, how it was normalized, what entitlement source was used, what assumptions were made, and what action was approved.</p><div class="copy-box"><div><strong>Reusable governance line</strong></div><button class="mini-btn" onclick="copyText(this)">Copy</button><pre><code>A defensible license position is not a tool screenshot. It is a traceable chain from discovery to entitlement to calculation to assumption to approved action.</code></pre></div></section>
-<section id="30-60-90-day-roadmap" class="portal-section" data-section-title="30/60/90 Day Roadmap"><div class="section-toolbar"><h2>30/60/90 Day Roadmap</h2><button class="mini-btn" onclick="printSection('30-60-90-day-roadmap')">Print this section</button></div><div class="table-wrap"><table><thead><tr><th>Period</th><th>Focus</th><th>Outcome</th></tr></thead><tbody><tr><td>First 30 days</td><td>Baseline evidence, scope, owners, and data quality.</td><td>A visible risk and confidence view.</td></tr><tr><td>Days 31-60</td><td>Pilot workflow controls and validate assumptions with business owners.</td><td>First closed-loop remediations and cleaner executive reporting.</td></tr><tr><td>Days 61-90</td><td>Scale the playbook into renewal, audit, and optimization routines.</td><td>A repeatable operating model rather than a one-time project.</td></tr></tbody></table></div></section>
-<section id="sources" class="portal-section" data-section-title="Sources"><div class="section-toolbar"><h2>Sources</h2><button class="mini-btn" onclick="printSection('sources')">Print this section</button></div><p>Selected public reference sources used for this article:</p><ul><li><a href="https://www.servicenow.com/docs/r/release-notes/software-asset-management-rn.html" target="_blank" rel="noopener">ServiceNow SAM release notes</a></li><li><a href="https://docs.flexera.com/flexeraone/EN/WhatsNew/FeatureList/itamfeatures.htm" target="_blank" rel="noopener">Flexera One ITAM features by release</a></li><li><a href="https://www.servicenow.com/content/dam/servicenow-assets/public/en-us/doc-type/other-document/entitlements/PROD15033.pdf" target="_blank" rel="noopener">ServiceNow SAM packaging entitlement document</a></li></ul></section>
-<section class="engagement-panel" data-engagement-panel="audit-defense-using-servicenow-sam-pro-and-flexera">
-  <div class="engagement-top"><div><span class="eyebrow">Reader response</span><h2 style="margin:8px 0 0">Discuss this article</h2><p class="meta">Likes, shares and comments are stored in this browser for a static hosted site.</p></div><div class="engagement-actions"><button class="primary" type="button" data-like-button>Like</button><button type="button" onclick="copyLink()">Share</button></div></div>
-  <div class="engagement-counts"><span><b data-like-count>0</b> likes</span><span><b data-share-count>0</b> shares</span><span><b data-comment-count>0</b> comments</span></div>
-  <form class="comment-form" data-comment-form><input name="name" autocomplete="name" placeholder="Your name"><textarea name="comment" required placeholder="Add a thoughtful comment"></textarea><button type="submit">Post comment</button></form>
-  <div class="comment-list" data-comment-list></div>
-</section></div></div></article></main><footer class="site-footer">By Ashish Deshmukh · Notes on technology, work, learning, systems and practical execution.</footer><script src="../assets/site.js"></script></body></html>
+<main>
+  <article>
+    <section class="article-hero">
+      <div class="cat">Audit Defense</div>
+      <h1>Audit Defense Using ServiceNow SAM Pro and Flexera: What to Prepare Before the Publisher Calls</h1>
+      <p class="deck" style="color:#475467">SAM tools help audit defense only when the evidence trail is stronger than the dashboard. Here is a practical audit pack for ServiceNow SAM Pro and Flexera environments.</p>
+      <div class="byline"><div class="avatar">AD</div><div><strong>By Ashish Deshmukh on April 2, 2026</strong><br>12 min read</div></div>
+      <div class="share-row">
+        <a class="primary" href="#" data-share-linkedin target="_blank" rel="noopener">Share on LinkedIn</a>
+        <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
+        <button data-copy-link onclick="copyLink()">Copy link</button>
+      </div>
+    </section>
+    <div class="article-shell">
+      <aside class="toc">
+        <strong>In this article</strong>
+        <a href="#defense-executive-view">Executive View</a>
+        <a href="#defense-what-changed">What Changed</a>
+        <a href="#defense-multitool">ServiceNow &amp; Flexera Reality</a>
+        <a href="#defense-pack">The Audit Defense Pack</a>
+        <a href="#defense-cross-validation">Cross-Tool Discovery Check</a>
+        <a href="#defense-boundaries">Legal &amp; Data Boundaries</a>
+        <a href="#defense-runbook">Audit Run-book &amp; Roles</a>
+        <a href="#defense-scorecard">Interactive Risk Scorecard</a>
+        <a href="#defense-practitioner-qa">Practitioner Q&amp;A</a>
+        <a href="#defense-cheat-sheet">Quick Revision Cheat Sheet</a>
+      </aside>
+      <div class="article-body">
+        
+        <section id="defense-executive-view" class="portal-section" data-section-title="Executive View">
+          <div class="section-toolbar">
+            <h2>Executive View</h2>
+            <button class="mini-btn" onclick="printSection('defense-executive-view')">Print this section</button>
+          </div>
+          <p class="lead">Software publishers (Oracle, Microsoft, IBM, SAP) use audits as commercial leverage during contract negotiations. Many enterprises buy advanced SAM tools (like ServiceNow SAM Pro or Flexera One) and assume their dashboards protect them. An audit-defense strategy requires much more than tool screenshots.</p>
+          <div class="practitioner-card" data-practitioner="keep">
+            <h4>Practitioner Notes</h4>
+            <p>Senior perspective: "Auditors do not accept compliance reports from your tools. They demand raw inventory files, system command logs, and HR database exports. The role of SAM tools during an audit is to serve as our internal sanity check, allowing us to anticipate findings and build a counter-ELP before disclosure."</p>
+          </div>
+          <p>This article outlines the operational playbooks required to coordinate ServiceNow SAM Pro and Flexera environments, establish a structured "Audit Defense Pack," and manage vendor relationships during formal compliance reviews.</p>
+          <div class="callout warning">
+            <strong>Senior Takeaway</strong>
+            <p>A vendor's audit finding is only a commercial demand, not a legal judgment. Your defense relies on having a structured counter-ELP backed by raw technical evidence that challenges the auditor's assumptions.</p>
+          </div>
+        </section>
+
+        <section id="defense-what-changed" class="portal-section" data-section-title="What Changed">
+          <div class="section-toolbar">
+            <h2>What Changed</h2>
+            <button class="mini-btn" onclick="printSection('defense-what-changed')">Print this section</button>
+          </div>
+          <p>Audits have moved from basic desktop and server install counts toward complex virtualization boundaries (like VMware clusters and containers) and user-based SaaS allocations. In response, modern SAM teams must coordinate multiple tooling systems concurrently.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Audit Focus</th>
+                  <th>Legacy Auditor Demand</th>
+                  <th>2026 Auditor Method</th>
+                  <th>Required Defensive Asset</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Database Servers</td>
+                  <td>Count of database server installs</td>
+                  <td>Full hypervisor VM mobility history</td>
+                  <td>Strict cluster placement and host-affinity logs.</td>
+                </tr>
+                <tr>
+                  <td>SaaS Portals</td>
+                  <td>Active assigned user count exports</td>
+                  <td>User activity logs via API integrations</td>
+                  <td>Active HR leaver registries and role-based allocations.</td>
+                </tr>
+                <tr>
+                  <td>Tool Validation</td>
+                  <td>Auditors run local discovery scripts</td>
+                  <td>Comparison of multiple system scans</td>
+                  <td>Pre-reconciled cross-tool inventory reports.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="defense-multitool" class="portal-section" data-section-title="ServiceNow &amp; Flexera Reality">
+          <div class="section-toolbar">
+            <h2>ServiceNow &amp; Flexera Reality</h2>
+            <button class="mini-btn" onclick="printSection('defense-multitool')">Print this section</button>
+          </div>
+          <p>Most Fortune 500 enterprises run a hybrid SAM architecture: Flexera One ITAM for deep hardware core calculations and database feature usage, and ServiceNow SAM Pro for request fulfillment, catalog approvals, and CMDB workflow integration. Reconciling these dual data scopes is a critical audit prerequisite.</p>
+          <div class="callout danger">
+            <strong>The Cross-Tool Conflict</strong>
+            <p>If Flexera reports a SQL Server instance as active Standard edition based on an installer file, while ServiceNow marks it as Enterprise based on a database version query, the auditor will claim the higher, more expensive Enterprise license requirement unless you resolve this discrepancy beforehand.</p>
+          </div>
+        </section>
+
+        <section id="defense-pack" class="portal-section" data-section-title="The Audit Defense Pack">
+          <div class="section-toolbar">
+            <h2>The Audit Defense Pack</h2>
+            <button class="mini-btn" onclick="printSection('defense-pack')">Print this section</button>
+          </div>
+          <p>An Audit Defense Pack is a centralized repository containing pre-verified evidence that proves your compliance posture. This pack must be compiled and updated *before* the publisher registers a formal audit request.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Document Type</th>
+                  <th>Target Components</th>
+                  <th>Defensive Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Entitlement baseline</td>
+                  <td>Ordering documents, master contracts, support renewals, MLS exports</td>
+                  <td>Proves what software products and quantities you legally own.</td>
+                </tr>
+                <tr>
+                  <td>Hardware Spec proof</td>
+                  <td>Hypervisor vCenter exports, physical host CPU/socket scans</td>
+                  <td>Defends core licensing factors and limits virtualization boundaries.</td>
+                </tr>
+                <tr>
+                  <td>Exclusion Log</td>
+                  <td>Dev/test server lists, Visual Studio users, retired servers</td>
+                  <td>Excludes non-production environments from production pricing scopes.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="defense-cross-validation" class="portal-section" data-section-title="Cross-Tool Discovery Check">
+          <div class="section-toolbar">
+            <h2>Cross-Tool Discovery Check</h2>
+            <button class="mini-btn" onclick="printSection('defense-cross-validation')">Print this section</button>
+          </div>
+          <p>Cross-validating discovery records from both Flexera and ServiceNow prevents surprise findings. Analysts must verify that both agent databases are reporting matching server core counts and software editions.</p>
+          <div class="copy-box">
+            <div><strong>PowerShell Reconciliation Comparison Spec</strong></div>
+            <button class="mini-btn" onclick="copyText(this)">Copy</button>
+            <pre><code class=""># Reconcile server CPU core counts between Flexera inventory and ServiceNow CMDB
+Compare-Object -ReferenceObject (Get-Content "Flexera_Server_Cores.txt") `
+               -DifferenceObject (Get-Content "ServiceNow_Server_Cores.txt") `
+               -Property ServerName, Cores, Sockets -IncludeEqual</code></pre>
+          </div>
+        </section>
+
+        <section id="defense-boundaries" class="portal-section" data-section-title="Legal &amp; Data Boundaries">
+          <div class="section-toolbar">
+            <h2>Legal &amp; Data Boundaries</h2>
+            <button class="mini-btn" onclick="printSection('defense-boundaries')">Print this section</button>
+          </div>
+          <p>Auditors often request information beyond their contractual rights (such as full network sweeps or access to unrelated active active directories). Establish a strict gateway for all data requests.</p>
+          <div class="callout danger">
+            <strong>The Network Probe Risk</strong>
+            <p>Never allow an auditor to install a proprietary discovery tool directly in your production networks. These tools are designed to surface inactive, bundled, or cached files that do not require licensing but can inflate their draft findings.</p>
+          </div>
+        </section>
+
+        <section id="defense-runbook" class="portal-section" data-section-title="Audit Run-book &amp; Roles">
+          <div class="section-toolbar">
+            <h2>Audit Run-book &amp; Roles</h2>
+            <button class="mini-btn" onclick="printSection('defense-runbook')">Print this section</button>
+          </div>
+          <p>Manage an audit like a formal legal project. A structured run-book must define specific roles across your internal stakeholders to prevent accidental information disclosures.</p>
+          <ol class="numbered">
+            <li>**Single Point of Contact (SPOC)**: Assign a senior SAM manager as the sole recipient of all auditor emails. No DBAs or sysadmins may communicate directly with the publisher.</li>
+            <li>**Technical Review Committee**: Technical analysts review and sanitize all data extracts (scrubbing server names, user emails, and unrelated products) before sharing.</li>
+            <li>**Commercial Committee**: Procurement and vendor managers negotiate purchase options only after the final counter-ELP is established.</li>
+            <li>**Executive Sponsor**: Keep the CIO or General Counsel updated to handle potential escalations.</li>
+          </ol>
+        </section>
+
+        <section id="defense-scorecard" class="portal-section" data-section-title="Interactive Risk Scorecard">
+          <div class="section-toolbar">
+            <h2>Interactive Risk Scorecard</h2>
+            <button class="mini-btn" onclick="printSection('defense-scorecard')">Print this section</button>
+          </div>
+          <p>Estimate your enterprise's audit readiness and calculate your potential exposure risk using our interactive scorecard scorecard calculator. Identify weak spots in your current processes.</p>
+          
+          <div class="calc-card" data-practitioner="keep">
+            <h3>Audit Readiness Risk Calculator</h3>
+            <label>Entitlement Baseline Complete (%): <input id="audEnt" type="number" value="80" oninput="calcAuditRisk()"></label>
+            <label>Cross-Tool Discovery Discrepancy (%): <input id="audDisc" type="number" value="15" oninput="calcAuditRisk()"></label>
+            <label>Untracked Virtualization Clusters (Hosts): <input id="audUntracked" type="number" value="5" oninput="calcAuditRisk()"></label>
+            <button onclick="calcAuditRisk()">Calculate Risk Score</button>
+            <div style="margin-top: 14px; font-weight: 700;" id="audScoreOut">Exposure Risk Level: Moderate (Risk Score: 45)</div>
+          </div>
+        </section>
+
+        <section id="defense-practitioner-qa" class="portal-section" data-section-title="Practitioner Q&amp;A">
+          <div class="section-toolbar">
+            <h2>Practitioner Q&amp;A</h2>
+            <button class="mini-btn" onclick="printSection('defense-practitioner-qa')">Print this section</button>
+          </div>
+          <div class="qa-bank">
+            <details class="qa" data-practitioner="keep">
+              <summary>Should we share VM mobility history during a VMware audit?</summary>
+              <p>Only if explicitly required by your contract terms. Oracle and other publishers often ask for vCenter VM migration logs to claim that a database VM "could have moved" to any host in the cluster. Provide static host affinity rules and cluster boundaries first; only escalate VM history logs under legal guidance.</p>
+              <button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button>
+            </details>
+            <details class="qa" data-practitioner="keep">
+              <summary>How do we handle unlinked purchases in Flexera?</summary>
+              <p>Unlinked purchases represent bought licenses that are not associated with discovered installations. Auditors will treat these as active compliance gaps on discovered hosts while ignoring the purchased surplus on other sheets. An analyst must link entitlements to correct active scopes before final presentation.</p>
+              <button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button>
+            </details>
+            <details class="qa" data-practitioner="keep">
+              <summary>What is a counter-ELP?</summary>
+              <p>A counter-ELP is your internal version of the Effective License Position. It uses your verified interpretations of contract clauses, custom virtualization boundaries, and cleaned inventory lists to contest the auditor's initial high-water-mark draft findings.</p>
+              <button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button>
+            </details>
+          </div>
+        </section>
+
+        <section id="defense-cheat-sheet" class="portal-section" data-section-title="Quick Revision Cheat Sheet">
+          <div class="section-toolbar">
+            <h2>Quick Revision Cheat Sheet</h2>
+            <button class="mini-btn" onclick="printSection('defense-cheat-sheet')">Print this section</button>
+          </div>
+          <div class="cheat-grid" data-practitioner="keep">
+            <div>
+              <h3>Single Contact</h3>
+              <p>Establish a Single Point of Contact (SPOC). Prevent engineers from sharing raw data or scripts directly with the auditor.</p>
+            </div>
+            <div>
+              <h3>Sanitize Data</h3>
+              <p>Never share raw system logs. Scrub server names, user accounts, and unrelated software products beforehand.</p>
+            </div>
+            <div>
+              <h3>No Probes</h3>
+              <p>Reject the installation of external network scanning tools. Run all scripts internally under your own control.</p>
+            </div>
+            <div>
+              <h3>Counter-ELP</h3>
+              <p>Build your own counter-ELP. Challenge the auditor's default assumptions with verified contractual evidence.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="engagement-panel" data-engagement-panel="audit-defense-using-servicenow-sam-pro-and-flexera">
+          <div class="engagement-top">
+            <div>
+              <span class="eyebrow">Reader response</span>
+              <h2 style="margin:8px 0 0">Discuss this article</h2>
+              <p class="meta">Likes, shares and comments are stored in this browser for a static hosted site.</p>
+            </div>
+            <div class="engagement-actions">
+              <button class="primary" type="button" data-like-button>Like</button>
+              <button type="button" onclick="copyLink()">Share</button>
+            </div>
+          </div>
+          <div class="engagement-counts">
+            <span><b data-like-count>0</b> likes</span>
+            <span><b data-share-count>0</b> shares</span>
+            <span><b data-comment-count>0</b> comments</span>
+          </div>
+          <form class="comment-form" data-comment-form>
+            <input name="name" autocomplete="name" placeholder="Your name">
+            <textarea name="comment" required placeholder="Add a thoughtful comment"></textarea>
+            <button type="submit">Post comment</button>
+          </form>
+          <div class="comment-list" data-comment-list></div>
+        </section>
+
+      </div>
+    </div>
+  </article>
+</main>
+<footer class="site-footer">By Ashish Deshmukh · Notes on technology, work, learning, systems and practical execution.</footer>
+<script src="../assets/site.js"></script>
+<script>
+function calcAuditRisk() {
+  const ent = +document.getElementById('audEnt').value || 0;
+  const disc = +document.getElementById('audDisc').value || 0;
+  const untracked = +document.getElementById('audUntracked').value || 0;
+  
+  // Risk goes down with completeness of entitlements, goes up with discrepancies and untracked assets
+  const entRisk = 100 - ent;
+  const discRisk = disc * 2.5;
+  const untrackedRisk = untracked * 6.0;
+  
+  const totalRisk = Math.min(100, Math.max(0, (entRisk * 0.4) + (discRisk * 0.3) + (untrackedRisk * 0.3)));
+  
+  let rating = 'Low';
+  if (totalRisk >= 75) rating = 'CRITICAL';
+  else if (totalRisk >= 50) rating = 'High';
+  else if (totalRisk >= 25) rating = 'Moderate';
+  
+  const out = document.getElementById('audScoreOut');
+  if (out) {
+    out.textContent = `Calculated Risk Score: ${totalRisk.toFixed(0)}/100 | Exposure Risk Level: ${rating}`;
+  }
+}
+document.addEventListener('DOMContentLoaded', calcAuditRisk);
+</script>
+</body></html>
