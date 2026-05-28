@@ -37,13 +37,137 @@ function autoFormatContent(rawText) {
     return rawText; // Already HTML
   }
   
-  const paragraphs = rawText.split(/\n\s*\n+/);
+  let content = rawText;
+  
+  // 1) Parse [notes]...[/notes]
+  content = content.replace(/\[notes\]([\s\S]*?)\[\/notes\]/g, (match, text) => {
+    return `<div class="practitioner-card" data-practitioner="keep"><h4>Practitioner Notes</h4><p>${text.trim()}</p></div>`;
+  });
+  
+  // 2) Parse [warning]...[/warning], [danger]...[/danger], [info]...[/info]
+  content = content.replace(/\[warning\]([\s\S]*?)\[\/warning\]/g, (match, text) => {
+    return `<div class="callout warning"><strong>Warning</strong><p>${text.trim()}</p></div>`;
+  });
+  content = content.replace(/\[danger\]([\s\S]*?)\[\/danger\]/g, (match, text) => {
+    return `<div class="callout danger"><strong>Danger</strong><p>${text.trim()}</p></div>`;
+  });
+  content = content.replace(/\[info\]([\s\S]*?)\[\/info\]/g, (match, text) => {
+    return `<div class="callout"><strong>Notice</strong><p>${text.trim()}</p></div>`;
+  });
+  
+  // 3) Parse [formula]...[/formula]
+  content = content.replace(/\[formula\]([\s\S]*?)\[\/formula\]/g, (match, text) => {
+    return `<div class="copy-box"><div><strong>Formula / Code</strong></div><button class="mini-btn" onclick="copyText(this)">Copy</button><pre><code class="">${text.trim()}</code></pre></div>`;
+  });
+  
+  // 4) Parse [excel title="..." size="..." sheets="..." link="..."]
+  content = content.replace(/\[excel\s+title="([^"]+)"\s+size="([^"]+)"\s+sheets="([^"]+)"\s+link="([^"]+)"\s*\]/g, (match, title, size, sheets, link) => {
+    return `
+      <div class="workbook-embed" data-practitioner="keep" style="margin:20px 0">
+        <div class="workbook-glass">
+          <div>
+            <span class="eyebrow">Embedded Excel Workbook</span>
+            <h3 style="margin:6px 0">${title}</h3>
+            <p style="margin:0 0 10px; font-size:14px; color:var(--muted)">This publisher-specific workbook is embedded inside this portal as a real .xlsx file with formulas, sample data, filters, frozen headers, assumptions, and executive summary logic.</p>
+            <div class="workbook-meta"><span>${sheets}</span><span>${size}</span><span>Formula-backed ELP</span></div>
+          </div>
+          <a class="download-btn" download="${title.replace(/\s+/g, '_')}.xlsx" href="${link}">Download Excel</a>
+        </div>
+      </div>
+    `;
+  });
+  
+  // 5) Parse [calculator type="..."]
+  content = content.replace(/\[calculator\s+type="([^"]+)"\s*\]/g, (match, type) => {
+    if (type === 'oracle') {
+      return `
+        <div class="calc-card" data-practitioner="keep" style="margin:20px 0">
+          <h3>Oracle Processor Calculator</h3>
+          <label>Cores <input id="orclCores" type="number" value="20" oninput="calcOracle()"></label>
+          <label>Core factor <input id="orclFactor" type="number" value="0.5" step="0.25" oninput="calcOracle()"></label>
+          <button onclick="calcOracle()">Calculate</button>
+          <output id="orclCalcOut" style="display:block; margin-top:10px; font-weight:700">Required: 10 Processor licenses</output>
+        </div>
+      `;
+    } else if (type === 'ibm') {
+      return `
+        <div class="calc-card" data-practitioner="keep" style="margin:20px 0">
+          <h3>IBM PVU Calculator</h3>
+          <label>Sockets <input id="ibmSockets" type="number" value="2" oninput="calcIBM()"></label>
+          <label>Cores per Socket <input id="ibmCores" type="number" value="8" oninput="calcIBM()"></label>
+          <label>PVU per Core <input id="ibmPvu" type="number" value="70" step="10" oninput="calcIBM()"></label>
+          <label>VM Allocated vCPUs <input id="ibmVcpu" type="number" value="4" oninput="calcIBM()"></label>
+          <button onclick="calcIBM()">Calculate PVU</button>
+          <output id="ibmCalcOut" style="display:block; margin-top:10px; font-weight:700">Full capacity: 1120 PVU | Sub-capacity: 280 PVU</output>
+        </div>
+      `;
+    } else if (type === 'java') {
+      return `
+        <div class="calc-card" data-practitioner="keep" style="margin:20px 0">
+          <h3>Java SE Universal Subscription Calculator</h3>
+          <label>Employees <input id="javaEmpCount" type="number" value="1200" oninput="calcJavaCost()"></label>
+          <label>Contractors <input id="javaContCount" type="number" value="300" oninput="calcJavaCost()"></label>
+          <button onclick="calcJavaCost()">Calculate Annual Cost</button>
+          <output id="javaCalcOut" style="display:block; margin-top:10px; font-weight:700">Annual Cost: $216,000 / year</output>
+        </div>
+      `;
+    } else if (type === 'copilot') {
+      return `
+        <div class="calc-card" data-practitioner="keep" style="margin:20px 0">
+          <h3>M365 Copilot Cost &amp; ROI Calculator</h3>
+          <label>Assigned Seats <input id="copilotSeats" type="number" value="500" oninput="calcCopilotROI()"></label>
+          <label>Inactive Users <input id="copilotInactive" type="number" value="150" oninput="calcCopilotROI()"></label>
+          <label>Estimated Hours Saved/User <input id="copilotHours" type="number" value="4" oninput="calcCopilotROI()"></label>
+          <button onclick="calcCopilotROI()">Calculate ROI</button>
+          <output id="copilotCalcOut" style="display:block; margin-top:10px; font-weight:700">Annual Waste: $54,000 / year</output>
+        </div>
+      `;
+    }
+    return '';
+  });
+
+  const paragraphs = content.split(/\n\s*\n+/);
   let html = '';
   let currentSection = null;
   
   paragraphs.forEach((p, idx) => {
     const text = p.trim();
     if (!text) return;
+    
+    // Markdown table detection: starts and ends with |
+    if (text.startsWith('|') && text.includes('\n|')) {
+      const lines = text.split('\n');
+      let tableHtml = '<div class="table-wrap"><table class="data-table"><thead>';
+      let isBody = false;
+      
+      lines.forEach(line => {
+        const cleanLine = line.trim().replace(/^\||\|$/g, '');
+        if (cleanLine.includes('---')) {
+          tableHtml += '</thead><tbody>';
+          isBody = true;
+          return;
+        }
+        
+        const cols = cleanLine.split('|');
+        tableHtml += '<tr>';
+        cols.forEach(col => {
+          const cleanCol = col.trim();
+          tableHtml += isBody ? `<td>${cleanCol}</td>` : `<th>${cleanCol}</th>`;
+        });
+        tableHtml += '</tr>';
+      });
+      
+      tableHtml += isBody ? '</tbody>' : '</thead>';
+      tableHtml += '</table></div>';
+      html += tableHtml;
+      return;
+    }
+    
+    // Pass raw HTML cards directly
+    if (text.startsWith('<div') || text.startsWith('<section')) {
+      html += text;
+      return;
+    }
     
     // Header logic: starts with # or ##, or is a short line without ending punctuation
     const isHeader = text.startsWith('##') || text.startsWith('#') || (text.length < 80 && !text.endsWith('.') && !text.endsWith('?') && !text.endsWith('!'));
@@ -161,6 +285,8 @@ function printSection(id){window.print()}
 function copyLink(){navigator.clipboard.writeText(location.href);trackShare();const ev=typeof event!=='undefined'?event:null;const targetBtn=(ev?.target&&ev.target.tagName==='BUTTON')?ev.target:null;const b=targetBtn||document.querySelector('[data-copy-link]');if(b){const old=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=old,900)}}
 function calcIBM(){const s=+document.getElementById('ibmSockets')?.value||0,c=+document.getElementById('ibmCores')?.value||0,p=+document.getElementById('ibmPvu')?.value||0,v=+document.getElementById('ibmVcpu')?.value||0;const o=document.getElementById('ibmCalcOut');if(o)o.textContent=`Full capacity: ${s*c*p} PVU | Sub-capacity: ${v*p} PVU`}
 function calcOracle(){const c=+document.getElementById('orclCores')?.value||0,f=+document.getElementById('orclFactor')?.value||0;const o=document.getElementById('orclCalcOut');if(o)o.textContent=`Required: ${Math.ceil(c*f)} Processor licenses`}
+function calcJavaCost(){const e=+document.getElementById('javaEmpCount')?.value||0,t=+document.getElementById('javaContCount')?.value||0,n=e+t;let a=0;n<=999?a=15:n<=2999?a=12:n<=8999?a=10.5:n<=19999?a=8.25:n<=49999?a=6.75:a=5.25;const r=n*a*12,c=document.getElementById('javaCalcOut');c&&(c.textContent=`Calculated Employees: ${n} | Tier Price: $${a.toFixed(2)}/mo | Annual Cost: $${r.toLocaleString()} / year`)}
+function calcCopilotROI(){const e=+document.getElementById('copilotSeats')?.value||0,t=+document.getElementById('copilotInactive')?.value||0,n=+document.getElementById('copilotHours')?.value||0,a=360*e,r=360*t,c=Math.max(0,e-t),i=50*n,s=12*c*i,o=s-a,u=document.getElementById('copilotCalcOut');u&&(u.textContent=`Annual Spend: $${a.toLocaleString()} | Annual Inactive Waste: $${r.toLocaleString()} | Active Productivity ROI: $${s.toLocaleString()}/year | Net Benefit: $${o.toLocaleString()}/year`)}
 
 function renderDynamicArticles(){
   const grid = document.querySelector('.article-grid');
@@ -175,7 +301,6 @@ function renderDynamicArticles(){
     if(deleted.includes(slug)){
       card.remove();
     } else {
-      // Apply hardcoded edits if any
       if (hardEdits[slug]) {
         const prefix = (location.pathname.includes('/articles/')) ? '' : 'articles/';
         card.setAttribute('href', `${prefix}viewer.html?slug=${slug}`);
@@ -278,6 +403,185 @@ function injectAdminControls(card, slug, isDynamic){
   card.appendChild(container);
 }
 
+function insertAtCursor(textarea, before, after = '') {
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const text = textarea.value;
+  const selected = text.substring(start, end);
+  const replacement = before + selected + after;
+  textarea.value = text.substring(0, start) + replacement + text.substring(end);
+  textarea.selectionStart = start + before.length;
+  textarea.selectionEnd = start + before.length + selected.length;
+  textarea.focus();
+}
+
+function showCalculatorSelectionDialog(textarea) {
+  const choice = prompt("Enter calculator type:\n1 - Oracle Processor\n2 - IBM PVU\n3 - Java SE Universal Cost\n4 - M365 Copilot ROI");
+  if (!choice) return;
+  let type = '';
+  if (choice === '1') type = 'oracle';
+  else if (choice === '2') type = 'ibm';
+  else if (choice === '3') type = 'java';
+  else if (choice === '4') type = 'copilot';
+  else {
+    alert("Invalid choice.");
+    return;
+  }
+  insertAtCursor(textarea, `[calculator type="${type}"]\n`);
+}
+
+function showExcelWorkbookFormDialog(textarea) {
+  const input = prompt(
+    "Enter Excel details (separated by vertical bar |):\nTitle | Size | Sheets Count | File Path\n\nDefault sample:",
+    "Oracle SAM ELP Workbook | 37.3 KB | 13 sheets | ../assets/Oracle_SAM_ELP_Workbook.xlsx"
+  );
+  if (!input) return;
+  const parts = input.split('|').map(p => p.trim());
+  if (parts.length < 4) {
+    alert("Invalid format. Please enter all 4 values separated by '|'.");
+    return;
+  }
+  const [title, size, sheets, link] = parts;
+  insertAtCursor(textarea, `[excel title="${title}" size="${size}" sheets="${sheets}" link="${link}"]\n`);
+}
+
+function setupRichEditor(modalContainer, form) {
+  const textarea = form.querySelector('textarea[name="content"]');
+  if (!textarea) return;
+  
+  const wrapper = document.createElement('div');
+  wrapper.className = 'editor-textarea-wrapper';
+  wrapper.innerHTML = `
+    <div class="editor-tabs">
+      <button type="button" class="editor-tab-btn active" data-tab="write">Write</button>
+      <button type="button" class="editor-tab-btn" data-tab="preview">Visual Live Preview</button>
+    </div>
+    <div data-editor-pane="write">
+      <div class="editor-toolbar">
+        <div class="editor-toolbar-group">
+          <span class="editor-toolbar-label">Cards</span>
+          <button type="button" class="editor-btn" data-insert="notes" title="Practitioner Notes Card">🟦 Notes</button>
+          <button type="button" class="editor-btn" data-insert="warning" title="Warning Callout (Amber)">🟨 Warning</button>
+          <button type="button" class="editor-btn" data-insert="danger" title="Danger Callout (Red)">🟥 Danger</button>
+          <button type="button" class="editor-btn" data-insert="info" title="Info callout (Gray)">⬜ Info</button>
+        </div>
+        <div class="editor-toolbar-group">
+          <span class="editor-toolbar-label">Math/Data</span>
+          <button type="button" class="editor-btn" data-insert="formula" title="Math Formula/Code box">🖤 Formula</button>
+          <button type="button" class="editor-btn" data-insert="table" title="Standard Markdown Table">📊 Table</button>
+        </div>
+        <div class="editor-toolbar-group">
+          <span class="editor-toolbar-label">Widgets</span>
+          <button type="button" class="editor-btn" data-insert="calculator" title="Interactive Calculator widget">🧮 Calculator</button>
+          <button type="button" class="editor-btn" data-insert="excel" title="Excel Workbook Attachment">📁 Excel</button>
+        </div>
+      </div>
+    </div>
+    <div data-editor-pane="preview" style="display: none;">
+      <div class="editor-preview-container article-body"></div>
+    </div>
+  `;
+  
+  const parentLabel = textarea.parentElement;
+  const writePane = wrapper.querySelector('[data-editor-pane="write"]');
+  parentLabel.insertBefore(wrapper, textarea);
+  writePane.appendChild(textarea);
+  
+  parentLabel.style.display = 'flex';
+  parentLabel.style.flexDirection = 'column';
+  parentLabel.style.gap = '6px';
+  
+  const tabBtns = wrapper.querySelectorAll('.editor-tab-btn');
+  const writePaneDiv = wrapper.querySelector('[data-editor-pane="write"]');
+  const previewPaneDiv = wrapper.querySelector('[data-editor-pane="preview"]');
+  const previewContainer = wrapper.querySelector('.editor-preview-container');
+  
+  tabBtns.forEach(btn => {
+    btn.onclick = () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      const tab = btn.dataset.tab;
+      if (tab === 'write') {
+        writePaneDiv.style.display = 'block';
+        previewPaneDiv.style.display = 'none';
+        textarea.focus();
+      } else {
+        writePaneDiv.style.display = 'none';
+        previewPaneDiv.style.display = 'block';
+        
+        const rawContent = textarea.value;
+        const compiledHtml = autoFormatContent(rawContent);
+        previewContainer.innerHTML = compiledHtml;
+        
+        // Setup triggers for any interactive components in the preview
+        const orclCores = previewContainer.querySelector('#orclCores');
+        const orclFactor = previewContainer.querySelector('#orclFactor');
+        if (orclCores && orclFactor) {
+          orclCores.oninput = () => calcOracle();
+          orclFactor.oninput = () => calcOracle();
+          calcOracle();
+        }
+        
+        const ibmSockets = previewContainer.querySelector('#ibmSockets');
+        const ibmCores = previewContainer.querySelector('#ibmCores');
+        const ibmPvu = previewContainer.querySelector('#ibmPvu');
+        const ibmVcpu = previewContainer.querySelector('#ibmVcpu');
+        if (ibmSockets && ibmCores && ibmPvu && ibmVcpu) {
+          ibmSockets.oninput = () => calcIBM();
+          ibmCores.oninput = () => calcIBM();
+          ibmPvu.oninput = () => calcIBM();
+          ibmVcpu.oninput = () => calcIBM();
+          calcIBM();
+        }
+        
+        const javaEmp = previewContainer.querySelector('#javaEmpCount');
+        const javaCont = previewContainer.querySelector('#javaContCount');
+        if (javaEmp && javaCont) {
+          javaEmp.oninput = () => calcJavaCost();
+          javaCont.oninput = () => calcJavaCost();
+          calcJavaCost();
+        }
+        
+        const copilotSeats = previewContainer.querySelector('#copilotSeats');
+        const copilotInactive = previewContainer.querySelector('#copilotInactive');
+        const copilotHours = previewContainer.querySelector('#copilotHours');
+        if (copilotSeats && copilotInactive && copilotHours) {
+          copilotSeats.oninput = () => calcCopilotROI();
+          copilotInactive.oninput = () => calcCopilotROI();
+          copilotHours.oninput = () => calcCopilotROI();
+          calcCopilotROI();
+        }
+      }
+    };
+  });
+  
+  const insertBtns = wrapper.querySelectorAll('.editor-btn');
+  insertBtns.forEach(btn => {
+    btn.onclick = () => {
+      const type = btn.dataset.insert;
+      if (type === 'notes') {
+        insertAtCursor(textarea, '[notes]\n', '\n[/notes]');
+      } else if (type === 'warning') {
+        insertAtCursor(textarea, '[warning]\n', '\n[/warning]');
+      } else if (type === 'danger') {
+        insertAtCursor(textarea, '[danger]\n', '\n[/danger]');
+      } else if (type === 'info') {
+        insertAtCursor(textarea, '[info]\n', '\n[/info]');
+      } else if (type === 'formula') {
+        insertAtCursor(textarea, '[formula]\n', '\n[/formula]');
+      } else if (type === 'table') {
+        const tableText = `\n| Metric | Rule / Formula | Example | Watchout |\n| --- | --- | --- | --- |\n| Processor | Physical cores * factor | 20 cores * 0.5 = 10 licenses | Virtualization boundary drives cores |\n| Named User Plus | Actual users vs minimums | EE: 25 NUP per Processor min | Minimum exceeds active users |\n`;
+        insertAtCursor(textarea, tableText);
+      } else if (type === 'calculator') {
+        showCalculatorSelectionDialog(textarea);
+      } else if (type === 'excel') {
+        showExcelWorkbookFormDialog(textarea);
+      }
+    };
+  });
+}
+
 function showAddArticleModal(){
   const modalId = 'addArticleModal';
   if(document.getElementById(modalId)) return;
@@ -297,16 +601,16 @@ function showAddArticleModal(){
   modal.style.padding = '20px';
   
   modal.innerHTML = `
-    <div class="calc-card" style="width: 100%; max-width: 600px; background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); max-height: calc(100vh - 40px); overflow: auto; border-radius:14px; padding:22px">
+    <div class="editor-modal-content">
       <h2 style="margin-top:0; font-size:24px">Add New Article</h2>
       <form id="addArticleForm" style="display:grid; gap:12px">
-        <label style="font-weight:700; font-size:13px">Title<br><input name="title" required placeholder="e.g. Oracle Database Performance Tuning" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
-        <label style="font-weight:700; font-size:13px">Category / Topic<br><input name="category" required placeholder="e.g. Oracle Licensing" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
-        <label style="font-weight:700; font-size:13px">Summary / Deck<br><textarea name="description" required placeholder="e.g. A field guide to database tuning..." style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); height:60px; font-family:inherit"></textarea></label>
-        <label style="font-weight:700; font-size:13px">Content (HTML or Plain Text)<br><textarea name="content" required placeholder="Paste plain text paragraphs (separated by double newlines) or custom HTML markup." style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); height:160px; font-family:inherit"></textarea></label>
+        <label style="font-weight:700; font-size:13px">Title<br><input name="title" required placeholder="e.g. Oracle Database Performance Tuning" class="editor-input"></label>
+        <label style="font-weight:700; font-size:13px">Category / Topic<br><input name="category" required placeholder="e.g. Oracle Licensing" class="editor-input"></label>
+        <label style="font-weight:700; font-size:13px">Summary / Deck<br><textarea name="description" required placeholder="e.g. A field guide to database tuning..." class="editor-input" style="height:60px; resize:vertical"></textarea></label>
+        <label style="font-weight:700; font-size:13px">Content (HTML or Plain Text)<br><textarea name="content" required class="editor-input" style="height:200px; resize:vertical" placeholder="Write article content. Use the visual editor toolbar above to insert styled components."></textarea></label>
         <div style="display:flex; gap:10px">
-          <label style="flex:1; font-weight:700; font-size:13px">Author<br><input name="author" value="Ashish Deshmukh" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
-          <label style="flex:1; font-weight:700; font-size:13px">Date<br><input name="date" value="${new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'})}" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
+          <label style="flex:1; font-weight:700; font-size:13px">Author<br><input name="author" value="Ashish Deshmukh" class="editor-input"></label>
+          <label style="flex:1; font-weight:700; font-size:13px">Date<br><input name="date" value="${new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'})}" class="editor-input"></label>
         </div>
         <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px">
           <button type="button" class="theme-toggle" id="cancelAddArt" style="cursor:pointer">Cancel</button>
@@ -317,6 +621,8 @@ function showAddArticleModal(){
   `;
   
   document.body.appendChild(modal);
+  setupRichEditor(modal, document.getElementById('addArticleForm'));
+  
   document.getElementById('cancelAddArt').onclick = () => modal.remove();
   
   document.getElementById('addArticleForm').onsubmit = (e) => {
@@ -364,7 +670,7 @@ function showEditArticleModal(slug, isDynamic){
       title: document.querySelector(`[href*="${slug}"] h2`)?.textContent || '',
       category: document.querySelector(`[href*="${slug}"] .cat`)?.textContent || '',
       description: document.querySelector(`[href*="${slug}"] p`)?.textContent || '',
-      content: '', // Edited hardcoded ones will save content as well
+      content: '',
       author: 'Ashish Deshmukh',
       date: new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'})
     };
@@ -387,16 +693,16 @@ function showEditArticleModal(slug, isDynamic){
   modal.style.padding = '20px';
   
   modal.innerHTML = `
-    <div class="calc-card" style="width: 100%; max-width: 600px; background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow); max-height: calc(100vh - 40px); overflow: auto; border-radius:14px; padding:22px">
+    <div class="editor-modal-content">
       <h2 style="margin-top:0; font-size:24px">Edit Article</h2>
       <form id="editArticleForm" style="display:grid; gap:12px">
-        <label style="font-weight:700; font-size:13px">Title<br><input name="title" required value="${article.title}" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
-        <label style="font-weight:700; font-size:13px">Category / Topic<br><input name="category" required value="${article.category}" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
-        <label style="font-weight:700; font-size:13px">Summary / Deck<br><textarea name="description" required style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); height:60px; font-family:inherit">${article.description}</textarea></label>
-        <label style="font-weight:700; font-size:13px">Content (HTML or Plain Text)<br><textarea name="content" required placeholder="Paste plain text paragraphs or custom HTML markup." style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); height:160px; font-family:inherit">${article.rawContent || article.content || ''}</textarea></label>
+        <label style="font-weight:700; font-size:13px">Title<br><input name="title" required value="${article.title}" class="editor-input"></label>
+        <label style="font-weight:700; font-size:13px">Category / Topic<br><input name="category" required value="${article.category}" class="editor-input"></label>
+        <label style="font-weight:700; font-size:13px">Summary / Deck<br><textarea name="description" required class="editor-input" style="height:60px; resize:vertical">${article.description}</textarea></label>
+        <label style="font-weight:700; font-size:13px">Content (HTML or Plain Text)<br><textarea name="content" required class="editor-input" style="height:200px; resize:vertical" placeholder="Write article content. Use the visual editor toolbar above to insert styled components.">${article.rawContent || article.content || ''}</textarea></label>
         <div style="display:flex; gap:10px">
-          <label style="flex:1; font-weight:700; font-size:13px">Author<br><input name="author" value="${article.author || 'Ashish Deshmukh'}" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
-          <label style="flex:1; font-weight:700; font-size:13px">Date<br><input name="date" value="${article.date}" style="width:100%; padding:8px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink); font-family:inherit"></label>
+          <label style="flex:1; font-weight:700; font-size:13px">Author<br><input name="author" value="${article.author || 'Ashish Deshmukh'}" class="editor-input"></label>
+          <label style="flex:1; font-weight:700; font-size:13px">Date<br><input name="date" value="${article.date}" class="editor-input"></label>
         </div>
         <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:8px">
           <button type="button" class="theme-toggle" id="cancelEditArt" style="cursor:pointer">Cancel</button>
@@ -407,6 +713,8 @@ function showEditArticleModal(slug, isDynamic){
   `;
   
   document.body.appendChild(modal);
+  setupRichEditor(modal, document.getElementById('editArticleForm'));
+  
   document.getElementById('cancelEditArt').onclick = () => modal.remove();
   
   document.getElementById('editArticleForm').onsubmit = (e) => {
@@ -442,6 +750,7 @@ function showEditArticleModal(slug, isDynamic){
   };
 }
 
+
 function showAdminDashboard(){
   const modalId = 'adminDashboardModal';
   if(document.getElementById(modalId)) return;
@@ -450,7 +759,6 @@ function showAdminDashboard(){
   const deleted = JSON.parse(localStorage.getItem('ashishJournal:deletedArticles') || '[]');
   const hardEdits = JSON.parse(localStorage.getItem('ashishJournal:hardcodedEdits') || '{}');
   
-  // Calculate total comments across all slugs in localStorage
   let totalComments = 0;
   for(let i=0; i<localStorage.length; i++){
     const key = localStorage.key(i);
@@ -539,7 +847,6 @@ document.addEventListener('DOMContentLoaded',()=> {
   document.querySelectorAll('[data-comment-form]').forEach(f => f.addEventListener('submit', addComment));
   updateEngagement(getSlug());
 
-  // Inject Admin button next to theme toggle
   const navLinks = document.querySelector('.nav-links');
   if (navLinks) {
     const adminBtn = document.createElement('button');
@@ -550,10 +857,8 @@ document.addEventListener('DOMContentLoaded',()=> {
     navLinks.appendChild(adminBtn);
   }
 
-  // Load dynamics & deletions
   renderDynamicArticles();
 
-  // Inject Add Article and Admin Dashboard buttons on homepage
   const isHome = location.pathname.endsWith('index.html') || location.pathname === '/' || location.pathname.endsWith('/ashish-deshmukh-journal/') || location.pathname.endsWith('/sam-blog-site/');
   if (isHome) {
     const titleSec = document.querySelector('.home-section .section-title');
