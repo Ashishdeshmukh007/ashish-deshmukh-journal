@@ -2,7 +2,7 @@
 <meta name="author" content="Ashish Deshmukh">
 <title id="viewerTitle">Ashish’s Enterprise Ledger</title>
 <meta name="description" id="viewerMetaDesc" content="Dynamic article viewer.">
-<link rel="stylesheet" href="../assets/styles.css?v=20260529-visuals">
+<link rel="stylesheet" href="../assets/styles.css?v=20260529-deepvisuals">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/viewer.html">
 
@@ -58,33 +58,33 @@ document.addEventListener('DOMContentLoaded', () => {
     location.href = '../index.html';
     return;
   }
-  
+
   document.body.dataset.articleSlug = slug;
-  
+
   // Try to load from dynamic articles first, then check edited hardcoded articles
   const dynamics = JSON.parse(localStorage.getItem('ashishJournal:dynamicArticles') || '[]');
   const hardEdits = JSON.parse(localStorage.getItem('ashishJournal:hardcodedEdits') || '{}');
-  
+
   const article = dynamics.find(a => a.slug === slug) || hardEdits[slug];
-  
+
   if (!article) {
     document.getElementById('viewerBody').innerHTML = '<p class="lead">Article not found.</p>';
     return;
   }
-  
+
   document.title = article.title + ' | Ashish’s Enterprise Ledger';
   document.getElementById('viewerMetaDesc').content = article.description;
   document.getElementById('viewerCat').textContent = article.category;
   document.getElementById('viewerH1').textContent = article.title;
   document.getElementById('viewerDeck').textContent = article.description;
   document.getElementById('viewerByline').innerHTML = `<strong>By ${article.author || 'Ashish Deshmukh'} on ${article.date}</strong><br>10 min read`;
-  
+
   const body = document.getElementById('viewerBody');
-  
+
   // Format content using central auto-formatting engine from site.js
   const formattedHtml = autoFormatContent(article.rawContent || article.content || '');
   body.innerHTML = formattedHtml;
-  
+
   // Generate Table of Contents
   const toc = document.getElementById('viewerToc');
   const headings = body.querySelectorAll('h2, h3');
@@ -92,12 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
     headings.forEach((h, idx) => {
       const id = h.id || `section-${idx}`;
       h.id = id;
-      
+
       const link = document.createElement('a');
       link.href = `#${id}`;
       link.textContent = h.textContent;
       toc.appendChild(link);
-      
+
       if (h.tagName === 'H2') {
         // Wrap and inject toolbar only if not already wrapped
         if (h.parentNode && !h.parentNode.classList.contains('section-toolbar')) {
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
           wrap.className = 'section-toolbar';
           h.parentNode.insertBefore(wrap, h);
           wrap.appendChild(h);
-          
+
           const printBtn = document.createElement('button');
           printBtn.className = 'mini-btn';
           printBtn.textContent = 'Print this section';
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-  
+
   // Inject standard engagement panel for dynamic articles
   const panelHtml = `
   <section class="engagement-panel" data-engagement-panel="${slug}">
@@ -142,11 +142,11 @@ document.addEventListener('DOMContentLoaded', () => {
     </form>
     <div class="comment-list" data-comment-list></div>
   </section>`;
-  
+
   const panelContainer = document.createElement('div');
   panelContainer.innerHTML = panelHtml;
   body.appendChild(panelContainer);
-  
+
   // Re-run engagement logic from site.js
   updateEngagement(slug);
   panelContainer.querySelector('[data-like-button]').addEventListener('click', toggleLike);

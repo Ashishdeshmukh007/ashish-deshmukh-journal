@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="FinOps and ITAM Are Converging: A 2026 Technology Value Operating Model">
 <meta name="twitter:description" content="FinOps has expanded beyond public cloud. SaaS, licensing, AI, data centers, and software contracts now belong in one technology value conversation.">
 <meta name="twitter:image" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/assets/social/finops-itam-convergence-technology-value-2026.jpg">
-<link rel="stylesheet" href="../assets/styles.css?v=20260529-visuals">
+<link rel="stylesheet" href="../assets/styles.css?v=20260529-deepvisuals">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/finops-itam-convergence-technology-value-2026.html">
 </head><body data-article-slug="finops-itam-convergence-technology-value-2026"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
@@ -38,10 +38,6 @@
         <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
         <button data-copy-link onclick="copyLink()">Copy link</button>
       </div>
-      <figure class="article-visual">
-        <img src="../assets/visuals/finops-itam-convergence-technology-value-2026-infographic.png" alt="FinOps + ITAM Convergence visual infographic">
-        <figcaption>Technology value visual showing how FinOps, ITAM and SaaS management can converge into one operating model.</figcaption>
-      </figure>
     </section>
     <div class="article-shell">
       <aside class="toc">
@@ -58,7 +54,7 @@
         <a href="#converge-cheat-sheet">Quick Revision Cheat Sheet</a>
       </aside>
       <div class="article-body">
-        
+
         <section id="converge-executive-view" class="portal-section" data-section-title="Executive View">
           <div class="section-toolbar">
             <h2>Executive View</h2>
@@ -171,7 +167,12 @@
               </tbody>
             </table>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="cloud-finops-itam-value-loop.png">
+            <img src="../assets/visuals/deep/cloud-finops-itam-value-loop.png" alt="FinOps and ITAM value loop">
+            <figcaption><strong>Visual explainer:</strong> FinOps and ITAM value loop: cloud spend, BYOL evidence, SaaS usage, reclaim actions and renewal planning should operate as one management cycle.</figcaption>
+          </figure>
+</section>
 
         <section id="converge-byol" class="portal-section" data-section-title="BYOL vs PAYG Economics">
           <div class="section-toolbar">
@@ -215,7 +216,12 @@
               </tbody>
             </table>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="microsoft-ea-trueup-elp-flow.png">
+            <img src="../assets/visuals/deep/microsoft-ea-trueup-elp-flow.png" alt="BYOL control visual">
+            <figcaption><strong>Visual explainer:</strong> BYOL control visual: entitlement, deployment, cloud benefit declarations and renewal deltas must be reconciled before cost optimization is claimed.</figcaption>
+          </figure>
+</section>
 
         <section id="converge-operating-model" class="portal-section" data-section-title="The Converged Operating Model">
           <div class="section-toolbar">
@@ -270,7 +276,7 @@
             <button class="mini-btn" onclick="printSection('converge-calculator')">Print this section</button>
           </div>
           <p>Estimate your potential monthly savings by migrating your cloud databases from Pay-As-You-Go (PAYG) rates to Bring Your Own License (BYOL) models. Input your core count and estimated run hours to model the savings.</p>
-          
+
           <div class="calc-card" data-practitioner="keep">
             <h3>BYOL vs PAYG Cloud Savings Calculator</h3>
             <label>SQL Enterprise vCPUs: <input id="byolCores" type="number" value="8" oninput="calcBYOLSavings()"></label>
@@ -364,16 +370,16 @@
 function calcBYOLSavings() {
   const cores = +document.getElementById('byolCores').value || 0;
   const hours = +document.getElementById('byolHours').value || 0;
-  
+
   // Assume SQL Enterprise PAYG software premium of $0.625 per core-hour
   // Assume compute infrastructure cost of $0.15 per core-hour (constant in both PAYG and BYOL)
   const softwareHourly = cores * 0.625;
   const infraHourly = cores * 0.15;
-  
+
   const paygCost = (softwareHourly + infraHourly) * hours;
   const byolCost = infraHourly * hours;
   const savings = paygCost - byolCost;
-  
+
   const out = document.getElementById('byolCalcOut');
   if (out) {
     out.textContent = `Monthly PAYG Cost: $${paygCost.toLocaleString(undefined, {maximumFractionDigits:0})} | Monthly BYOL Cost: $${byolCost.toLocaleString(undefined, {maximumFractionDigits:0})} | Monthly Savings: $${savings.toLocaleString(undefined, {maximumFractionDigits:0})}`;

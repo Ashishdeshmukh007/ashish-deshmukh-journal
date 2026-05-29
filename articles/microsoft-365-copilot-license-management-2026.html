@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="Microsoft 365 Copilot License Management in 2026: From Pilot Excitement to Cost Control">
 <meta name="twitter:description" content="Microsoft 365 Copilot licensing now needs the same discipline as any major enterprise software program: eligibility, assignment, usage, governance, and renewal control.">
 <meta name="twitter:image" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/assets/social/microsoft-365-copilot-license-management-2026.jpg">
-<link rel="stylesheet" href="../assets/styles.css?v=20260529-visuals">
+<link rel="stylesheet" href="../assets/styles.css?v=20260529-deepvisuals">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/microsoft-365-copilot-license-management-2026.html">
 </head><body data-article-slug="microsoft-365-copilot-license-management-2026"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
@@ -38,10 +38,6 @@
         <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
         <button data-copy-link onclick="copyLink()">Copy link</button>
       </div>
-      <figure class="article-visual">
-        <img src="../assets/visuals/microsoft-365-copilot-license-management-2026-infographic.png" alt="M365 Copilot Cost Control visual infographic">
-        <figcaption>Copilot governance visual showing how seat assignment, usage evidence and productivity signals should drive renewal decisions.</figcaption>
-      </figure>
     </section>
     <div class="article-shell">
       <aside class="toc">
@@ -59,7 +55,7 @@
         <a href="#m365-cheat-sheet">Quick Revision Cheat Sheet</a>
       </aside>
       <div class="article-body">
-        
+
         <section id="m365-executive-view" class="portal-section" data-section-title="Executive View">
           <div class="section-toolbar">
             <h2>Executive View</h2>
@@ -168,7 +164,12 @@
             <strong>The Double-Allocation Trap</strong>
             <p>If you assign a Copilot license to a user whose base M365 E3 license is deactivated during an offboarding cycle, you will continue to be billed for the Copilot add-on seat unless it is explicitly returned to the tenant pool.</p>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="copilot-seat-governance-funnel.png">
+            <img src="../assets/visuals/deep/copilot-seat-governance-funnel.png" alt="Copilot seat governance funnel">
+            <figcaption><strong>Visual explainer:</strong> Copilot seat governance funnel: eligible population, pilot group, activation, usage telemetry and reclaim candidates must be separated before expansion.</figcaption>
+          </figure>
+</section>
 
         <section id="m365-adoption" class="portal-section" data-section-title="Usage Telemetry &amp; Graph API">
           <div class="section-toolbar">
@@ -220,7 +221,12 @@ GET https://graph.microsoft.com/v1.0/reports/getM365CopilotUserActivityUserDetai
               </tbody>
             </table>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="saas-reclamation-roi-flow.png">
+            <img src="../assets/visuals/deep/saas-reclamation-roi-flow.png" alt="SaaS reclamation visual">
+            <figcaption><strong>Visual explainer:</strong> SaaS reclamation visual: usage telemetry only creates value when it drives approval, reclaim, renewal avoidance and measurable savings.</figcaption>
+          </figure>
+</section>
 
         <section id="m365-security" class="portal-section" data-section-title="Security &amp; Data Compliance">
           <div class="section-toolbar">
@@ -255,7 +261,7 @@ GET https://graph.microsoft.com/v1.0/reports/getM365CopilotUserActivityUserDetai
             <button class="mini-btn" onclick="printSection('m365-roi-calculator')">Print this section</button>
           </div>
           <p>Calculate the potential financial waste and ROI of your M365 Copilot deployment. Input your active seat count and estimated adoption rates to model your optimization savings.</p>
-          
+
           <div class="calc-card" data-practitioner="keep">
             <h3>M365 Copilot Cost &amp; ROI Calculator</h3>
             <label>Assigned Copilot Seats: <input id="copilotSeats" type="number" value="500" oninput="calcCopilotROI()"></label>
@@ -351,16 +357,16 @@ function calcCopilotROI() {
   const seats = +document.getElementById('copilotSeats').value || 0;
   const inactive = +document.getElementById('copilotInactive').value || 0;
   const hours = +document.getElementById('copilotHours').value || 0;
-  
+
   const annualCost = seats * 360;
   const annualWaste = inactive * 360;
-  
+
   // Assume avg labor rate of $50/hour
   const activeSeats = Math.max(0, seats - inactive);
   const monthlySavingsPerUser = hours * 50;
   const annualSavings = activeSeats * monthlySavingsPerUser * 12;
   const netBenefit = annualSavings - annualCost;
-  
+
   const out = document.getElementById('copilotCalcOut');
   if (out) {
     out.textContent = `Annual Spend: $${annualCost.toLocaleString()} | Annual Inactive Waste: $${annualWaste.toLocaleString()} | Active Productivity ROI: $${annualSavings.toLocaleString()}/year | Net Benefit: $${netBenefit.toLocaleString()}/year`;

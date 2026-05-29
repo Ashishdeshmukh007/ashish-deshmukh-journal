@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="IBM Cloud Pak VPC Licensing: How to Build a Control Model Around IBM License Service">
 <meta name="twitter:description" content="Cloud Pak licensing is not just PVU with a new label. VPC ratios, container reporting, IBM License Service, and OpenShift operations change the SAM control model.">
 <meta name="twitter:image" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/assets/social/ibm-cloud-pak-vpc-license-service-control-model.jpg">
-<link rel="stylesheet" href="../assets/styles.css?v=20260529-visuals">
+<link rel="stylesheet" href="../assets/styles.css?v=20260529-deepvisuals">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/ibm-cloud-pak-vpc-license-service-control-model.html">
 </head><body data-article-slug="ibm-cloud-pak-vpc-license-service-control-model"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
@@ -38,10 +38,6 @@
         <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
         <button data-copy-link onclick="copyLink()">Copy link</button>
       </div>
-      <figure class="article-visual">
-        <img src="../assets/visuals/ibm-cloud-pak-vpc-license-service-control-model-infographic.png" alt="IBM Cloud Pak VPC Control Model visual infographic">
-        <figcaption>Cloud Pak visual showing how container deployment evidence, License Service reporting and product ratios convert into VPC consumption.</figcaption>
-      </figure>
     </section>
     <div class="article-shell">
       <aside class="toc">
@@ -59,7 +55,7 @@
         <a href="#ibm-cheat-sheet">Quick Revision Cheat Sheet</a>
       </aside>
       <div class="article-body">
-        
+
         <section id="ibm-executive-view" class="portal-section" data-section-title="Executive View">
           <div class="section-toolbar">
             <h2>Executive View</h2>
@@ -126,7 +122,12 @@
             <strong>The Shared-Pool Trap</strong>
             <p>Because Cloud Paks allow you to deploy different bundled products under a single VPC license pool, developers can inadvertently consume the entire company-wide VPC entitlement by deploying highly resource-intensive components without budget approvals.</p>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="cloud-pak-vpc-ils-ratio-map.png">
+            <img src="../assets/visuals/deep/cloud-pak-vpc-ils-ratio-map.png" alt="Cloud Pak VPC and IBM License Service visual">
+            <figcaption><strong>Visual explainer:</strong> Cloud Pak VPC and IBM License Service visual: ratios, OpenShift nodes, bundled products and 90-day consumption peaks must be reviewed together.</figcaption>
+          </figure>
+</section>
 
         <section id="ibm-license-service" class="portal-section" data-section-title="IBM License Service (ILS)">
           <div class="section-toolbar">
@@ -138,7 +139,12 @@
             <h4>Practitioner Notes</h4>
             <p>"If you run containerized IBM software (like MQ or WebSphere) on OpenShift without having the IBM License Service active in the cluster, IBM auditors will calculate your compliance requirements using the full physical core capacity of all worker nodes in the cluster."</p>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="ibm-ilmt-fnms-pvu-flow.png">
+            <img src="../assets/visuals/deep/ibm-ilmt-fnms-pvu-flow.png" alt="IBM tool evidence visual">
+            <figcaption><strong>Visual explainer:</strong> IBM tool evidence visual: ILS/ILMT style peaks, entitlement source and ELP assumptions must align before the final position is shared.</figcaption>
+          </figure>
+</section>
 
         <section id="ibm-subcapacity" class="portal-section" data-section-title="Sub-Capacity Container Rules">
           <div class="section-toolbar">
@@ -256,7 +262,7 @@ curl -k -H "Authorization: Bearer <API_TOKEN>" \
             <button class="mini-btn" onclick="printSection('ibm-vpc-calculator')">Print this section</button>
           </div>
           <p>Model your Cloud Pak for Integration VPC license consumption. Input the core allocations for different bundled products to calculate your total pooled VPC requirements.</p>
-          
+
           <div class="calc-card" data-practitioner="keep">
             <h3>Cloud Pak for Integration VPC Pool Calculator</h3>
             <label>IBM MQ vCPUs: <input id="ibmCPMQ" type="number" value="16" oninput="calcCloudPakVPC()"></label>
@@ -352,13 +358,13 @@ function calcCloudPakVPC() {
   const mq = +document.getElementById('ibmCPMQ').value || 0;
   const api = +document.getElementById('ibmCPAPI').value || 0;
   const app = +document.getElementById('ibmCPApp').value || 0;
-  
+
   // Ratios: MQ is 0.5, API is 1.0, App is 2.0
   const mqVPC = mq * 0.5;
   const apiVPC = api * 1.0;
   const appVPC = app * 2.0;
   const total = mqVPC + apiVPC + appVPC;
-  
+
   const out = document.getElementById('ibmCPCalcOut');
   if (out) {
     out.textContent = `MQ (ratio 0.5): ${mqVPC} VPC | API (ratio 1.0): ${apiVPC} VPC | App Connect (ratio 2.0): ${appVPC} VPC | Total Pool VPCs Required: ${total}`;

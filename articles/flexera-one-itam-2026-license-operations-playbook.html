@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="Flexera One ITAM in 2026: A License Operations Playbook for SAM Teams">
 <meta name="twitter:description" content="Flexera One ITAM is becoming a broader technology value platform. Here is how SAM teams should use it for ELP quality, SaaS visibility, IBM sub-capacity, and audit defense.">
 <meta name="twitter:image" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/assets/social/flexera-one-itam-2026-license-operations-playbook.jpg">
-<link rel="stylesheet" href="../assets/styles.css?v=20260529-visuals">
+<link rel="stylesheet" href="../assets/styles.css?v=20260529-deepvisuals">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/flexera-one-itam-2026-license-operations-playbook.html">
 </head><body data-article-slug="flexera-one-itam-2026-license-operations-playbook"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
@@ -38,10 +38,6 @@
         <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
         <button data-copy-link onclick="copyLink()">Copy link</button>
       </div>
-      <figure class="article-visual">
-        <img src="../assets/visuals/flexera-one-itam-2026-license-operations-playbook-infographic.png" alt="Flexera One ITAM Playbook visual infographic">
-        <figcaption>Illustrative Flexera One ITAM workbench: discovery evidence, publisher logic, ELP review and remediation actions in one operating view.</figcaption>
-      </figure>
     </section>
     <div class="article-shell">
       <aside class="toc">
@@ -60,7 +56,7 @@
         <a href="#flex-cheat-sheet">Quick Revision Cheat Sheet</a>
       </aside>
       <div class="article-body">
-        
+
         <section id="flex-executive-view" class="portal-section" data-section-title="Executive View">
           <div class="section-toolbar">
             <h2>Executive View</h2>
@@ -137,7 +133,12 @@ FROM ComplianceComputer
 WHERE ActiveStatus = 1 AND LastInventoryDate &lt; DATEADD(day, -30, GETDATE())
 ORDER BY LastInventoryDate ASC</code></pre>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="fnms-beacon-discovery-rule-configuration-mock.png">
+            <img src="../assets/visuals/deep/fnms-beacon-discovery-rule-configuration-mock.png" alt="FNMS on-prem beacon mock">
+            <figcaption><strong>Visual explainer:</strong> Illustrative FNMS on-prem beacon mock: where the analyst sets scoped targets, service credentials, discovery actions and import validation before treating Flexera data as ELP evidence.</figcaption>
+          </figure>
+</section>
 
         <section id="flex-normalization" class="portal-section" data-section-title="Normalization &amp; ARL">
           <div class="section-toolbar">
@@ -173,7 +174,12 @@ ORDER BY LastInventoryDate ASC</code></pre>
               </tbody>
             </table>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="fnms-onprem-elp-configuration-mock.png">
+            <img src="../assets/visuals/deep/fnms-onprem-elp-configuration-mock.png" alt="FNMS license record mock">
+            <figcaption><strong>Visual explainer:</strong> Illustrative FNMS license record mock: link recognized applications, purchases and evidence sources before exporting a draft compliance position.</figcaption>
+          </figure>
+</section>
 
         <section id="flex-ibm-subcap" class="portal-section" data-section-title="IBM Sub-Capacity">
           <div class="section-toolbar">
@@ -250,7 +256,12 @@ ORDER BY LastInventoryDate ASC</code></pre>
 4. If no exception is requested in 5 days, SCCM/Intune uninstalls the software automatically.
 5. Flexera releases the license allocation back to the pool, generating cost savings.</code></pre>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="saas-reclamation-roi-flow.png">
+            <img src="../assets/visuals/deep/saas-reclamation-roi-flow.png" alt="Reclamation visual">
+            <figcaption><strong>Visual explainer:</strong> Reclamation visual: convert low usage evidence into approval workflow, license return, renewal avoidance and a defensible savings story.</figcaption>
+          </figure>
+</section>
 
         <section id="flex-manual-validation" class="portal-section" data-section-title="Manual ELP Validation">
           <div class="section-toolbar">
@@ -272,7 +283,7 @@ ORDER BY LastInventoryDate ASC</code></pre>
             <button class="mini-btn" onclick="printSection('flex-scorecard')">Print this section</button>
           </div>
           <p>Calculate your Flexera environment's data health and coverage score using our interactive scorecard scorecard calculator. Use this data to target infrastructure improvements.</p>
-          
+
           <div class="calc-card" data-practitioner="keep">
             <h3>Flexera One ITAM Health Scorecard</h3>
             <label>Total Active Server Assets: <input id="flexTotalServers" type="number" value="1000" oninput="calcFlexScore()"></label>
@@ -370,16 +381,16 @@ function calcFlexScore() {
   const missServers = +document.getElementById('flexMissingServers').value || 0;
   const totSaaS = +document.getElementById('flexSaaSUsers').value || 1;
   const missSaaS = +document.getElementById('flexUnconnectedSaaS').value || 0;
-  
+
   const serverCov = ((totServers - missServers) / totServers) * 100;
   const saasCov = ((totSaaS - missSaaS) / totSaaS) * 100;
   const overall = (serverCov * 0.6) + (saasCov * 0.4);
-  
+
   let rating = 'Poor';
   if (overall >= 95) rating = 'Excellent';
   else if (overall >= 85) rating = 'Good';
   else if (overall >= 70) rating = 'Fair';
-  
+
   const out = document.getElementById('flexScoreOut');
   if (out) {
     out.textContent = `Server Coverage: ${serverCov.toFixed(1)}% | SaaS API Coverage: ${saasCov.toFixed(1)}% | Overall Health: ${overall.toFixed(1)}% (${rating})`;

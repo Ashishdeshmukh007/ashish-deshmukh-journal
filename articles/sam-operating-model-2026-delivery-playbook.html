@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="The 2026 SAM Operating Model: From Compliance Reports to a Delivery Playbook">
 <meta name="twitter:description" content="A modern SAM function needs workflow ownership, evidence standards, tooling discipline, FinOps alignment, audit readiness, and business-facing service design.">
 <meta name="twitter:image" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/assets/social/sam-operating-model-2026-delivery-playbook.jpg">
-<link rel="stylesheet" href="../assets/styles.css?v=20260529-visuals">
+<link rel="stylesheet" href="../assets/styles.css?v=20260529-deepvisuals">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/sam-operating-model-2026-delivery-playbook.html">
 </head><body data-article-slug="sam-operating-model-2026-delivery-playbook"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
@@ -38,10 +38,6 @@
         <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
         <button data-copy-link onclick="copyLink()">Copy link</button>
       </div>
-      <figure class="article-visual">
-        <img src="../assets/visuals/sam-operating-model-2026-delivery-playbook-infographic.png" alt="Modern SAM Operating Model visual infographic">
-        <figcaption>Operating model visual showing how modern SAM teams move from periodic reporting to governed delivery routines.</figcaption>
-      </figure>
     </section>
     <div class="article-shell">
       <aside class="toc">
@@ -59,7 +55,7 @@
         <a href="#ops-cheat-sheet">Quick Revision Cheat Sheet</a>
       </aside>
       <div class="article-body">
-        
+
         <section id="ops-executive-view" class="portal-section" data-section-title="Executive View">
           <div class="section-toolbar">
             <h2>Executive View</h2>
@@ -151,7 +147,12 @@
               </tbody>
             </table>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="sam-operating-model-delivery-loop.png">
+            <img src="../assets/visuals/deep/sam-operating-model-delivery-loop.png" alt="Operating model visual">
+            <figcaption><strong>Visual explainer:</strong> Operating model visual: SAM works when intake, evidence, publisher logic, remediation, governance and executive value reporting are connected.</figcaption>
+          </figure>
+</section>
 
         <section id="ops-workflows" class="portal-section" data-section-title="Workflow &amp; CMDB Ownership">
           <div class="section-toolbar">
@@ -216,7 +217,12 @@
               </tbody>
             </table>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="cloud-finops-itam-value-loop.png">
+            <img src="../assets/visuals/deep/cloud-finops-itam-value-loop.png" alt="Value factory visual">
+            <figcaption><strong>Visual explainer:</strong> Value factory visual: repeated savings come from a managed loop of data, actions, approvals, measurement and renewal decisions.</figcaption>
+          </figure>
+</section>
 
         <section id="ops-frictionless" class="portal-section" data-section-title="Frictionless Service Design">
           <div class="section-toolbar">
@@ -251,7 +257,7 @@
             <button class="mini-btn" onclick="printSection('ops-scorecard')">Print this section</button>
           </div>
           <p>Calculate your SAM function's operating maturity and C-level ROI using our interactive scorecard calculator. Target areas to shift from reactive compliance to proactive delivery.</p>
-          
+
           <div class="calc-card" data-practitioner="keep">
             <h3>SAM Operating Maturity Calculator</h3>
             <label>Hard Annual Cash Savings ($): <input id="opsSavings" type="number" value="1200000" oninput="calcOpsMaturity()"></label>
@@ -347,20 +353,20 @@ function calcOpsMaturity() {
   const savings = +document.getElementById('opsSavings').value || 0;
   const cost = +document.getElementById('opsCost').value || 1;
   const disc = +document.getElementById('opsDiscovery').value || 0;
-  
+
   const roi = savings / cost;
   let roiScore = 20;
   if (roi >= 5.0) roiScore = 40;
   else if (roi >= 3.0) roiScore = 30;
-  
+
   const discScore = disc * 0.6;
   const score = roiScore + discScore;
-  
+
   let rating = 'Ad Hoc Counting';
   if (score >= 85) rating = 'Value Delivery Playbook';
   else if (score >= 70) rating = 'Managed Optimization';
   else if (score >= 50) rating = 'Controlled Compliance';
-  
+
   const out = document.getElementById('opsScoreOut');
   if (out) {
     out.textContent = `Program ROI: ${roi.toFixed(1)}x | Discovery Coverage: ${disc.toFixed(1)}% | Maturity Score: ${score.toFixed(0)}/100 (${rating})`;

@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="Flexera One vs ServiceNow SAM Pro in 2026: An Architecture and Operations Comparison">
 <meta name="twitter:description" content="Enterprise SAM teams are rarely choosing between Flexera and ServiceNow on a blank slate. Here is how they compare across discovery, publisher logical engines, automation, SaaS/Cloud ITAM convergence, and audit defensibility.">
 <meta name="twitter:image" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/assets/social/flexera-one-vs-servicenow-sam-pro-2026-comparison.jpg">
-<link rel="stylesheet" href="../assets/styles.css?v=20260529-visuals">
+<link rel="stylesheet" href="../assets/styles.css?v=20260529-deepvisuals">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/flexera-one-vs-servicenow-sam-pro-2026-comparison.html">
 </head><body data-article-slug="flexera-one-vs-servicenow-sam-pro-2026-comparison"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
@@ -38,10 +38,6 @@
         <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
         <button data-copy-link onclick="copyLink()">Copy link</button>
       </div>
-      <figure class="article-visual">
-        <img src="../assets/visuals/flexera-one-vs-servicenow-sam-pro-2026-comparison-infographic.png" alt="Flexera One vs ServiceNow SAM Pro visual infographic">
-        <figcaption>Illustrative comparison dashboard showing how Flexera-style evidence depth and ServiceNow-style workflow ownership differ in practice.</figcaption>
-      </figure>
     </section>
     <div class="article-shell">
       <aside class="toc">
@@ -58,7 +54,7 @@
         <a href="#comparison-final-verdict">Strategic Verdict</a>
       </aside>
       <div class="article-body">
-        
+
         <section id="comparison-executive-view" class="portal-section" data-section-title="Executive View">
           <div class="section-toolbar">
             <h2>Executive View</h2>
@@ -116,7 +112,12 @@
             - Matching software requests to available dynamic inventory.
           </p>
           <p>Flexera, by comparison, relies on API integrations to trigger action. It acts as the "brain of truth," advising the ITSM platform on what to do rather than executing it directly inside the ticketing plane.</p>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="servicenow-sam-pro-workflow-mock.png">
+            <img src="../assets/visuals/deep/servicenow-sam-pro-workflow-mock.png" alt="ServiceNow SAM Pro workflow mock">
+            <figcaption><strong>Visual explainer:</strong> Illustrative ServiceNow SAM Pro workflow mock: finding, policy, task and outcome in one governed remediation path.</figcaption>
+          </figure>
+</section>
 
         <section id="comparison-detailed-comparison-table" class="portal-section" data-section-title="Detailed Feature Comparison">
           <div class="section-toolbar">
@@ -161,7 +162,12 @@
               </tbody>
             </table>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="tool-comparison-decision-matrix.png">
+            <img src="../assets/visuals/deep/tool-comparison-decision-matrix.png" alt="Decision matrix visual">
+            <figcaption><strong>Visual explainer:</strong> Decision matrix visual: Flexera is strongest when publisher depth and reconciliation logic matter; ServiceNow is strongest when workflow ownership and platform process matter.</figcaption>
+          </figure>
+</section>
 
         <section id="comparison-saas-cloud" class="portal-section" data-section-title="SaaS and Cloud ITAM Convergence">
           <div class="section-toolbar">
@@ -178,7 +184,12 @@
             <button class="mini-btn" onclick="printSection('comparison-audit-defensibility')">Print this section</button>
           </div>
           <p>Both tools carry publisher-certified status (such as Oracle LMS and IBM sub-capacity certification). However, in a high-stakes audit, the strength of the evidence trail matters most. Flexera's deep repository preserves complete inventory history and partition tracking, making it exceptionally defensible. ServiceNow is fully defensible only if your ITOM discovery schedules are kept pristine and the CMDB suffers no synchronization gaps.</p>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="fnms-onprem-elp-configuration-mock.png">
+            <img src="../assets/visuals/deep/fnms-onprem-elp-configuration-mock.png" alt="Flexera FNMS ELP mock">
+            <figcaption><strong>Visual explainer:</strong> Illustrative Flexera FNMS ELP mock: use the tool output as a draft until inventory, entitlement, ARL/PURL and assumptions have been validated.</figcaption>
+          </figure>
+</section>
 
         <section id="comparison-waste-calculator" class="portal-section" data-section-title="Waste &amp; Savings Calculator">
           <div class="section-toolbar">
@@ -186,7 +197,7 @@
             <button class="mini-btn" onclick="printSection('comparison-waste-calculator')">Print this section</button>
           </div>
           <p>Calculate your potential savings by reclaiming unused licenses using automated workflows (ServiceNow style) versus deep data discovery reconciliation (Flexera style):</p>
-          
+
           <div class="calc-card" data-practitioner="keep" id="custom_savings_calc" data-formula="DesktopCount * AvgCost * DesktopWasteRate + DatacenterCount * AvgDcCost * DcWasteRate" data-output="Estimated Annual Recoverable Waste: USD {result}">
             <h3>ITAM Cost Optimization Simulator</h3>
             <div class="calc-grid">
@@ -227,7 +238,7 @@
             <button class="mini-btn" onclick="printSection('comparison-workbook-downloads')">Print this section</button>
           </div>
           <p>Download our standard tool selection and scorecard assessment template workbooks to support your internal decision-making processes:</p>
-          
+
           <div class="workbook-embed" data-practitioner="keep" style="margin:20px 0">
             <div class="workbook-glass">
               <div>
@@ -252,7 +263,7 @@
           </p>
           <p>For organizations choosing a single tool: go with Flexera if your datacenter complexity is high and your audit risk is material. Go with ServiceNow if your team is committed to ITSM catalog automation and the CMDB is actively owned.</p>
         </section>
-        
+
       </div>
     </div>
   </article>

@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="AI at Work Governance: The License and Compliance Risks Hiding Behind Productivity Pilots">
 <meta name="twitter:description" content="Enterprise AI adoption creates a new SAM problem: subscriptions, model access, data controls, software supply-chain licensing, and usage accountability all need governance.">
 <meta name="twitter:image" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/assets/social/ai-at-work-governance-license-risk-playbook.jpg">
-<link rel="stylesheet" href="../assets/styles.css?v=20260529-visuals">
+<link rel="stylesheet" href="../assets/styles.css?v=20260529-deepvisuals">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/ai-at-work-governance-license-risk-playbook.html">
 </head><body data-article-slug="ai-at-work-governance-license-risk-playbook"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
@@ -38,10 +38,6 @@
         <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
         <button data-copy-link onclick="copyLink()">Copy link</button>
       </div>
-      <figure class="article-visual">
-        <img src="../assets/visuals/ai-at-work-governance-license-risk-playbook-infographic.png" alt="AI Governance and License Risk visual infographic">
-        <figcaption>AI governance visual mapping the controls needed when productivity pilots become enterprise-wide software commitments.</figcaption>
-      </figure>
     </section>
     <div class="article-shell">
       <aside class="toc">
@@ -59,7 +55,7 @@
         <a href="#ai-cheat-sheet">Quick Revision Cheat Sheet</a>
       </aside>
       <div class="article-body">
-        
+
         <section id="ai-executive-view" class="portal-section" data-section-title="Executive View">
           <div class="section-toolbar">
             <h2>Executive View</h2>
@@ -239,7 +235,12 @@
             <li>Audit single-sign-on (SSO) logs and corporate expense receipts for unsanctioned subscriptions to OpenAI, Anthropic, Jasper, or Runway.</li>
             <li>Scan codebase repositories using software composition analysis (SCA) tools to catalog downloaded pre-trained models.</li>
           </ol>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="contract-intelligence-clause-to-control.png">
+            <img src="../assets/visuals/deep/contract-intelligence-clause-to-control.png" alt="Clause-to-control visual">
+            <figcaption><strong>Visual explainer:</strong> Clause-to-control visual: AI and software obligations become operational only when contract language is mapped to system controls and evidence owners.</figcaption>
+          </figure>
+</section>
 
         <section id="ai-control-tower" class="portal-section" data-section-title="ServiceNow AI Control Tower">
           <div class="section-toolbar">
@@ -251,7 +252,12 @@
             <strong>Automated AI Control Flow</strong>
             <p>Ensure that all AI request items route through a central approval chain in ServiceNow. A user requesting an API key must provide a data impact assessment, and the system must enforce automatic token quotas to prevent cost overruns.</p>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="ai-governance-license-risk-map.png">
+            <img src="../assets/visuals/deep/ai-governance-license-risk-map.png" alt="AI governance and license risk map">
+            <figcaption><strong>Visual explainer:</strong> AI governance and license risk map: sanctioned AI, shadow AI, code assistants, data use, procurement and security controls need a shared operating model.</figcaption>
+          </figure>
+</section>
 
         <section id="ai-matrix" class="portal-section" data-section-title="Compliance Scoring Matrix">
           <div class="section-toolbar">
@@ -259,7 +265,7 @@
             <button class="mini-btn" onclick="printSection('ai-matrix')">Print this section</button>
           </div>
           <p>Evaluate your enterprise's AI compliance risk profile using our interactive compliance scoring calculator. Model different licensing scenarios to determine your risk posture.</p>
-          
+
           <div class="calc-card" data-practitioner="keep">
             <h3>AI Model &amp; IP Compliance Calculator</h3>
             <label>Meta LLaMA 3 Monthly Users: <input id="aiLlamaUsers" type="number" value="10000" oninput="calcAICheck()"></label>
@@ -355,18 +361,18 @@ function calcAICheck() {
   const llama = +document.getElementById('aiLlamaUsers').value || 0;
   const unscanned = +document.getElementById('aiUnscanned').value || 0;
   const shadow = +document.getElementById('aiShadowSaaS').value || 0;
-  
+
   // Model user limit: 700M active users.
   // Risk score based on unscanned codebase percentage and active shadow SaaS tool count
   const unscannedRisk = unscanned * 2.5;
   const shadowRisk = shadow * 1.5;
   const total = Math.min(100, Math.max(0, unscannedRisk + shadowRisk));
-  
+
   let rating = 'Low Risk';
   if (total >= 70) rating = 'CRITICAL RISK';
   else if (total >= 40) rating = 'High Risk';
   else if (total >= 20) rating = 'Moderate Risk';
-  
+
   const out = document.getElementById('aiCalcOut');
   if (out) {
     out.textContent = `LLaMA Users: ${llama.toLocaleString()} | IP Risk Score: ${total.toFixed(0)}/100 | IP Compliance Risk: ${rating}`;

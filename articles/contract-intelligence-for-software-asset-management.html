@@ -15,7 +15,7 @@
 <meta name="twitter:title" content="Contract Intelligence for Software Asset Management: Turning Agreements into Actionable License Controls">
 <meta name="twitter:description" content="AI contract extraction is useful only if SAM teams convert extracted terms into entitlement, obligation, renewal, and audit controls.">
 <meta name="twitter:image" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/assets/social/contract-intelligence-for-software-asset-management.jpg">
-<link rel="stylesheet" href="../assets/styles.css?v=20260529-visuals">
+<link rel="stylesheet" href="../assets/styles.css?v=20260529-deepvisuals">
 <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
 <link rel="canonical" href="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/contract-intelligence-for-software-asset-management.html">
 </head><body data-article-slug="contract-intelligence-for-software-asset-management"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
@@ -38,10 +38,6 @@
         <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
         <button data-copy-link onclick="copyLink()">Copy link</button>
       </div>
-      <figure class="article-visual">
-        <img src="../assets/visuals/contract-intelligence-for-software-asset-management-infographic.png" alt="Contract Intelligence for SAM visual infographic">
-        <figcaption>Contract intelligence visual showing how extracted terms become operational license controls and renewal actions.</figcaption>
-      </figure>
     </section>
     <div class="article-shell">
       <aside class="toc">
@@ -59,7 +55,7 @@
         <a href="#contract-cheat-sheet">Quick Revision Cheat Sheet</a>
       </aside>
       <div class="article-body">
-        
+
         <section id="contract-executive-view" class="portal-section" data-section-title="Executive View">
           <div class="section-toolbar">
             <h2>Executive View</h2>
@@ -127,7 +123,12 @@
             <strong>The "Unlimited" Trap</strong>
             <p>If an AI contract engine reads the phrase "Unlimited deployment of SQL Server during the 3-year term," it may flag the license as a permanent unlimited entitlement. A human analyst must verify the certification clause, which requires declaring and freezing quantities at the end of the term.</p>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="contract-intelligence-clause-to-control.png">
+            <img src="../assets/visuals/deep/contract-intelligence-clause-to-control.png" alt="Contract intelligence visual">
+            <figcaption><strong>Visual explainer:</strong> Contract intelligence visual: convert license clauses, restrictions and renewal terms into tool controls, workflow triggers and evidence requirements.</figcaption>
+          </figure>
+</section>
 
         <section id="contract-extraction" class="portal-section" data-section-title="AI Extraction Frameworks">
           <div class="section-toolbar">
@@ -181,7 +182,12 @@
               </tbody>
             </table>
           </div>
-        </section>
+
+          <figure class="explain-visual" data-deep-visual="tool-comparison-decision-matrix.png">
+            <img src="../assets/visuals/deep/tool-comparison-decision-matrix.png" alt="Platform mapping visual">
+            <figcaption><strong>Visual explainer:</strong> Platform mapping visual: decide whether a clause belongs in Flexera, ServiceNow, procurement workflow, CMDB or manual audit pack.</figcaption>
+          </figure>
+</section>
 
         <section id="contract-purls" class="portal-section" data-section-title="Product Use Rights (PURLs)">
           <div class="section-toolbar">
@@ -256,7 +262,7 @@
             <button class="mini-btn" onclick="printSection('contract-scorecard')">Print this section</button>
           </div>
           <p>Evaluate your enterprise's contract database quality and calculate your extraction confidence score using our interactive scorecard scorecard calculator.</p>
-          
+
           <div class="calc-card" data-practitioner="keep">
             <h3>Contract Database Quality Calculator</h3>
             <label>Contracts Captured in ITAM System (%): <input id="conCap" type="number" value="85" oninput="calcConScore()"></label>
@@ -352,18 +358,18 @@ function calcConScore() {
   const cap = +document.getElementById('conCap').value || 0;
   const unmapped = +document.getElementById('conUnmapped').value || 0;
   const deadlines = +document.getElementById('conDeadlines').value || 0;
-  
+
   // Base health determined by captured percentage, penalized by unmapped records and missing deadlines
   const unmappedPen = unmapped * 0.5;
   const deadlinePen = deadlines * 3.0;
-  
+
   const score = Math.min(100, Math.max(0, cap - unmappedPen - deadlinePen));
-  
+
   let rating = 'Poor';
   if (score >= 90) rating = 'Excellent';
   else if (score >= 75) rating = 'Good';
   else if (score >= 50) rating = 'Fair';
-  
+
   const out = document.getElementById('conScoreOut');
   if (out) {
     out.textContent = `Extracted Contracts: ${cap}% | Unmapped POs: ${unmapped} | Database Health: ${score.toFixed(0)}/100 (${rating})`;
