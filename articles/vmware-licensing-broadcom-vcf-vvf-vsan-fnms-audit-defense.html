@@ -1,0 +1,614 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Ashish Deshmukh">
+<title>VMware Licensing After Broadcom: VCF, VVF, vSAN, FNMS and Audit Defense</title>
+<meta name="description" content="A senior SAM and ITAM playbook for Broadcom-era VMware licensing across VCF, VVF, vSAN, core counting, agreement review, FNMS ELP preparation, audit defense and renewal optimization.">
+<meta property="og:title" content="VMware Licensing After Broadcom: VCF, VVF, vSAN, FNMS and Audit Defense">
+<meta property="og:description" content="A senior SAM and ITAM playbook for Broadcom-era VMware licensing across VCF, VVF, vSAN, core counting, agreement review, FNMS ELP preparation, audit defense and renewal optimization.">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta property="og:url" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/vmware-licensing-broadcom-vcf-vvf-vsan-fnms-audit-defense.html">
+<meta property="og:image" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/assets/social/vmware-licensing-broadcom-vcf-vvf-vsan-fnms-audit-defense.jpg">
+<meta property="og:image:secure_url" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/assets/social/vmware-licensing-broadcom-vcf-vvf-vsan-fnms-audit-defense.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="VMware Licensing After Broadcom: VCF, VVF, vSAN, FNMS and Audit Defense">
+<meta name="twitter:title" content="VMware Licensing After Broadcom: VCF, VVF, vSAN, FNMS and Audit Defense">
+<meta name="twitter:description" content="A senior SAM and ITAM playbook for Broadcom-era VMware licensing across VCF, VVF, vSAN, core counting, agreement review, FNMS ELP preparation, audit defense and renewal optimization.">
+<meta name="twitter:image" content="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/assets/social/vmware-licensing-broadcom-vcf-vvf-vsan-fnms-audit-defense.jpg">
+<link rel="stylesheet" href="../assets/styles.css">
+<link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://ashishdeshmukh007.github.io/ashish-deshmukh-journal/articles/vmware-licensing-broadcom-vcf-vvf-vsan-fnms-audit-defense.html">
+</head><body data-article-slug="vmware-licensing-broadcom-vcf-vvf-vsan-fnms-audit-defense"><div class="reading-progress" data-reading-progress></div><header class="site-header"><nav class="nav">
+<a class="logo" href="../index.html">Ashish’s <span>Enterprise Ledger</span></a>
+<div class="nav-links">
+  <a href="../index.html#articles">Articles</a>
+  <a href="../index.html#topics">Topics</a>
+  <form class="nav-search" data-site-search role="search"><input data-article-search type="search" placeholder="Search writing"><button type="submit">Go</button></form>
+  <button class="theme-toggle" type="button" data-theme-toggle>Dark</button>
+</div></nav></header>
+<main>
+  <article>
+    <section class="article-hero">
+      <div class="cat">VMware Licensing</div>
+      <h1>VMware Licensing After Broadcom: VCF, VVF, vSAN, FNMS and Audit Defense</h1>
+      <p class="deck" style="color:#475467">A senior SAM and ITAM playbook for Broadcom-era VMware licensing across VCF, VVF, vSAN, core counting, agreement review, FNMS ELP preparation, audit defense and renewal optimization.</p>
+      <div class="byline"><div class="avatar">AD</div><div><strong>By Ashish Deshmukh on May 29, 2026</strong><br>18 min read</div></div>
+      <div class="share-row">
+        <a class="primary" href="#" data-share-linkedin target="_blank" rel="noopener">Share on LinkedIn</a>
+        <a href="#" data-share-x target="_blank" rel="noopener">Share on X</a>
+        <button data-copy-link onclick="copyLink()">Copy link</button>
+      </div>
+    </section>
+    <div class="article-shell">
+      <aside class="toc">
+        <strong>In this article</strong>
+        <a href="#vmware-executive-mental-model">Executive Mental Model</a>
+        <a href="#vmware-broadcom-era-changes">Broadcom-Era Changes</a>
+        <a href="#vmware-product-bundle-map">Product and Bundle Map</a>
+        <a href="#vmware-core-counting">Core Counting Formula</a>
+        <a href="#vmware-vsan-deep-dive">vSAN Deep Dive</a>
+        <a href="#vmware-agreement-stack">Agreement Stack</a>
+        <a href="#vmware-vcf-vvf-deep-dive">VCF and VVF Deep Dive</a>
+        <a href="#vmware-keys-reporting">Keys, Files and v9 Reporting</a>
+        <a href="#vmware-elp-methodology">ELP Methodology</a>
+        <a href="#vmware-fnms-operating-procedure">FNMS Operating Procedure</a>
+        <a href="#vmware-worked-examples">Worked ELP Examples</a>
+        <a href="#vmware-renewal-optimization">Renewal Optimization</a>
+        <a href="#vmware-audit-defense">Audit Defense Pack</a>
+        <a href="#vmware-data-collection">Data Collection Evidence</a>
+        <a href="#vmware-scenarios">Scenario Playbook</a>
+        <a href="#vmware-interview-language">Interview Language</a>
+        <a href="#vmware-final-checklist">Final Checklist</a>
+      </aside>
+      <div class="article-body">
+        <section id="vmware-executive-mental-model" class="portal-section" data-section-title="Executive Mental Model">
+          <div class="section-toolbar">
+            <h2>Executive Mental Model</h2>
+            <button class="mini-btn" onclick="printSection('vmware-executive-mental-model')">Print this section</button>
+          </div>
+          <p class="lead">VMware licensing used to feel like a familiar infrastructure topic: vSphere, vCenter, ESXi hosts, socket-era thinking, support renewals and license keys. In the Broadcom era, that is not enough. A defensible VMware position now needs product bundle mapping, host-level physical core counts, vSAN capacity logic, agreement interpretation, version-specific reporting controls and a clean evidence pack.</p>
+          <div class="practitioner-card" data-practitioner="keep">
+            <h4>Practitioner Notes</h4>
+            <p>The senior answer is: VMware compliance is not a VM count. It is product or bundle entitlement plus physical ESXi core consumption plus vSAN TiB consumption plus bundled component scope plus agreement restrictions plus evidence quality.</p>
+          </div>
+          <p>For a SAM consultant, the key shift is to stop treating license keys as the position. Keys are activation evidence. The entitlement position comes from transaction documents, Broadcom portal exports, order forms, support dates, applicable Specific Program Documentation and legacy VMware records where they still matter. Consumption comes from vCenter, ESXi hardware data, vSAN capacity evidence, NSX, Aria or VCF Operations, HCX and inventory tooling such as Flexera FNMS.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Term</th><th>Plain-English Meaning</th><th>SAM Treatment</th></tr></thead>
+              <tbody>
+                <tr><td>ESXi host</td><td>Physical server running the VMware hypervisor.</td><td>Primary licensable hardware unit for vSphere, VVF and VCF core counts.</td></tr>
+                <tr><td>vCenter</td><td>Management plane for ESXi hosts and clusters.</td><td>Evidence source for host, cluster, version, license assignment and relationships.</td></tr>
+                <tr><td>vSAN</td><td>Software-defined storage using local disks inside ESXi hosts.</td><td>Separate TiB risk. Core compliance does not automatically mean vSAN compliance.</td></tr>
+                <tr><td>VVF</td><td>VMware vSphere Foundation bundle.</td><td>Core subscription with included vSAN capacity and component scope limits.</td></tr>
+                <tr><td>VCF</td><td>VMware Cloud Foundation full-stack private cloud bundle.</td><td>Core subscription with broader components, larger vSAN inclusion and portability/reporting considerations.</td></tr>
+                <tr><td>SPD</td><td>Specific Program Documentation.</td><td>Product-specific legal source for metric, minimums, component rights, cloud restrictions and reporting.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout warning">
+            <strong>Not legal advice</strong>
+            <p>This article is a SAM and ITAM operating guide based on the attached VMware Licensing Guide workbook. For a real customer decision, validate against the signed transaction document, applicable Broadcom agreement, order-date SPD, installed-release SPD and current portal evidence.</p>
+          </div>
+        </section>
+
+        <section id="vmware-broadcom-era-changes" class="portal-section" data-section-title="Broadcom-Era Changes">
+          <div class="section-toolbar">
+            <h2>Broadcom-Era Changes</h2>
+            <button class="mini-btn" onclick="printSection('vmware-broadcom-era-changes')">Print this section</button>
+          </div>
+          <p>Broadcom-era VMware licensing moved the operational center of gravity away from standalone perpetual-license habits and toward subscription bundles such as VMware Cloud Foundation and VMware vSphere Foundation. That changes the ELP because the analyst must understand what the customer bought, which physical cores are in scope, whether vSAN capacity is covered, whether bundled components are used inside the permitted boundaries and whether version 9 reporting obligations exist.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Old Habit</th><th>Current Reality</th><th>SAM Impact</th></tr></thead>
+              <tbody>
+                <tr><td>Count CPU sockets for many vSphere positions.</td><td>Core licensing is central for VCF, VVF and current subscriptions.</td><td>Collect socket and core detail at host level, not only server model or VM counts.</td></tr>
+                <tr><td>Perpetual license plus SnS renewal was the usual operating model.</td><td>Subscription entitlement and support term now drive renewal and support risk.</td><td>Track entitlement start/end, support status, upgrade rights and reporting obligations.</td></tr>
+                <tr><td>Standalone SKUs could be mapped product by product.</td><td>Portfolio is consolidated around VVF, VCF and add-ons.</td><td>Bundle mapping matters more than isolated application recognition.</td></tr>
+                <tr><td>Separate component keys were often reviewed as the evidence.</td><td>Solution keys and VCF/VVF 9 license files change activation evidence.</td><td>Treat keys/files as technical evidence and reconcile back to legal entitlement.</td></tr>
+                <tr><td>Audit work was mostly document and deployment driven.</td><td>Version 9 introduces scheduled compliance report responsibilities.</td><td>Create a governance calendar and keep submission evidence.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>One practical version trap: standalone vSphere Standard and Enterprise Plus availability is release-dependent. A customer with legacy standalone entitlement cannot automatically assume it supports every feature or release in a VCF/VVF 9 estate. Version mapping is therefore a compliance control, not cosmetic documentation.</p>
+        </section>
+
+        <section id="vmware-product-bundle-map" class="portal-section" data-section-title="Product and Bundle Map">
+          <div class="section-toolbar">
+            <h2>Product and Bundle Map</h2>
+            <button class="mini-btn" onclick="printSection('vmware-product-bundle-map')">Print this section</button>
+          </div>
+          <p>The first calculation step is product classification. If a cluster is wrongly classified as generic vSphere when it is actually VCF, or VVF when it consumes full-stack VCF components, the rest of the workbook can be mathematically neat and still wrong.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Offer / Component</th><th>What It Is</th><th>ELP Treatment</th></tr></thead>
+              <tbody>
+                <tr><td>vSphere / ESXi</td><td>Core virtualization layer running workloads on physical hosts.</td><td>Count physical cores on licensed ESXi hosts.</td></tr>
+                <tr><td>vCenter Server</td><td>Central management for hosts and clusters.</td><td>Validate instance entitlement, version rights and managed estate scope.</td></tr>
+                <tr><td>vSAN</td><td>Software-defined storage across ESXi hosts.</td><td>Calculate TiB entitlement and actual licensing-relevant capacity separately.</td></tr>
+                <tr><td>VVF</td><td>vSphere-led enterprise workload platform.</td><td>Core subscription; included vSAN is 0.25 TiB per VVF core; components are tied to VVF cores.</td></tr>
+                <tr><td>VCF</td><td>Full private-cloud stack including compute, storage, networking and operations.</td><td>Core subscription; included vSAN is 1 TiB per VCF core; component use must stay within VCF scope.</td></tr>
+                <tr><td>NSX</td><td>Software-defined networking and security.</td><td>Usually relevant under VCF component scope; check geography, export and permitted-use constraints.</td></tr>
+                <tr><td>Operations / Automation / Networks</td><td>Monitoring, automation and network operations capabilities.</td><td>Confirm they manage only licensed VCF/VVF cores unless a separate right exists.</td></tr>
+                <tr><td>HCX, VKS, Private AI Foundation</td><td>Migration, Kubernetes and AI-related capabilities where included or added.</td><td>Validate entitlement source, SKU inclusion, support/lifecycle assumptions and component scope.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="cheat-grid" data-practitioner="keep">
+            <div><h3>VVF</h3><p>Best understood as a vSphere Foundation platform. Core metric, 16-core-per-CPU minimum, 0.25 TiB vSAN per core, operations scope tied to VVF cores, and cloud/hosting restrictions to check carefully.</p></div>
+            <div><h3>VCF</h3><p>Best understood as the full-stack private cloud bundle. Core metric, 16-core-per-CPU minimum, 1 TiB vSAN per core, NSX and operations components inside scope, and certified-cloud portability rules.</p></div>
+          </div>
+        </section>
+
+        <section id="vmware-core-counting" class="portal-section" data-section-title="Core Counting Formula">
+          <div class="section-toolbar">
+            <h2>Core Counting Formula</h2>
+            <button class="mini-btn" onclick="printSection('vmware-core-counting')">Print this section</button>
+          </div>
+          <p>For VCF and VVF, the core calculation is physical host based. The important rule is the 16-core minimum per physical CPU or processor. The mistake to avoid is applying one minimum to the whole estate. The minimum applies to each processor inside each host.</p>
+          <div class="copy-box">
+            <div><strong>VMware Core Formula</strong></div><button class="mini-btn" onclick="copyText(this)">Copy</button>
+            <pre><code>Required licensed cores per CPU = MAX(actual physical cores in that CPU, 16)
+Required licensed cores per host = CPU sockets x MAX(cores per CPU, 16)
+Required licensed cores for environment = SUM(required licensed cores across scoped ESXi hosts)</code></pre>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Host Example</th><th>Physical Hardware</th><th>Wrong Count</th><th>Correct VMware Count</th></tr></thead>
+              <tbody>
+                <tr><td>Small host</td><td>2 CPUs x 8 cores</td><td>16 actual cores</td><td>32 licensed cores because each CPU has a 16-core floor.</td></tr>
+                <tr><td>Normal host</td><td>2 CPUs x 16 cores</td><td>32 actual cores</td><td>32 licensed cores.</td></tr>
+                <tr><td>High-core host</td><td>2 CPUs x 32 cores</td><td>64 actual cores</td><td>64 licensed cores.</td></tr>
+                <tr><td>4-socket host</td><td>4 CPUs x 12 cores</td><td>48 actual cores</td><td>64 licensed cores because 4 CPUs x 16 minimum.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="calc-card" data-practitioner="keep">
+            <h3>VMware Host Core and vSAN Calculator</h3>
+            <div class="calc-grid">
+              <label>Hosts <input id="vmwHosts" class="editor-input" type="number" value="6" oninput="calcVMware()"></label>
+              <label>CPU Sockets / Host <input id="vmwSockets" class="editor-input" type="number" value="2" oninput="calcVMware()"></label>
+              <label>Cores / CPU <input id="vmwCores" class="editor-input" type="number" value="24" oninput="calcVMware()"></label>
+              <label>Entitled Cores <input id="vmwEntitled" class="editor-input" type="number" value="500" oninput="calcVMware()"></label>
+              <label>Actual vSAN TiB <input id="vmwVsan" class="editor-input" type="number" value="180" oninput="calcVMware()"></label>
+              <label>Bundle <select id="vmwBundle" class="editor-input" oninput="calcVMware()"><option value="VVF">VVF</option><option value="VCF">VCF</option></select></label>
+            </div>
+            <output id="vmwCalcOut" class="calc-result">Required cores and vSAN position will calculate here.</output>
+          </div>
+          <p>Senior consultant source-data rules: validate sockets and cores from vCenter, ESXi, PowerCLI or hardware inventory; keep actual physical cores separate from licensable cores; record whether hosts are production, DR, migration, evaluation or decommissioning; and do not silently exclude BIOS-disabled cores unless the applicable legal source supports that treatment.</p>
+        </section>
+
+        <section id="vmware-vsan-deep-dive" class="portal-section" data-section-title="vSAN Deep Dive">
+          <div class="section-toolbar">
+            <h2>vSAN Deep Dive</h2>
+            <button class="mini-btn" onclick="printSection('vmware-vsan-deep-dive')">Print this section</button>
+          </div>
+          <p>vSAN is where many VMware ELPs become overconfident. A customer can be compliant on VMware cores and non-compliant on storage capacity. VCF includes a larger vSAN entitlement than VVF, and the included capacity must be tied to the relevant licensed core scope.</p>
+          <div class="copy-box">
+            <div><strong>vSAN Formula</strong></div><button class="mini-btn" onclick="copyText(this)">Copy</button>
+            <pre><code>VCF included vSAN TiB = VCF licensed cores x 1.00 TiB
+VVF included vSAN TiB = VVF licensed cores x 0.25 TiB
+Extra vSAN required = MAX(actual vSAN TiB - included vSAN TiB - add-on vSAN TiB, 0)</code></pre>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Scenario</th><th>Core Entitlement</th><th>Included vSAN</th><th>Actual vSAN</th><th>Position</th></tr></thead>
+              <tbody>
+                <tr><td>VCF private cloud</td><td>320 VCF cores</td><td>320 TiB</td><td>210 TiB</td><td><span class="rag green">Green</span> 110 TiB surplus.</td></tr>
+                <tr><td>VVF enterprise cluster</td><td>320 VVF cores</td><td>80 TiB</td><td>210 TiB</td><td><span class="rag red">Red</span> 130 TiB deficit before add-ons.</td></tr>
+                <tr><td>No vSAN enabled</td><td>320 VVF cores</td><td>80 TiB included</td><td>0 TiB</td><td>No vSAN need, but included entitlement is unused.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout warning">
+            <strong>Raw capacity vs usable capacity</strong>
+            <p>For SAM, the licensing-relevant question is not merely datastore free space after RAID, FTT and overhead. Use approved VMware/Broadcom tooling, vSAN owner validation and a dated evidence file rather than relying only on a UI summary screenshot.</p>
+          </div>
+        </section>
+
+        <section id="vmware-agreement-stack" class="portal-section" data-section-title="Agreement Stack">
+          <div class="section-toolbar">
+            <h2>Agreement Stack</h2>
+            <button class="mini-btn" onclick="printSection('vmware-agreement-stack')">Print this section</button>
+          </div>
+          <p>A VMware ELP is part math and part agreement interpretation. The agreement stack tells you which document controls when two documents conflict. In Broadcom-era VMware work, do not rely only on old VMware Product Guide habits. Capture the transaction document, DPA where applicable, product SPD or SaaS listing, module terms and the Foundation Agreement.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Priority</th><th>Document</th><th>What to Extract</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Transaction Document / Quote / Order Form / SOW</td><td>Product, SKU, quantity, metric, term, start/end dates, support, cloud rights and negotiated terms.</td></tr>
+                <tr><td>2</td><td>Broadcom Data Processing Addendum</td><td>Privacy/data processing obligations where applicable; relevant for SaaS and support context.</td></tr>
+                <tr><td>3</td><td>Specific Program Documentation or SaaS Listing</td><td>Metric, minimums, components, vSAN, cloud/hosting restrictions, reporting and support restrictions.</td></tr>
+                <tr><td>4</td><td>Software, SaaS or Services Module</td><td>General license grant, support/update rights and audit mechanics.</td></tr>
+                <tr><td>5</td><td>Foundation Agreement</td><td>Definitions, limitation, payment, disputes and order of precedence.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>For legacy estates, keep VMware ELA order forms, Product Guide versions, EULA or Software Exhibit copies, SnS records, Customer Connect exports and historical keys. They may still prove historical rights, support end dates and version eligibility. They should not be assumed to grant current VCF/VVF 9 usage unless a current entitlement or explicit upgrade path supports that conclusion.</p>
+          <div class="callout danger">
+            <strong>Agreement trap</strong>
+            <p>Do not say "the purchase order says we can do it" unless the governing agreement accepts those PO terms. Broadcom agreement precedence can make conflicting customer PO terms ineffective.</p>
+          </div>
+        </section>
+
+        <section id="vmware-vcf-vvf-deep-dive" class="portal-section" data-section-title="VCF and VVF Deep Dive">
+          <div class="section-toolbar">
+            <h2>VCF and VVF Deep Dive</h2>
+            <button class="mini-btn" onclick="printSection('vmware-vcf-vvf-deep-dive')">Print this section</button>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Dimension</th><th>VVF</th><th>VCF</th></tr></thead>
+              <tbody>
+                <tr><td>Primary positioning</td><td>vSphere-led enterprise workload platform.</td><td>Full private cloud / full-stack platform.</td></tr>
+                <tr><td>Metric</td><td>Per physical core subscription.</td><td>Per physical core subscription.</td></tr>
+                <tr><td>Minimum</td><td>16 cores per processor.</td><td>16 cores per processor.</td></tr>
+                <tr><td>Included vSAN</td><td>0.25 TiB per VVF core.</td><td>1 TiB per VCF core.</td></tr>
+                <tr><td>Operations entitlement</td><td>Operations-style entitlement for VVF scope.</td><td>Operations, Automation and Networks for VCF scope.</td></tr>
+                <tr><td>NSX</td><td>Not equivalent to the full VCF NSX stack.</td><td>Included component under VCF scope, subject to restrictions.</td></tr>
+                <tr><td>Cloud use</td><td>Cloud Services restrictions require careful review.</td><td>Portability is conditional and tied to certified cloud services and eligible license sources.</td></tr>
+                <tr><td>Best ELP risk</td><td>vSAN overage, monitoring non-VVF cores and cloud/hosting restriction.</td><td>Core deficit, component scope, portability, NSX/export and reporting.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>VCF and VVF bundled components may only be used on or for the same physical cores where the relevant vSphere component is deployed, unless the agreement says otherwise. This is the boundary that separates a clean ELP from a risky one. Operations, Automation, Operations for Networks, NSX, HCX, VKS and other components need a scope map, not just an installed/not-installed flag.</p>
+        </section>
+
+        <section id="vmware-keys-reporting" class="portal-section" data-section-title="Keys, Files and v9 Reporting">
+          <div class="section-toolbar">
+            <h2>Keys, Files and v9 Reporting</h2>
+            <button class="mini-btn" onclick="printSection('vmware-keys-reporting')">Print this section</button>
+          </div>
+          <p>Do not confuse entitlement, technical activation and compliance reporting. Entitlement is what the customer bought. License keys and files are how software is activated or allocated. Compliance reports are the operational reporting mechanism for certain version 9 deployments.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Mechanism</th><th>Applies To</th><th>SAM Action</th></tr></thead>
+              <tbody>
+                <tr><td>Classic license keys</td><td>Older vSphere, vCenter, vSAN and many v8 deployments.</td><td>Export assigned keys and capacity; reconcile to portal and contract evidence.</td></tr>
+                <tr><td>Solution license key</td><td>VCF/VVF transition model around certain vSphere and VCF versions.</td><td>Confirm whether one key enables solution components and whether brownfield component keys remain.</td></tr>
+                <tr><td>VCF/VVF 9 license file</td><td>Version 9 licensing operations.</td><td>Track license file, Business Services Console allocation and reporting evidence.</td></tr>
+                <tr><td>Connected mode</td><td>Non-air-gapped environments.</td><td>Validate registration and automatic reporting behavior.</td></tr>
+                <tr><td>Disconnected mode</td><td>Air-gapped environments.</td><td>Create manual upload/report calendar with owner and evidence folder.</td></tr>
+                <tr><td>Compliance report</td><td>VCF/VVF version 9 deployments.</td><td>Track 180-day cadence, submissions, screenshots and support implications.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout warning">
+            <strong>Version 9 governance control</strong>
+            <p>Build a recurring task for 180-day reporting. Do not leave it as a tribal-memory obligation inside the VMware admin team. SAM, platform operations, procurement and the service owner should know where the submission evidence is stored.</p>
+          </div>
+        </section>
+
+        <section id="vmware-elp-methodology" class="portal-section" data-section-title="ELP Methodology">
+          <div class="section-toolbar">
+            <h2>ELP Methodology</h2>
+            <button class="mini-btn" onclick="printSection('vmware-elp-methodology')">Print this section</button>
+          </div>
+          <p>The VMware Effective License Position compares entitlement to consumption and explains the delta. The senior version does not simply produce a red/green dashboard; it explains what evidence was used, what assumptions were made, where FNMS agrees with manual calculation and where Broadcom-specific interpretation was applied.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Step</th><th>Activity</th><th>Output</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Define scope: legal entity, sites, vCenters, clusters, cloud, timeframe and products.</td><td>Scope statement and assumptions.</td></tr>
+                <tr><td>2</td><td>Collect entitlement: contracts, transaction docs, portal exports, support dates, SPDs and license evidence.</td><td>Entitlement register.</td></tr>
+                <tr><td>3</td><td>Collect deployment: vCenter, ESXi, CPU/core, vSAN, NSX, Operations, HCX and cloud.</td><td>Technical inventory pack.</td></tr>
+                <tr><td>4</td><td>Clean and normalize: remove duplicates, retired hosts, stale VMs and wrong cluster mappings.</td><td>Reconciled host list.</td></tr>
+                <tr><td>5</td><td>Classify product scope: legacy vSphere, VVF, VCF, standalone vSAN and add-ons.</td><td>Product mapping matrix.</td></tr>
+                <tr><td>6</td><td>Calculate core consumption per host using the 16-core-per-CPU rule.</td><td>Core consumption sheet.</td></tr>
+                <tr><td>7</td><td>Calculate vSAN capacity separately.</td><td>vSAN consumption sheet.</td></tr>
+                <tr><td>8</td><td>Map bundled components to licensed cores.</td><td>Component compliance sheet.</td></tr>
+                <tr><td>9</td><td>Compare entitlement versus consumption.</td><td>ELP summary.</td></tr>
+                <tr><td>10</td><td>Review agreement restrictions: cloud, hosting, portability, reporting and support.</td><td>Contract risk log.</td></tr>
+                <tr><td>11</td><td>Prepare remediation and optimization options.</td><td>Action plan.</td></tr>
+                <tr><td>12</td><td>Package evidence for audit or renewal.</td><td>Evidence folder and executive summary.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Workbook Tab</th><th>Purpose</th><th>Key Fields</th></tr></thead>
+              <tbody>
+                <tr><td>00_Control</td><td>Scope, dates, owners and assumptions.</td><td>Customer, legal entity, vCenters, period, owner and data date.</td></tr>
+                <tr><td>01_Entitlements</td><td>Purchases, subscriptions and contracts.</td><td>Product, SKU, quantity, metric, start/end, site and source document.</td></tr>
+                <tr><td>02_Agreement_Terms</td><td>Rules extracted from documents.</td><td>Metric, minimums, component scope, cloud/hosting and reporting.</td></tr>
+                <tr><td>03_vCenter_Hosts</td><td>Host-level technical data.</td><td>vCenter, cluster, host, sockets, cores/socket and required cores.</td></tr>
+                <tr><td>04_vSAN</td><td>Storage capacity analysis.</td><td>Cluster, raw TiB, included TiB, add-on TiB and delta.</td></tr>
+                <tr><td>05_Component_Scope</td><td>NSX, Operations, HCX and VKS usage.</td><td>Instance, managed hosts/clusters and mapped entitlement.</td></tr>
+                <tr><td>06_Flexera_Export</td><td>FNMS evidence and cross-check.</td><td>FNMS ID, inventory date, license key, application, device and cluster.</td></tr>
+                <tr><td>08_ELP</td><td>Final entitlement versus consumption.</td><td>Entitlement, consumption, surplus/deficit and risk.</td></tr>
+                <tr><td>10_Audit_Pack</td><td>Sources and screenshots.</td><td>Document name, source, date, file path and hash if used.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="vmware-fnms-operating-procedure" class="portal-section" data-section-title="FNMS Operating Procedure">
+          <div class="section-toolbar">
+            <h2>FNMS Operating Procedure</h2>
+            <button class="mini-btn" onclick="printSection('vmware-fnms-operating-procedure')">Print this section</button>
+          </div>
+          <p>Flexera FNMS should be treated as the discovery, inventory, contract and evidence platform for VMware. For current Broadcom VCF/VVF subscription logic, a separate workbook may still be needed to apply the latest SPD rules where the tool content or license record configuration does not fully automate the calculation.</p>
+          <div class="callout">
+            <strong>How to say it professionally</strong>
+            <p>Flexera FNMS is being used as the discovery, inventory, contract and evidence platform for VMware. For the current Broadcom VCF/VVF model, we additionally apply the latest SPD rules in an external ELP workbook because the compliance conclusion depends on 16-core-per-processor minimums, included vSAN TiB per core, component scope and version 9 reporting obligations.</p>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Step</th><th>FNMS Action</th><th>Consultant Validation</th></tr></thead>
+              <tbody>
+                <tr><td>1</td><td>Configure vCenter or standalone ESXi credentials on the inventory beacon.</td><td>Use an approved service account with visibility into host, cluster, licensing and hardware data.</td></tr>
+                <tr><td>2</td><td>Confirm subnet coverage for vCenter/ESXi endpoints.</td><td>Use targeted /32 entries when the vCenter list is known; avoid uncontrolled broad scans during ELP.</td></tr>
+                <tr><td>3</td><td>Create a dedicated VMware discovery and inventory action.</td><td>Do not mix audit-baseline VMware inventory with unrelated discovery noise.</td></tr>
+                <tr><td>4</td><td>Select VMware infrastructure inventory with advanced VMware application recognition.</td><td>This is key for vSphere, vCenter, vSAN and relationship evidence.</td></tr>
+                <tr><td>5</td><td>Run the rule and check task status, beacon logs and upload/import status.</td><td>Discovery success is not the same as successful inventory import.</td></tr>
+                <tr><td>6</td><td>Review Discovery &amp; Inventory &gt; VMware Inventory.</td><td>All scoped vCenters, ESXi hosts and vSAN records should be represented or explained.</td></tr>
+                <tr><td>7</td><td>Run the vCenter Inventory Issues Analysis report.</td><td>Fix stale VM links, orphaned VMs, connector errors and missed movements before ELP sign-off.</td></tr>
+                <tr><td>8</td><td>Export inventory devices, VMware applications, license keys, purchases, contracts and license positions.</td><td>Join FNMS evidence to the manual Broadcom ELP workbook and keep an adjustment log.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>FNMS Quality Check</th><th>Why It Matters</th><th>Fix</th></tr></thead>
+              <tbody>
+                <tr><td>vCenter import freshness</td><td>Stale imports cause wrong host and cluster relationships.</td><td>Rerun beacon rule and check logs.</td></tr>
+                <tr><td>Host socket/core completeness</td><td>Core ELP cannot be calculated without hardware data.</td><td>Validate from vCenter, PowerCLI or hardware inventory.</td></tr>
+                <tr><td>Standalone ESXi discovery</td><td>Not every ESXi host is managed by vCenter.</td><td>Add standalone targets where needed.</td></tr>
+                <tr><td>Duplicate hosts</td><td>Multiple inventory sources can double count.</td><td>Normalize by host UUID, serial, vCenter and lifecycle status.</td></tr>
+                <tr><td>Masked or missing license keys</td><td>Technical assignment evidence is incomplete.</td><td>Review service-account permissions with the VMware admin.</td></tr>
+                <tr><td>Wrong application mapping</td><td>A vCenter/vSAN record alone may not equal the VCF/VVF bundle scope.</td><td>Use manual bundle mapping custom fields and architecture sign-off.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="vmware-worked-examples" class="portal-section" data-section-title="Worked ELP Examples">
+          <div class="section-toolbar">
+            <h2>Worked ELP Examples</h2>
+            <button class="mini-btn" onclick="printSection('vmware-worked-examples')">Print this section</button>
+          </div>
+          <div class="cheat-grid" data-practitioner="keep">
+            <div>
+              <h3>Example A: VVF with vSAN Overage</h3>
+              <p>Six production hosts at 2 CPUs x 24 cores consume 288 cores. Four DR hosts at 2 CPUs x 16 cores consume 128 cores. Total VVF required cores are 416. With 500 entitled cores, the core position is +84. Included vSAN is 416 x 0.25 = 104 TiB. If actual vSAN is 180 TiB and add-on entitlement is 100 TiB, the customer remains compliant with 24 TiB add-on surplus.</p>
+            </div>
+            <div>
+              <h3>Example B: VCF Core Deficit</h3>
+              <p>Five private cloud hosts at 2 CPUs x 32 cores consume 320 VCF cores. If entitlement is 300 cores, the core position is -20. Included vSAN is 320 TiB against 180 TiB actual, but the vSAN surplus does not offset the missing VCF core entitlement.</p>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Cluster</th><th>Hosts</th><th>Hardware</th><th>Scope</th><th>Required Cores</th></tr></thead>
+              <tbody>
+                <tr><td>Cluster A - General VM</td><td>8</td><td>2 CPUs x 16 cores</td><td>VVF</td><td>256</td></tr>
+                <tr><td>Cluster B - Private cloud</td><td>6</td><td>2 CPUs x 32 cores</td><td>VCF</td><td>384</td></tr>
+                <tr><td>Cluster C - DR</td><td>4</td><td>2 CPUs x 8 cores</td><td>VVF</td><td>128 because of the per-CPU minimum.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Do not combine all cores and compare against one bucket. VVF and VCF are separate product scopes. If Operations, NSX or vSAN are shared across clusters, validate the bundled component scope carefully.</p>
+        </section>
+
+        <section id="vmware-renewal-optimization" class="portal-section" data-section-title="Renewal Optimization">
+          <div class="section-toolbar">
+            <h2>Renewal Optimization</h2>
+            <button class="mini-btn" onclick="printSection('vmware-renewal-optimization')">Print this section</button>
+          </div>
+          <p>A VMware renewal is a commercial, architectural and compliance event. The SAM team should not simply accept the vendor quote. Build a pre-renewal ELP that shows active hosts, required cores, retirement candidates, vSAN need, VCF versus VVF scope and component usage.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Optimization Lever</th><th>Logic</th><th>ELP Impact</th></tr></thead>
+              <tbody>
+                <tr><td>Retire unused hosts</td><td>Stop paying for hardware that does no useful work.</td><td>Reduces core count and sometimes vSAN capacity.</td></tr>
+                <tr><td>Consolidate workloads</td><td>Run workloads on fewer, better-utilized hosts.</td><td>Reduces licensed host footprint.</td></tr>
+                <tr><td>Separate VCF and VVF clusters</td><td>Do not license basic workloads as full VCF if they do not need full-stack components.</td><td>Avoids over-bundling.</td></tr>
+                <tr><td>Review vSAN architecture</td><td>Storage-heavy VVF clusters can create add-on TiB exposure.</td><td>Reduces capacity shortfall or unnecessary purchase.</td></tr>
+                <tr><td>Remove stale NSX/Operations scope</td><td>Do not manage non-entitled cores accidentally.</td><td>Reduces component risk.</td></tr>
+                <tr><td>Plan hardware refresh</td><td>Low-core multi-socket hardware wastes entitlement under the minimum rule.</td><td>Optimizes the 16-core floor exposure.</td></tr>
+                <tr><td>Use FNMS evidence in negotiation</td><td>Show actual need rather than accepting quote assumptions.</td><td>Supports data-backed renewal challenge.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="vmware-audit-defense" class="portal-section" data-section-title="Audit Defense Pack">
+          <div class="section-toolbar">
+            <h2>Audit Defense Pack</h2>
+            <button class="mini-btn" onclick="printSection('vmware-audit-defense')">Print this section</button>
+          </div>
+          <p>A defensible VMware position is evidence based. It should not depend on verbal statements from infrastructure teams alone. The evidence pack should prove both sides of the position: legal entitlement and technical consumption.</p>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Evidence Folder</th><th>Required Content</th></tr></thead>
+              <tbody>
+                <tr><td>01_Agreements</td><td>Transaction documents, Broadcom agreement, modules, applicable SPDs and legacy VMware terms.</td></tr>
+                <tr><td>02_Entitlements</td><td>Broadcom portal exports, license keys, license files, support dates, invoices, POs and quotes.</td></tr>
+                <tr><td>03_Technical_Inventory</td><td>vCenter exports, ESXi host list, sockets/cores, RVTools and PowerCLI exports.</td></tr>
+                <tr><td>04_vSAN</td><td>vSAN capacity reports, calculator outputs and cluster mapping.</td></tr>
+                <tr><td>05_Components</td><td>NSX, Operations, Automation, Operations for Networks, HCX, VKS and AI component evidence where applicable.</td></tr>
+                <tr><td>06_Flexera</td><td>FNMS exports, discovery logs, VMware inventory, vCenter issue report and license records.</td></tr>
+                <tr><td>07_ELP_Calculation</td><td>Workbook, formulas, assumptions, reconciliations and deltas.</td></tr>
+                <tr><td>08_Remediation</td><td>Purchase plan, decommission evidence, reassignment and architecture changes.</td></tr>
+                <tr><td>09_Approvals</td><td>Sign-off from SAM, procurement, platform owner and architect.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="practitioner-card" data-practitioner="keep">
+            <h4>Audit Response Narrative</h4>
+            <p>We calculated VMware consumption at the physical ESXi host level, applied the 16-core-per-processor minimum, mapped each host to legacy vSphere, VVF or VCF scope, calculated vSAN TiB separately, validated bundled component usage against licensed cores, and reconciled contractual entitlement from transaction documents and portal exports with technical evidence from vCenter, FNMS and PowerCLI.</p>
+          </div>
+        </section>
+
+        <section id="vmware-data-collection" class="portal-section" data-section-title="Data Collection Evidence">
+          <div class="section-toolbar">
+            <h2>Data Collection Evidence</h2>
+            <button class="mini-btn" onclick="printSection('vmware-data-collection')">Print this section</button>
+          </div>
+          <p>When FNMS is available, use it as the evidence backbone. When it is not, build a controlled manual evidence pack with vCenter exports, RVTools, PowerCLI, Broadcom portal extracts and stakeholder sign-off.</p>
+          <div class="copy-box">
+            <div><strong>PowerCLI Host/Core Export Logic</strong></div><button class="mini-btn" onclick="copyText(this)">Copy</button>
+            <pre><code>Connect-VIServer -Server "vcenter.company.com"
+
+Get-VMHost | ForEach-Object {
+  $view = Get-View $_.Id
+  $sockets = $view.Hardware.CpuPkg.Count
+  $totalCores = $view.Hardware.CpuInfo.NumCpuCores
+  $coresPerSocket = [math]::Round($totalCores / $sockets, 2)
+  $licensedCores = $sockets * [math]::Max($coresPerSocket, 16)
+  [PSCustomObject]@{
+    vCenter = $global:DefaultVIServer.Name
+    Cluster = $_.Parent.Name
+    Host = $_.Name
+    Sockets = $sockets
+    TotalPhysicalCores = $totalCores
+    CoresPerSocket = $coresPerSocket
+    RequiredLicensedCores = $licensedCores
+    Version = $_.Version
+    Build = $_.Build
+  }
+} | Export-Csv ".\vmware_host_core_export.csv" -NoTypeInformation</code></pre>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Data Set</th><th>Primary Owner</th><th>Sign-off Question</th></tr></thead>
+              <tbody>
+                <tr><td>vCenter/ESXi host list</td><td>VMware platform owner</td><td>Is this the complete active host list for the scope date?</td></tr>
+                <tr><td>CPU/socket/core values</td><td>VMware admin or hardware team</td><td>Are physical CPU details accurate and current?</td></tr>
+                <tr><td>vSAN capacity</td><td>Storage or VMware owner</td><td>Is this licensing-relevant capacity, not merely usable/free capacity?</td></tr>
+                <tr><td>NSX, Operations, HCX, VKS</td><td>VMware architect</td><td>Are components mapped to the right VCF/VVF scope?</td></tr>
+                <tr><td>Contracts and entitlements</td><td>Procurement and SAM</td><td>Are all purchases, renewals, support dates and exception letters included?</td></tr>
+                <tr><td>FNMS exports</td><td>SAM tool owner</td><td>Is the inventory current and are known issues documented?</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="vmware-scenarios" class="portal-section" data-section-title="Scenario Playbook">
+          <div class="section-toolbar">
+            <h2>Scenario Playbook</h2>
+            <button class="mini-btn" onclick="printSection('vmware-scenarios')">Print this section</button>
+          </div>
+          <details class="qa" open><summary>Customer says: "We have enough keys in vCenter."</summary><p>Response: vCenter keys show technical assignment, not the full legal position. Request the transaction document, Broadcom entitlement export, support term, applicable SPD and host/core inventory. Then reconcile assigned key capacity to legally purchased capacity and deployed host requirements.</p><button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button></details>
+          <details class="qa"><summary>Customer wants to reduce the Broadcom renewal quote.</summary><p>Build a pre-renewal ELP and optimization case. Show active hosts, required cores, retirement candidates, vSAN need, VCF versus VVF scope and component usage. Challenge quote assumptions with decommission evidence, architecture plans and FNMS/vCenter extracts.</p><button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button></details>
+          <details class="qa"><summary>FNMS says compliant but manual ELP shows a deficit.</summary><p>Investigate whether FNMS is modeling the same product, metric and current Broadcom terms. The inventory may be accurate while the license record is legacy, generic or not configured for current VCF/VVF bundle rules. Prepare a reconciliation note rather than hiding the difference.</p><button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button></details>
+          <details class="qa"><summary>VCF/VVF 9 reporting was missed.</summary><p>Treat it as an operational compliance incident. Confirm connected or disconnected mode, identify last report date, collect screenshots/logs, submit or upload the required report through the approved process and create a 180-day recurring control with escalation.</p><button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button></details>
+        </section>
+
+        <section id="vmware-interview-language" class="portal-section" data-section-title="Interview Language">
+          <div class="section-toolbar">
+            <h2>Interview Language</h2>
+            <button class="mini-btn" onclick="printSection('vmware-interview-language')">Print this section</button>
+          </div>
+          <details class="qa" open><summary>How do you prepare a VMware ELP?</summary><p>I start by separating entitlement and consumption. On the entitlement side, I collect Broadcom portal exports, transaction documents, license keys or license files, support dates and applicable SPDs. On the consumption side, I collect vCenter/ESXi inventory, physical sockets and cores, vSAN capacity, NSX, Operations and other component usage. For VCF/VVF, I calculate required cores host by host using the 16-core-per-processor minimum, calculate vSAN separately and map components only to licensed bundle scope. If FNMS is available, I use it for inventory, license-key evidence, contracts and quality checks, then reconcile FNMS output against the latest Broadcom terms in the ELP workbook.</p><button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button></details>
+          <details class="qa"><summary>How do you use Flexera FNMS for VMware?</summary><p>I use FNMS as the discovery, inventory and reconciliation backbone. I configure VMware inventory through the inventory beacon and vCenter credentials, verify VMware Inventory and vCenter issue reports, export host and license evidence, load contracts and purchases, and then reconcile the FNMS position to a Broadcom-specific manual workbook for VCF/VVF core minimums, vSAN TiB, component scope and reporting obligations.</p><button class="mini-btn" onclick="copyAnswer(this)">Copy answer</button></details>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Weak Answer</th><th>Stronger Answer</th></tr></thead>
+              <tbody>
+                <tr><td>VMware is just counting VMs.</td><td>VMware compliance is driven by physical ESXi host cores, product scope, vSAN TiB and agreement terms.</td></tr>
+                <tr><td>Keys in vCenter prove entitlement.</td><td>Keys are activation evidence. Entitlement comes from transaction documents, portal exports, support records and applicable SPDs.</td></tr>
+                <tr><td>vSAN is included, so no separate work is needed.</td><td>vSAN inclusion differs by VVF and VCF and must be reconciled against actual licensing-relevant TiB.</td></tr>
+                <tr><td>FNMS says compliant, so we are done.</td><td>FNMS output is draft until inventory quality, license records, bundle scope and current Broadcom terms are validated.</td></tr>
+                <tr><td>Disabled BIOS cores do not count.</td><td>Check the applicable SPD; Broadcom-era rules may still require BIOS-deactivated cores to be licensed.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="vmware-final-checklist" class="portal-section" data-section-title="Final Checklist">
+          <div class="section-toolbar">
+            <h2>Final Checklist</h2>
+            <button class="mini-btn" onclick="printSection('vmware-final-checklist')">Print this section</button>
+          </div>
+          <div class="cheat-grid" data-practitioner="keep">
+            <div><h3>Top Risks</h3><p>16-core minimum missed; vSAN capacity ignored; VCF/VVF components used outside licensed scope; cloud or hosting restrictions skipped; version 9 reporting owner missing; FNMS vCenter import stale; legacy keys assumed to grant current rights.</p></div>
+            <div><h3>Senior Principle</h3><p>A shallow VMware ELP stops at "count cores." A senior ELP joins contract hierarchy, SPD version control, host-level core math, vSAN TiB, component scope, FNMS quality, audit evidence and renewal optimization.</p></div>
+          </div>
+          <div class="workbook-embed" data-practitioner="keep" style="margin:20px 0">
+            <div class="workbook-glass">
+              <div>
+                <span class="eyebrow">Source Workbook</span>
+                <h3 style="margin:6px 0">VMware Licensing Guide - Senior SAM / ITAM Workbook v2</h3>
+                <p style="margin:0 0 10px; font-size:14px; color:var(--muted)">The article is based on the attached VMware workbook source and converts it into a publishable Enterprise Ledger article with practical ELP, FNMS, audit and interview structure.</p>
+                <div class="workbook-meta"><span>35 pages</span><span>PDF source</span><span>Broadcom-era VMware</span></div>
+              </div>
+              <a class="download-btn" download="VMware_Licensing_Guide_SAM_Workbook_v2.pdf" href="../assets/VMware_Licensing_Guide_SAM_Workbook_v2.pdf">Download PDF</a>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Source Area</th><th>Use in Real Work</th></tr></thead>
+              <tbody>
+                <tr><td>Broadcom/VMware announcement and product documentation</td><td>Validate current portfolio, subscription model and vSphere/VCF/VVF release availability.</td></tr>
+                <tr><td>VCF and VVF Specific Program Documentation</td><td>Confirm metrics, minimums, included components, vSAN entitlement, cloud/hosting terms and reporting cadence.</td></tr>
+                <tr><td>Broadcom End User / Foundation Agreement</td><td>Confirm order of precedence, audit mechanics, support consequences and conflicting purchase-order treatment.</td></tr>
+                <tr><td>Broadcom knowledge articles for core counting and license calculators</td><td>Validate the 16-core-per-CPU method and vSAN/core calculations.</td></tr>
+                <tr><td>Flexera FNMS VMware inventory documentation</td><td>Validate vCenter connector setup, VMware Inventory, vCenter issues report and export evidence.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="engagement-panel" data-engagement-panel="vmware-licensing-broadcom-vcf-vvf-vsan-fnms-audit-defense">
+          <div class="engagement-top">
+            <div>
+              <span class="eyebrow">Reader response</span>
+              <h2 style="margin:8px 0 0">Discuss this article</h2>
+              <p class="meta">Likes, shares and comments are stored in this browser for a static hosted site.</p>
+            </div>
+            <div class="engagement-actions">
+              <button class="primary" type="button" data-like-button>Like</button>
+              <button type="button" onclick="copyLink()">Share</button>
+            </div>
+          </div>
+          <div class="engagement-counts">
+            <span><b data-like-count>0</b> likes</span>
+            <span><b data-share-count>0</b> shares</span>
+            <span><b data-comment-count>0</b> comments</span>
+          </div>
+          <form class="comment-form" data-comment-form>
+            <input name="name" autocomplete="name" placeholder="Your name">
+            <textarea name="comment" required placeholder="Add a thoughtful comment"></textarea>
+            <button type="submit">Post comment</button>
+          </form>
+          <div class="comment-list" data-comment-list></div>
+        </section>
+      </div>
+    </div>
+  </article>
+</main>
+<footer class="site-footer">By Ashish Deshmukh · Notes on technology, work, learning, systems and practical execution.</footer>
+<script src="../assets/site.js?v=20260529-vmware"></script>
+<script>
+function calcVMware(){
+  const hosts = +document.getElementById('vmwHosts')?.value || 0;
+  const sockets = +document.getElementById('vmwSockets')?.value || 0;
+  const cores = +document.getElementById('vmwCores')?.value || 0;
+  const entitled = +document.getElementById('vmwEntitled')?.value || 0;
+  const vsan = +document.getElementById('vmwVsan')?.value || 0;
+  const bundle = document.getElementById('vmwBundle')?.value || 'VVF';
+  const requiredPerHost = sockets * Math.max(cores, 16);
+  const required = hosts * requiredPerHost;
+  const coreDelta = entitled - required;
+  const includedRate = bundle === 'VCF' ? 1 : 0.25;
+  const includedVsan = required * includedRate;
+  const vsanDelta = includedVsan - vsan;
+  const coreStatus = coreDelta < 0 ? 'deficit' : 'surplus';
+  const vsanStatus = vsanDelta < 0 ? 'deficit' : 'surplus';
+  const out = document.getElementById('vmwCalcOut');
+  if(out){
+    out.textContent = `${bundle}: required cores ${required.toLocaleString()} (${Math.abs(coreDelta).toLocaleString()} core ${coreStatus}); included vSAN ${includedVsan.toLocaleString()} TiB (${Math.abs(vsanDelta).toLocaleString()} TiB ${vsanStatus}).`;
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  calcVMware();
+  const u = encodeURIComponent(location.href), t = encodeURIComponent(document.title);
+  document.querySelectorAll('[data-share-linkedin]').forEach(a => {
+    a.href = `https://www.linkedin.com/sharing/share-offsite/?url=${u}`;
+  });
+  document.querySelectorAll('[data-share-x]').forEach(a => {
+    a.href = `https://twitter.com/intent/tweet?text=${t}&url=${u}`;
+  });
+});
+</script>
+</body></html>
